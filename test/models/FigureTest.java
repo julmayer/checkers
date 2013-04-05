@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class FigureTest {
 	
-	Cell startPosition = new Cell();
+	Cell startPosition = new Cell(0, 0);
 
 	@Test
 	public void createInstance() {
@@ -45,7 +45,7 @@ public class FigureTest {
 	public void changePosition() {
 		Figure figure = getBlackFigure();
 		
-		Cell newPosition = new Cell();
+		Cell newPosition = new Cell(0,0);
 		figure.setPosition(newPosition);
 		
 		assertEquals(figure.getPosition(), newPosition);

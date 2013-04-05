@@ -24,7 +24,7 @@ public class CellTest {
 	@Test
 	public void setterTest(){
 		Cell cell = new Cell(0,0);
-		Figure occupier = new Figure();
+		Figure occupier = new Figure(cell, Figure.COLOR.black);
 		cell.setOccupier(occupier);
 		assertNotNull(cell.getOccupier());
 	}
