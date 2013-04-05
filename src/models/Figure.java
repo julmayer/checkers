@@ -105,7 +105,7 @@ public class Figure {
 	private List<Cell> mustKill(List<Cell> cells) {
 		List<Cell> result = new LinkedList<>();
 		for (Cell cell : cells) {
-			if (cell.isOccupied && !cell.getOccupier().getColor().equals(this.color)) {
+			if (cell.isOccupied() && !cell.getOccupier().getColor().equals(this.color)) {
 				result.add(cell);
 			}
 		}
