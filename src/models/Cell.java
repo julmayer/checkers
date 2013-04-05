@@ -12,6 +12,10 @@ public class Cell {
 		this.occupier = null;
 	}
 	
+	public boolean isOccupied(){
+		return occupier != null;
+	}
+	
 	//getter
 	public int getX(){
 		return x;
