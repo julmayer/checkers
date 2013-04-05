@@ -7,13 +7,26 @@ import org.junit.Test;
 
 public class CellTest {
 
-	@Before
-	public void setUp() throws Exception {
+	@Test
+	public void createInstance() {
+		Cell cell = new Cell(0,0);
+		assertNotNull(cell);
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void getterTest(){
+		Cell cell = new Cell(0,0);
+		assertEquals(0, cell.getX());
+		assertEquals(0, cell.getY());
+		assertNull(cell.getOccupier());
 	}
 
+	@Test
+	public void setterTest(){
+		Cell cell = new Cell(0,0);
+		Figure occupier = new Figure();
+		cell.setOccupier(occupier);
+		assertNotNull(cell.getOccupier());
+	}
+	
 }
