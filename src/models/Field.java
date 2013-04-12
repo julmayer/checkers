@@ -3,11 +3,11 @@ package models;
 public class Field {
 	private Cell[][] field;
 	private final int X = 8;
-	private final int Y =8;
+	private final int Y = 8;
 	
 	public Field(){
 		this.field = new Cell[X][Y];
-		createField();
+		initCells();
 	}
 
 	public Cell[][] getField(){
@@ -18,9 +18,9 @@ public class Field {
 		return field[x][y];
 	}
 
-	final public void createField(){
-		for (int i = 0; i < 8; i++){
-			for (int j = 0; j < 8; j++){
+	final private void initCells(){
+		for (int i = 0; i < X; i++){
+			for (int j = 0; j < Y; j++){
 				field[i][j] = new Cell(i, j);
 			}
 		}

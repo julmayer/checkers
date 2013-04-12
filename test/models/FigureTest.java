@@ -51,6 +51,9 @@ public class FigureTest {
 		assertFalse(blackFigure.isAlive());
 		assertNull(blackFigure.getPosition());
 		assertTrue(whiteFigure.isAlive());
+		assertNotNull(blackFigure.hashCode());
+		blackFigure.setPosition(startPosition);
+		
 	}
 	
 	@Test
@@ -82,7 +85,7 @@ public class FigureTest {
 	}
 	
 	@Test
-	public void equality() {
+	public void equalityAndHashCode() {
 		Figure otherPosition = new Figure(new Cell(1, 1), Figure.COLOR.black);
 		Figure notAlive = new Figure(startPosition, Figure.COLOR.black);
 		notAlive.kill();
@@ -93,7 +96,21 @@ public class FigureTest {
 		assertFalse(blackFigure.equals(startPosition));
 		assertFalse(blackFigure.equals(otherPosition));
 		assertFalse(blackFigure.equals(notAlive));
+		assertFalse(blackFigure.equals(null));
 		assertEquals(same, blackFigure);
 		assertEquals(same.hashCode(), blackFigure.hashCode());
+		blackFigure.kill();
+		assertEquals(notAlive, blackFigure);
+	}
+	
+	@Test
+	public void enumTest() {
+		Figure.COLOR[] colors = Figure.COLOR.values();
+		Figure.COLOR[] testcolors = new Figure.COLOR[2];
+		Figure.COLOR white = Figure.COLOR.valueOf("white");
+		Figure.COLOR black = Figure.COLOR.valueOf(Figure.COLOR.class, "black");
+		testcolors[0] = white;
+		testcolors[1] = black;
+		assertArrayEquals(testcolors, colors);		
 	}
 }

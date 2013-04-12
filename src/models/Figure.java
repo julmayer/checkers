@@ -69,7 +69,7 @@ public class Figure {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (alive ? 1231 : 1237);
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + (color.hashCode());
 		result = prime * result
 				+ ((position == null) ? 0 : position.hashCode());
 		return result;
@@ -93,11 +93,7 @@ public class Figure {
 		if (color != other.color) {
 			return false;
 		}
-		if (position == null) {
-			if (other.position != null) {
-				return false;
-			}
-		} else if (!position.equals(other.position)) {
+		if (position != null && !position.equals(other.position)) {
 			return false;
 		}
 		return true;
