@@ -2,57 +2,98 @@ package models;
 
 import static org.junit.Assert.*;
 
-import java.awt.Point;
-
-import javax.swing.text.Position;
+import java.nio.file.FileVisitOption;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class FigureTest {
 	
-	Cell startPosition = new Cell(0, 0);
+	Cell startPosition;
+	Figure blackFigure;
+	Figure whiteFigure;
+	
+	@Before 
+	public void setUp() {
+		startPosition = new Cell(0, 0);
+		blackFigure = new Figure(startPosition, Figure.COLOR.black);
+		whiteFigure = new Figure(startPosition, Figure.COLOR.white);
+	}
 
 	@Test
-	public void createInstance() {
-		Figure figure = getBlackFigure();
-			
-		assertNotNull(figure);
-		assertTrue(figure.isAlive());
-		assertFalse(figure.isCrowned());
-		assertNotNull(figure.getPossibleMoves());
-		assertNotNull(figure.getPosition());
-		assertEquals(figure.getColor(), Figure.COLOR.black);
+	public void createBlackFigure() {
+		
+		assertNotNull(blackFigure);
+		assertTrue(blackFigure.isAlive());
+		assertFalse(blackFigure.isCrowned());
+		assertNotNull(blackFigure.getPossibleMoves());
+		assertEquals(startPosition, blackFigure.getPosition());
+		assertEquals(Figure.COLOR.black, blackFigure.getColor());
+		assertNotSame(whiteFigure, blackFigure);
+	}
+	
+	@Test
+	public void createWhiteFigure() {
+		
+		assertNotNull(whiteFigure);
+		assertTrue(whiteFigure.isAlive());
+		assertFalse(whiteFigure.isCrowned());
+		assertNotNull(whiteFigure.getPossibleMoves());
+		assertEquals(startPosition, whiteFigure.getPosition());
+		assertEquals(Figure.COLOR.white, whiteFigure.getColor());
+		assertNotSame(blackFigure, whiteFigure);
 	}
 
 	@Test
 	public void killFigure() {
-		Figure figure = getBlackFigure();
-		figure.setAlive(false);
-		
-		assertFalse(figure.isAlive());
+		blackFigure.kill();
+		assertFalse(blackFigure.isAlive());
+		assertNull(blackFigure.getPosition());
+		assertTrue(whiteFigure.isAlive());
 	}
 	
 	@Test
 	public void crownFigure() {
-		Figure figure = getBlackFigure();
-		figure.setCrowned(true);
+		blackFigure.setCrowned(true);
 		
-		assertTrue(figure.isCrowned());
+		assertTrue(blackFigure.isCrowned());
+		assertFalse(whiteFigure.isCrowned());
 	}
 	
 	@Test
 	public void changePosition() {
-		Figure figure = getBlackFigure();
+		Cell newPosition = new Cell(1,1);
+		blackFigure.setPosition(newPosition);
 		
-		Cell newPosition = new Cell(0,0);
-		figure.setPosition(newPosition);
-		
-		assertEquals(figure.getPosition(), newPosition);
-		assertNotSame(startPosition, newPosition);
+		assertEquals(newPosition, blackFigure.getPosition());
+		assertNotSame(blackFigure.getPosition(), startPosition);
 	}
 	
-	private Figure getBlackFigure() {
-		return new Figure(startPosition, Figure.COLOR.black);
+	@Test
+	public void changePossibleMoves() {
+		List<Cell> possibles = new LinkedList<>();
+		possibles.add(new Cell(5, 5));
+		possibles.add(new Cell(6, 6));
+		blackFigure.setPossibleMoves(possibles);
+		
+		assertEquals(possibles, blackFigure.getPossibleMoves());
+		assertNotSame(whiteFigure.getPossibleMoves(), blackFigure.getPossibleMoves());
+	}
+	
+	@Test
+	public void equality() {
+		Figure otherPosition = new Figure(new Cell(1, 1), Figure.COLOR.black);
+		Figure notAlive = new Figure(startPosition, Figure.COLOR.black);
+		notAlive.kill();
+		Figure same = new Figure(startPosition, Figure.COLOR.black);
+		assertSame(blackFigure, blackFigure);
+		assertNotSame(whiteFigure, blackFigure);
+		assertNotSame(startPosition, blackFigure);
+		assertNotSame(otherPosition, blackFigure);
+		assertNotSame(notAlive, blackFigure);
+		assertSame(same, blackFigure);
+		
 	}
 }

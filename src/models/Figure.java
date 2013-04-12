@@ -49,66 +49,44 @@ public class Figure {
 		return alive;
 	}
 
-	public void setAlive(boolean alive) {
-		this.alive = alive;
+	public void kill() {
+		this.alive = false;
+		this.position = null;
 	}
 
 	public List<Cell> getPossibleMoves() {
 		return possibleMoves;
+	}
+	
+	public void setPossibleMoves(List<Cell> possibleMoves) {
+		this.possibleMoves = possibleMoves;
 	}
 
 	public COLOR getColor() {
 		return color;
 	}
 
-	public void createPossibleMoves() {
-		if (crowned) {
-			crownedMoves();
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		Figure figure;
+		if (obj instanceof Figure) {
+			figure = (Figure) obj;
 		} else {
-			regulareMoves();
-		}
-	}
-	
-	private void regulareMoves() {
-		int x = position.getX();
-		int y = position.getY();
-		Cell upperLeft, upperRight, lowerLeft, lowerRight;
-		List<Cell> cells = new LinkedList<>();
-		
-		upperLeft = new Cell(x-1, y+1);
-		upperRight = new Cell(x+1, y+1);
-		lowerLeft = new Cell(x-1, y-1);
-		lowerRight = new Cell(x+1, y-1);
-		
-		cells.add(upperRight);
-		cells.add(upperLeft);
-		cells.add(lowerRight);
-		cells.add(lowerLeft);
-		
-		possibleMoves = mustKill(cells);
-		
-		if (possibleMoves.size() > 0) {
-			return;
+			return false;
 		}
 		
-		if (color.equals(COLOR.black)) {
-			
-		} else {
-			
+		if (!this.color.equals(figure.color)) {
+			return false;
+		} else if (this.alive != figure.alive) {
+			return false;
+		} else if (!this.position.equals(figure.getPosition())) {
+			return false;
 		}
-	}
-	
-	private void crownedMoves() {
 		
-	}
-	
-	private List<Cell> mustKill(List<Cell> cells) {
-		List<Cell> result = new LinkedList<>();
-		for (Cell cell : cells) {
-			if (cell.isOccupied() && !cell.getOccupier().getColor().equals(this.color)) {
-				result.add(cell);
-			}
-		}
-		return result;
+		return true;
 	}
 }
