@@ -14,19 +14,32 @@ public class CellTest {
 	}
 
 	@Test
-	public void getterTest(){
-		Cell cell = new Cell(0,0);
-		assertEquals(0, cell.getX());
-		assertEquals(0, cell.getY());
-		assertNull(cell.getOccupier());
+	public void methodsTests(){
+		Cell cell1 = new Cell(0,0);
+		assertEquals(0, cell1.getX());
+		assertEquals(0, cell1.getY());
+		assertNull(cell1.getOccupier());
+		assertFalse(cell1.isOccupied());
+		Figure occupier1 = new Figure(cell1, Figure.COLOR.black);
+		cell1.setOccupier(occupier1);
+		assertTrue(cell1.isOccupied());
+		assertNotNull(cell1.getOccupier());
 	}
-
+	
 	@Test
-	public void setterTest(){
-		Cell cell = new Cell(0,0);
-		Figure occupier = new Figure(cell, Figure.COLOR.black);
-		cell.setOccupier(occupier);
-		assertNotNull(cell.getOccupier());
+	public void equalityTest(){
+		Cell cell1 = new Cell(0,0);
+		Cell cell2 = new Cell(1,1);
+		Cell cell3 = new Cell(1,0);
+		Cell cell4 = new Cell(0,0);
+		assertFalse(cell1.equals(cell2));
+		assertFalse(cell1.equals(cell3));
+		assertFalse(cell2.equals(cell3));
+		assertTrue(cell1.equals(cell1));
+		Figure occupier1 = new Figure(cell1, Figure.COLOR.white);
+		assertFalse(cell1.equals(occupier1));
+		assertTrue(cell1.equals(cell4));
 	}
+	
 	
 }

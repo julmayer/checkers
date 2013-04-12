@@ -3,15 +3,15 @@ package controller;
 import models.Field;
 import models.Figure;
 
-public class fieldController {
+public class FieldController {
 	
 	private Field field;
 	
-	public fieldController() {
+	public FieldController() {
 		field = new Field();
 	}
 
-	final public void createWhiteFigures() {
+	final private void createWhiteFigures() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (i % 2 == 0 && j % 2 != 0 ){
@@ -23,7 +23,7 @@ public class fieldController {
 		}
 	}
 	
-	final public void createBLackFigures() {
+	final private void createBlackFigures() {
 		for (int i = 5; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (i % 2 != 0 && j % 2 == 0 ){
@@ -34,4 +34,10 @@ public class fieldController {
 			}
 		}
 	}
+	
+	public void gameInit(){
+		createBlackFigures();
+		createWhiteFigures();
+	}
+	
 }

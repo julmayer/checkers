@@ -34,4 +34,28 @@ public class Cell {
 		this.occupier = occupier;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj){
+			return true;
+		}
+		
+		Cell cell;
+		if (obj instanceof Cell) {
+			cell = (Cell) obj;
+		} else {
+			return false;
+		}
+
+		if (! (this.x == cell.x)){
+			return false;
+		}
+		if (! (this.y == cell.y)){
+			return false;
+		}
+		
+		return true;
+		}
 }
+	
+
