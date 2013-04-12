@@ -2,7 +2,6 @@ package models;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class CellTest {
@@ -27,7 +26,7 @@ public class CellTest {
 	}
 	
 	@Test
-	public void equalityTest(){
+	public void equalityAndHashTest(){
 		Cell cell1 = new Cell(0,0);
 		Cell cell2 = new Cell(1,1);
 		Cell cell3 = new Cell(1,0);
@@ -39,6 +38,8 @@ public class CellTest {
 		Figure occupier1 = new Figure(cell1, Figure.COLOR.white);
 		assertFalse(cell1.equals(occupier1));
 		assertTrue(cell1.equals(cell4));
+		assertNotNull(cell1.hashCode());
+		assertFalse(cell1.equals(null));
 	}
 	
 	

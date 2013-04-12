@@ -1,5 +1,6 @@
 *.class
 /bin
+*sonar*
 
 # Package Files #
 *.jar

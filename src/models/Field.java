@@ -2,9 +2,11 @@ package models;
 
 public class Field {
 	private Cell[][] field;
+	private final int X = 8;
+	private final int Y =8;
 	
 	public Field(){
-		this.field = new Cell[8][8];
+		this.field = new Cell[X][Y];
 		createField();
 	}
 

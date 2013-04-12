@@ -33,29 +33,38 @@ public class Cell {
 	public void setOccupier(Figure occupier) {
 		this.occupier = occupier;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj){
+		if (this == obj) {
 			return true;
 		}
-		
-		Cell cell;
-		if (obj instanceof Cell) {
-			cell = (Cell) obj;
-		} else {
+		if (obj == null) {
 			return false;
 		}
-
-		if (! (this.x == cell.x)){
+		if (!(obj instanceof Cell)) {
 			return false;
 		}
-		if (! (this.y == cell.y)){
+		Cell other = (Cell) obj;
+		if (x != other.x) {
 			return false;
 		}
-		
+		if (y != other.y) {
+			return false;
+		}
 		return true;
-		}
+	}
+
+	
 }
 	
 
