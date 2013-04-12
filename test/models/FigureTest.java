@@ -16,7 +16,7 @@ public class FigureTest {
 	@Test
 	public void createInstance() {
 		Figure figure = getBlackFigure();
-		
+			
 		assertNotNull(figure);
 		assertTrue(figure.isAlive());
 		assertFalse(figure.isCrowned());

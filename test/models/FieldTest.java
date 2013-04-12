@@ -10,6 +10,7 @@ public class FieldTest {
 	public void createInstance() {
 		Field field = new Field();
 		assertNotNull(field);
+		assertNotNull(field.getField());
 	}
 
 }
