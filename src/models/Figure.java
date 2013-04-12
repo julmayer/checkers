@@ -3,8 +3,6 @@ package models;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.sql.PooledConnection;
-
 public class Figure {
 	public enum COLOR{
 		white,
@@ -67,26 +65,41 @@ public class Figure {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (alive ? 1231 : 1237);
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result
+				+ ((position == null) ? 0 : position.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
-		
-		Figure figure;
-		if (obj instanceof Figure) {
-			figure = (Figure) obj;
-		} else {
+		if (obj == null) {
 			return false;
 		}
-		
-		if (!this.color.equals(figure.color)) {
-			return false;
-		} else if (this.alive != figure.alive) {
-			return false;
-		} else if (!this.position.equals(figure.getPosition())) {
+		if (!(obj instanceof Figure)) {
 			return false;
 		}
-		
+		Figure other = (Figure) obj;
+		if (alive != other.alive) {
+			return false;
+		}
+		if (color != other.color) {
+			return false;
+		}
+		if (position == null) {
+			if (other.position != null) {
+				return false;
+			}
+		} else if (!position.equals(other.position)) {
+			return false;
+		}
 		return true;
 	}
 }

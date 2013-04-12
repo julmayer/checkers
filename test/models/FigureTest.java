@@ -2,7 +2,6 @@ package models;
 
 import static org.junit.Assert.*;
 
-import java.nio.file.FileVisitOption;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,12 +87,13 @@ public class FigureTest {
 		Figure notAlive = new Figure(startPosition, Figure.COLOR.black);
 		notAlive.kill();
 		Figure same = new Figure(startPosition, Figure.COLOR.black);
-		assertSame(blackFigure, blackFigure);
-		assertNotSame(whiteFigure, blackFigure);
-		assertNotSame(startPosition, blackFigure);
-		assertNotSame(otherPosition, blackFigure);
-		assertNotSame(notAlive, blackFigure);
-		assertSame(same, blackFigure);
-		
+		assertEquals(blackFigure, blackFigure);
+		assertEquals(blackFigure.hashCode(), blackFigure.hashCode());
+		assertFalse(blackFigure.equals(whiteFigure));
+		assertFalse(blackFigure.equals(startPosition));
+		assertFalse(blackFigure.equals(otherPosition));
+		assertFalse(blackFigure.equals(notAlive));
+		assertEquals(same, blackFigure);
+		assertEquals(same.hashCode(), blackFigure.hashCode());
 	}
 }
