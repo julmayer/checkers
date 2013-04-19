@@ -1,8 +1,10 @@
-package controller;
+package de.htwg.checkers.controller;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import de.htwg.checkers.controller.FieldController;
 
 public class FieldControllerTest {
 

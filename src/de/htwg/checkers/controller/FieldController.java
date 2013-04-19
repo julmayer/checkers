@@ -1,7 +1,7 @@
-package controller;
+package de.htwg.checkers.controller;
 
-import models.Field;
-import models.Figure;
+import de.htwg.checkers.models.Field;
+import de.htwg.checkers.models.Figure;
 
 public class FieldController {
 	
@@ -38,6 +38,10 @@ public class FieldController {
 	public void gameInit(){
 		createBlackFigures();
 		createWhiteFigures();
+	}
+	
+	public Field getField() {
+		return this.field;
 	}
 	
 }

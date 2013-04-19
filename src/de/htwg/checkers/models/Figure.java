@@ -1,4 +1,4 @@
-package models;
+package de.htwg.checkers.models;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -67,8 +67,10 @@ public class Figure {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
+		final int isAliveKey = 1231;
+		final int notAliveKey = 1237;
 		int result = 1;
-		result = prime * result + (alive ? 1231 : 1237);
+		result = prime * result + (alive ? isAliveKey : notAliveKey);
 		result = prime * result + (color.hashCode());
 		result = prime * result
 				+ ((position == null) ? 0 : position.hashCode());

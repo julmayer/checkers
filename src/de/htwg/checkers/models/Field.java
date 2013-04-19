@@ -1,4 +1,4 @@
-package models;
+package de.htwg.checkers.models;
 
 public class Field {
 	private Cell[][] field;
