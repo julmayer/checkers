@@ -20,7 +20,7 @@ public class Figure {
 		this.color = color;
 		this.alive = true;
 		this.crowned = false;
-		this.possibleMoves = new LinkedList<>();
+		this.possibleMoves = new LinkedList<Cell>();
 	}
 
 	public Cell getPosition() {
