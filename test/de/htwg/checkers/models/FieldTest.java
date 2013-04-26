@@ -11,7 +11,7 @@ public class FieldTest {
 
 	@Test
 	public void createInstance() {
-		Field field = new Field();
+		Field field = new Field(8);
 		Cell cell = new Cell(5,4);
 		assertNotNull(field);
 		assertNotNull(field.getField());

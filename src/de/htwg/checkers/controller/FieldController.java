@@ -7,17 +7,17 @@ public class FieldController {
 	
 	private Field field;
 	private final int rowsToFill;
+	private int size;
 	
 	public FieldController(int size) {
-		final int minSize = 3;
+		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException();
-		} else if (size == minSize){
-			rowsToFill = 1;
 		} else {
 			rowsToFill = size/2 - 1;
 		}
 		field = new Field(size);
+		this.size = size;
 	}
 
 	final private void createWhiteFigures(int size) {
@@ -34,22 +34,22 @@ public class FieldController {
 	
 	final private void createBlackFigures(int size) {
 		if (size % 2 == 0){
-			for (int y = size - rowsToFill;y <= size; y++){
+			for (int y = size - rowsToFill;y < size; y++){
 				for (int x = 0; x < size; x++) {
 					if (x % 2 == 0 && y % 2 != 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.white);
+						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
 					} else if (x % 2 != 0 && y % 2 == 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.white);
+						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
 					}
 				}
 			}
 		} else {
-			for (int y = size - rowsToFill;y <= size; y++){
+			for (int y = size - rowsToFill;y < size; y++){
 				for (int x = 0; x < size; x++) {
 					if (x % 2 != 0 && y % 2 == 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.white);
+						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
 					} else if (x % 2 == 0 && y % 2 != 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.white);
+						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
 					}
 				}
 			}
@@ -81,7 +81,7 @@ public class FieldController {
 		}
 	}*/
 	
-	public void gameInit(int size){
+	public void gameInit(){
 		createBlackFigures(size);
 		createWhiteFigures(size);
 	}
