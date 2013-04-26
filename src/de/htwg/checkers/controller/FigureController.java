@@ -29,19 +29,19 @@ public class FigureController {
 		int x = figure.getPosition().getX();
 		int y = figure.getPosition().getY();
 		Cell upperLeft, upperRight, lowerLeft, lowerRight;
-		List<Cell> cells = new LinkedList<>();
+		List<Cell> neighbourCells = new LinkedList<>();
 		
 		upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
 		upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
 		lowerLeft = fieldController.getField().getCellByCoordinates(x-1, y-1);
 		lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
 		
-		cells.add(upperRight);
-		cells.add(upperLeft);
-		cells.add(lowerRight);
-		cells.add(lowerLeft);
+		neighbourCells.add(upperRight);
+		neighbourCells.add(upperLeft);
+		neighbourCells.add(lowerRight);
+		neighbourCells.add(lowerLeft);
 		
-		possibleMoves = mustKill(figure, cells);
+		possibleMoves = mustKill(figure, neighbourCells);
 		
 		if (possibleMoves.size() > 0) {
 			return possibleMoves;
