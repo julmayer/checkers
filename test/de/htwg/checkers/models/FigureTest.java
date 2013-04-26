@@ -78,7 +78,7 @@ public class FigureTest {
 	
 	@Test
 	public void changePossibleMoves() {
-		List<Cell> possibles = new LinkedList<>();
+		List<Cell> possibles = new LinkedList<Cell>();
 		possibles.add(new Cell(5, 5));
 		possibles.add(new Cell(6, 6));
 		blackFigure.setPossibleMoves(possibles);
