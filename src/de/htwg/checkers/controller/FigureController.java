@@ -25,11 +25,11 @@ public class FigureController {
 	}
 	
 	private List<Cell> regulareMoves(Figure figure) {
-		List<Cell> possibleMoves = new LinkedList<>();
+		List<Cell> possibleMoves = new LinkedList<Cell>();
 		int x = figure.getPosition().getX();
 		int y = figure.getPosition().getY();
 		Cell upperLeft, upperRight, lowerLeft, lowerRight;
-		List<Cell> neighbourCells = new LinkedList<>();
+		List<Cell> neighbourCells = new LinkedList<Cell>();
 		
 		upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
 		upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
@@ -70,7 +70,7 @@ public class FigureController {
 	}
 	
 	private List<Cell> mustKill(Figure figure, List<Cell> cells) {
-		List<Cell> result = new LinkedList<>();
+		List<Cell> result = new LinkedList<Cell>();
 		
 		for (Cell cell : cells) {
 			if (cell.isOccupied() && !cell.getOccupier().getColor().equals(figure.getColor())
