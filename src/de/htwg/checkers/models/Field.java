@@ -2,12 +2,10 @@ package de.htwg.checkers.models;
 
 public class Field {
 	private Cell[][] field;
-	private final int X = 8;
-	private final int Y = 8;
 	
-	public Field(){
-		this.field = new Cell[X][Y];
-		initCells();
+	public Field(int size){
+		this.field = new Cell[size][size];
+		initCells(size);
 	}
 
 	public Cell[][] getField(){
@@ -18,9 +16,9 @@ public class Field {
 		return field[x][y];
 	}
 
-	final private void initCells(){
-		for (int i = 0; i < X; i++){
-			for (int j = 0; j < Y; j++){
+	private void initCells(int size){
+		for (int i = 0; i < size; i++){
+			for (int j = 0; j < size; j++){
 				field[i][j] = new Cell(i, j);
 			}
 		}
