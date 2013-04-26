@@ -3,8 +3,6 @@
   <groupId>de.htwg.checkers</groupId>
   <artifactId>checkers</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name> Maven Quick Start Archetype </name>
-  <url> http://maven.apache.org </url>
   <build>
   	<sourceDirectory>src</sourceDirectory>
   	<testSourceDirectory>test</testSourceDirectory>
