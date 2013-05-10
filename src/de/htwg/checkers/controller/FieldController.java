@@ -24,31 +24,13 @@ public class FieldController {
 
 	private void createWhiteFigures(int size) {
 		for (int y = 0; y < rowsToFill; y++){
-			for (int x = 0; x < size; x++) {
-				fillCell(x,y,Figure.COLOR.white);
-			}
+			fillRow(y,Figure.COLOR.white);
 		}
 	}
 	
 	private void createBlackFigures(int size) {
-		if (size % 2 == 0){
-			for (int y = size - rowsToFill;y < size; y++){
-				for (int x = 0; x < size; x++) {
-					fillCell(x,y,Figure.COLOR.black);
-				}
-			}
-		} else {
-			for (int y = size - rowsToFill;y < size; y++){
-				for (int x = 0; x < size; x++) {
-					if (x % 2 != 0 && y % 2 == 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
-						increaseFigureCount(Figure.COLOR.black);
-					} else if (x % 2 == 0 && y % 2 != 0 ){
-						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
-						increaseFigureCount(Figure.COLOR.black);
-					}
-				}
-			}
+		for (int y = size - rowsToFill;y < size; y++){
+			fillRow(y,Figure.COLOR.black);
 		}
 	}
 	
@@ -65,14 +47,15 @@ public class FieldController {
 		return this.size;
 	}
 	
-	private void fillCell(int x, int y, Figure.COLOR color){
-		if (x % 2 == 0 && y % 2 != 0 ){
-			new Figure(field.getCellByCoordinates(x, y),color);
-			increaseFigureCount(color);
-		} else if (x % 2 != 0 && y % 2 == 0 ){
-			new Figure(field.getCellByCoordinates(x, y),color);
-			increaseFigureCount(color);
-			
+	private void fillRow(int y, Figure.COLOR color){
+		for (int x = 0; x < size; x++) {
+			if (x % 2 == 0 && y % 2 != 0 ){
+				new Figure(field.getCellByCoordinates(x, y),color);
+				increaseFigureCount(color);
+			} else if (x % 2 != 0 && y % 2 == 0 ){
+				new Figure(field.getCellByCoordinates(x, y),color);
+				increaseFigureCount(color);
+			}
 		}
 	}
 	
@@ -97,6 +80,6 @@ public class FieldController {
 	}
 	
 	public boolean isValidCoordinate(int x, int y) {
-		return x < 0 || y < 0 || x > size-1 || y > size-1;
+		return x > 0 && y > 0 && x < size-1 && y < size-1;
 	}
 }

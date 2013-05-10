@@ -28,15 +28,24 @@ public class FigureController {
 		List<Cell> possibleMoves = new LinkedList<Cell>();
 		int x = figure.getPosition().getX();
 		int y = figure.getPosition().getY();
-		Cell upperLeft = null, upperRight = null, lowerLeft = null, lowerRight = null;
+		Cell upperLeft = null;
+		Cell upperRight = null;
+		Cell lowerLeft = null;
+		Cell lowerRight = null;
 		List<Cell> neighbourCells = new LinkedList<Cell>();
 		
+		upperLeft = fillNeighbourCellList(x-1, y+1, upperLeft, neighbourCells);
+		upperRight = fillNeighbourCellList(x+1, y+1, upperRight, neighbourCells);
+		lowerLeft = fillNeighbourCellList(x-1, y-1, lowerLeft, neighbourCells);
+		lowerRight = fillNeighbourCellList(x+1, y-1, lowerRight, neighbourCells);
+		
+		/*
 		if (fieldController.isValidCoordinate(x-1, y+1)){
 			upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
 			neighbourCells.add(upperLeft);
 		}
-
-		if (fieldController.isValidCoordinate(x+1, y-1)){
+ 
+		if (fieldController.isValidCoordinate(x+1, y+1)){
 			upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
 			neighbourCells.add(upperRight);
 		}
@@ -49,7 +58,7 @@ public class FigureController {
 		if (fieldController.isValidCoordinate(x+1, y-1)){
 			lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
 			neighbourCells.add(lowerRight);
-		}
+		}*/
 				
 		possibleMoves = mustKill(figure, neighbourCells);
 		
@@ -118,7 +127,16 @@ public class FigureController {
 	}
 	
 	public void move(Cell from, Cell to) {
-		Figure figure = from.getOccupier();
+		//Figure figure = from.getOccupier();
 		
 	}
+	
+	 private Cell fillNeighbourCellList(int x, int y, Cell cell, List<Cell> neighbourCellList){
+		 if (fieldController.isValidCoordinate(x, y)){
+				cell = fieldController.getField().getCellByCoordinates(x, y);
+				neighbourCellList.add(cell);
+				return cell;
+			}
+		 return null;
+	 }
 }

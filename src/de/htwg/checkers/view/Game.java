@@ -56,7 +56,7 @@ public final class Game {
 			moveToY = scanner.nextInt();
 			System.out.println();
 			
-			if (!validateInput(moveFromX,moveFromY,moveToX,moveToY)){
+			if (!validateInput(moveFromX,moveFromY) || !validateInput(moveToX,moveToY)){
 				System.out.println("No Valid Input!");
 				continue;
 			}
@@ -69,12 +69,12 @@ public final class Game {
 				continue;
 			}
 			
-			if (currentFigure.getColor() == COLOR.black && blackTurn != true){
+			if (currentFigure.getColor() == COLOR.black && !blackTurn){
 				System.out.println("Please select a white figure!");
 				continue;
 			}
 			
-			if (currentFigure.getColor() == COLOR.white && blackTurn == true){
+			if (currentFigure.getColor() == COLOR.white && blackTurn){
 				System.out.println("Please select a black figure!");
 				continue;
 			}
@@ -131,8 +131,10 @@ public final class Game {
 		}		
 	}
 	
-	private static boolean validateInput(int w, int x, int y, int z){
-		if (w < 0 || w >= fieldsize || x < 0 || x >= fieldsize || y < 0 || y >= fieldsize ||z < 0 || z >= fieldsize){
+	private static boolean validateInput(int x, int y){
+		if (x < 0 || x >= fieldsize){
+			return false;
+		} else if (y < 0 || y >= fieldsize){
 			return false;
 		}
 		return true;
