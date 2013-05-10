@@ -28,37 +28,49 @@ public class FigureController {
 		List<Cell> possibleMoves = new LinkedList<Cell>();
 		int x = figure.getPosition().getX();
 		int y = figure.getPosition().getY();
-		Cell upperLeft, upperRight, lowerLeft, lowerRight;
+		Cell upperLeft = null, upperRight = null, lowerLeft = null, lowerRight = null;
 		List<Cell> neighbourCells = new LinkedList<Cell>();
 		
-		upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
-		upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
-		lowerLeft = fieldController.getField().getCellByCoordinates(x-1, y-1);
-		lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
+		int size = fieldController.getFieldSize();
 		
-		neighbourCells.add(upperRight);
-		neighbourCells.add(upperLeft);
-		neighbourCells.add(lowerRight);
-		neighbourCells.add(lowerLeft);
+		if (x > 0 && y < size){
+			upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
+			neighbourCells.add(upperLeft);
+		}
+
+		if (x < size && y < size){
+			upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
+			neighbourCells.add(upperRight);
+		}
 		
+		if (x > 0 && y > 0){
+			lowerLeft = fieldController.getField().getCellByCoordinates(x-1, y-1);
+			neighbourCells.add(lowerLeft);
+		}
+		
+		if (x < size && y > 0){
+			lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
+			neighbourCells.add(lowerRight);
+		}
+				
 		possibleMoves = mustKill(figure, neighbourCells);
 		
 		if (possibleMoves.size() > 0) {
 			return possibleMoves;
 		}
-		
+
 		if (figure.getColor().equals(COLOR.black)) {
-			if (!lowerLeft.isOccupied()) {
+			if (!lowerLeft.isOccupied() && lowerLeft != null) {
 				possibleMoves.add(lowerLeft);
 			}
-			if (!lowerRight.isOccupied()) {
+			if (!lowerRight.isOccupied() && lowerRight != null) {
 				possibleMoves.add(lowerRight);
 			}
 		} else {
-			if (!upperLeft.isOccupied()) {
+			if (!upperLeft.isOccupied() && upperLeft != null) {
 				possibleMoves.add(upperLeft);
 			}
-			if (!upperRight.isOccupied()) {
+			if (!upperRight.isOccupied() && upperRight != null) {
 				possibleMoves.add(upperRight);
 			}			
 		}

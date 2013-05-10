@@ -16,15 +16,16 @@ public final class Game {
 	private static Scanner scanner = new Scanner(System.in);
 	private static int moveCount = 0;
 	private static boolean blackTurn = true;
-	private static int countWhiteFigures; 
-	private static int countBlackFigures;
+
 	/**
 	 * @param args
 	 */
 	public static void main(final String[] args) {
 		
-		int moveFrom;
-		int moveTo;
+		int moveFromX;
+		int moveFromY;
+		int moveToX;
+		int moveToY;
 		
 		FigureController figureController = new FigureController();
 		FieldController fieldController = new FieldController(fieldsize);
@@ -34,10 +35,7 @@ public final class Game {
 		
 		Game game = new Game();
 		gamefield = fieldController.getField();
-		
-		countBlackFigures = fieldController.getCountBLackFigures();
-		countWhiteFigures = fieldController.getCountWhiteFigures();
-		
+				
 		System.out.println("Black begins, have fun!");
 		System.out.println();
 		game.showPositions();
@@ -46,16 +44,24 @@ public final class Game {
 		System.out.println();
 
 		
-		while (true) {
-			if (checkIfWin() == true)
-				return;
+		while (!fieldController.checkIfWin()) {
+
 			moveCount++;
 			game.showSituation();
-			System.out.print("Please enter your move (from to): ");
-			moveFrom = scanner.nextInt();
-			moveTo = scanner.nextInt();
+			System.out.print("Please enter your move (fromX fromY toX toY): ");
+			moveFromX = scanner.nextInt();
+			moveFromY = scanner.nextInt();
+			moveToX = scanner.nextInt();
+			moveToY = scanner.nextInt();
 
-			
+ 
+			if(gamefield.getCellByCoordinates(moveFromX, moveFromY).getOccupier().getPossibleMoves().contains(gamefield.getCellByCoordinates(moveToX, moveToY))){
+				System.out.println("YAYAY");
+			} else {
+				System.out.println("no possible move");
+				continue;
+			}
+
 			return;
 		}
 	}
@@ -100,16 +106,6 @@ public final class Game {
 		}		
 	}
 	
-	private static boolean checkIfWin(){
-		if (countBlackFigures == 0){
-			System.out.println("White wins! Congratulations!");
-			return true;
-		} else if (countWhiteFigures == 0){
-			System.out.println("Black wins! Congratulations!");
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 
 }

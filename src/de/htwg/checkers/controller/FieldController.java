@@ -8,8 +8,8 @@ public class FieldController {
 	private Field field;
 	private final int rowsToFill;
 	private int size;
-	private int countWhiteFigures;
-	private int countBlackFigures;
+	private static int countWhiteFigures;
+	private static int countBlackFigures;
 	
 	public FieldController(int size) {
 		final int minSize = 4;
@@ -61,11 +61,8 @@ public class FieldController {
 		return this.field;
 	}
 	
-	public int getCountWhiteFigures(){
-		return this.countWhiteFigures;
-	}
-	public int getCountBLackFigures(){
-		return this.countBlackFigures;
+	public int getFieldSize(){
+		return this.size;
 	}
 	
 	private void fillCell(int x, int y, Figure.COLOR color){
@@ -84,6 +81,18 @@ public class FieldController {
 			countBlackFigures++;
 		} else {
 			countWhiteFigures++;
+		}
+	}
+	
+	public boolean checkIfWin(){
+		if (countBlackFigures == 0){
+			System.out.println("White wins! Congratulations!");
+			return true;
+		} else if (countWhiteFigures == 0){
+			System.out.println("Black wins! Congratulations!");
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
