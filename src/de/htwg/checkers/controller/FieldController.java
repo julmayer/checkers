@@ -8,6 +8,8 @@ public class FieldController {
 	private Field field;
 	private final int rowsToFill;
 	private int size;
+	private int countWhiteFigures;
+	private int countBlackFigures;
 	
 	public FieldController(int size) {
 		final int minSize = 4;
@@ -40,8 +42,10 @@ public class FieldController {
 				for (int x = 0; x < size; x++) {
 					if (x % 2 != 0 && y % 2 == 0 ){
 						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
+						increaseFigureCount(Figure.COLOR.black);
 					} else if (x % 2 == 0 && y % 2 != 0 ){
 						new Figure(field.getCellByCoordinates(x, y),Figure.COLOR.black);
+						increaseFigureCount(Figure.COLOR.black);
 					}
 				}
 			}
@@ -57,11 +61,29 @@ public class FieldController {
 		return this.field;
 	}
 	
+	public int getCountWhiteFigures(){
+		return this.countWhiteFigures;
+	}
+	public int getCountBLackFigures(){
+		return this.countBlackFigures;
+	}
+	
 	private void fillCell(int x, int y, Figure.COLOR color){
 		if (x % 2 == 0 && y % 2 != 0 ){
 			new Figure(field.getCellByCoordinates(x, y),color);
+			increaseFigureCount(color);
 		} else if (x % 2 != 0 && y % 2 == 0 ){
 			new Figure(field.getCellByCoordinates(x, y),color);
+			increaseFigureCount(color);
+			
+		}
+	}
+	
+	private void increaseFigureCount(Figure.COLOR color){
+		if (color == Figure.COLOR.black){
+			countBlackFigures++;
+		} else {
+			countWhiteFigures++;
 		}
 	}
 }

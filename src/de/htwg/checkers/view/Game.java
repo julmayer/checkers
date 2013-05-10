@@ -14,10 +14,17 @@ public final class Game {
 	private static int fieldsize = 4;
 	private static Field gamefield;
 	private static Scanner scanner = new Scanner(System.in);
+	private static int moveCount = 0;
+	private static boolean blackTurn = true;
+	private static int countWhiteFigures; 
+	private static int countBlackFigures;
 	/**
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		
+		int moveFrom;
+		int moveTo;
 		
 		FigureController figureController = new FigureController();
 		FieldController fieldController = new FieldController(fieldsize);
@@ -28,14 +35,27 @@ public final class Game {
 		Game game = new Game();
 		gamefield = fieldController.getField();
 		
-		while (true) {
-			game.showPositions();
-			System.out.println();
-			game.showSituation();
-			System.out.println();
-			game.showLegend();
-			System.out.println();
+		countBlackFigures = fieldController.getCountBLackFigures();
+		countWhiteFigures = fieldController.getCountWhiteFigures();
+		
+		System.out.println("Black begins, have fun!");
+		System.out.println();
+		game.showPositions();
+		System.out.println();
+		game.showLegend();
+		System.out.println();
 
+		
+		while (true) {
+			if (checkIfWin() == true)
+				return;
+			moveCount++;
+			game.showSituation();
+			System.out.print("Please enter your move (from to): ");
+			moveFrom = scanner.nextInt();
+			moveTo = scanner.nextInt();
+
+			
 			return;
 		}
 	}
@@ -47,7 +67,7 @@ public final class Game {
 				Cell cell = gamefield.getCellByCoordinates(j, i);
 				Figure figure = cell.getOccupier();
 				if (figure == null) {
-					System.out.printf(" _ ");
+					System.out.printf(" - ");
 				} else if (figure.getColor().equals(Figure.COLOR.black)) {
 					System.out.printf(" X ");
 				} else {
@@ -56,10 +76,18 @@ public final class Game {
 			}
 			System.out.println();
 		}
+		System.out.println();
+		if (moveCount%2 != 0){
+			blackTurn = true;
+			System.out.println("Blacks turn.");
+		} else{
+			blackTurn = false;
+			System.out.println("Whites turn.");
+		}
 	}
 	
 	private void showLegend() {
-		System.out.println("X = Black, O = White, _ = Empty");
+		System.out.println("X = Black, O = White, - = Empty");
 	}
 	
 	private void showPositions() {
@@ -68,8 +96,20 @@ public final class Game {
 			for (int j = 0; j < fieldsize; ++j) {
 				System.out.printf("%d%d ", j, i);
 			}
-			System.out.println("");
+			System.out.println();
 		}		
+	}
+	
+	private static boolean checkIfWin(){
+		if (countBlackFigures == 0){
+			System.out.println("White wins! Congratulations!");
+			return true;
+		} else if (countWhiteFigures == 0){
+			System.out.println("Black wins! Congratulations!");
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
