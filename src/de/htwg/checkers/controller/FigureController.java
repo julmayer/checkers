@@ -33,12 +33,12 @@ public class FigureController {
 		
 		int size = fieldController.getFieldSize();
 		
-		if (x > 0 && y < size){
+		if (x > 0 && y < size-1){
 			upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
 			neighbourCells.add(upperLeft);
 		}
 
-		if (x < size && y < size){
+		if (x < size-1 && y < size-1){
 			upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
 			neighbourCells.add(upperRight);
 		}
@@ -48,7 +48,7 @@ public class FigureController {
 			neighbourCells.add(lowerLeft);
 		}
 		
-		if (x < size && y > 0){
+		if (x < size-1 && y > 0){
 			lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
 			neighbourCells.add(lowerRight);
 		}
@@ -60,17 +60,17 @@ public class FigureController {
 		}
 
 		if (figure.getColor().equals(COLOR.black)) {
-			if (!lowerLeft.isOccupied() && lowerLeft != null) {
+			if (lowerLeft != null && !lowerLeft.isOccupied()) {
 				possibleMoves.add(lowerLeft);
 			}
-			if (!lowerRight.isOccupied() && lowerRight != null) {
+			if (lowerRight != null && !lowerRight.isOccupied()) {
 				possibleMoves.add(lowerRight);
 			}
 		} else {
-			if (!upperLeft.isOccupied() && upperLeft != null) {
+			if (upperLeft != null && !upperLeft.isOccupied()) {
 				possibleMoves.add(upperLeft);
 			}
-			if (!upperRight.isOccupied() && upperRight != null) {
+			if (upperRight != null && !upperRight.isOccupied())  {
 				possibleMoves.add(upperRight);
 			}			
 		}

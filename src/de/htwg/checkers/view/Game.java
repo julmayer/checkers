@@ -7,6 +7,7 @@ import de.htwg.checkers.controller.FigureController;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.Figure.COLOR;
 
 public final class Game {
 
@@ -14,8 +15,9 @@ public final class Game {
 	private static int fieldsize = 4;
 	private static Field gamefield;
 	private static Scanner scanner = new Scanner(System.in);
-	private static int moveCount = 0;
+	private static int moveCount = 1;
 	private static boolean blackTurn = true;
+	private static Figure currentFigure;
 
 	/**
 	 * @param args
@@ -45,29 +47,53 @@ public final class Game {
 
 		
 		while (!fieldController.checkIfWin()) {
-
-			moveCount++;
+			
 			game.showSituation();
 			System.out.print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
 			moveToX = scanner.nextInt();
 			moveToY = scanner.nextInt();
-
- 
-			if(gamefield.getCellByCoordinates(moveFromX, moveFromY).getOccupier().getPossibleMoves().contains(gamefield.getCellByCoordinates(moveToX, moveToY))){
-				System.out.println("YAYAY");
-			} else {
-				System.out.println("no possible move");
+			System.out.println();
+			
+			if (!validateInput(moveFromX,moveFromY,moveToX,moveToY)){
+				System.out.println("No Valid Input!");
 				continue;
 			}
-
+			
+			currentFigure = gamefield.getCellByCoordinates(moveFromX, moveFromY).getOccupier();
+			figureController.createPossibleMoves(currentFigure);
+			
+			if (currentFigure == null) {
+				System.out.println("No figure selected!");
+				continue;
+			}
+			
+			if (currentFigure.getColor() == COLOR.black && blackTurn != true){
+				System.out.println("Please select a white figure!");
+				continue;
+			}
+			
+			if (currentFigure.getColor() == COLOR.white && blackTurn == true){
+				System.out.println("Please select a black figure!");
+				continue;
+			}
+ 
+			if(currentFigure.getPossibleMoves().contains(gamefield.getCellByCoordinates(moveToX, moveToY))){
+				System.out.println("YAYAY");
+				
+			} else {
+				System.out.println("This is no possible move!");
+				continue;
+			}
+			
+			moveCount++;
 			return;
 		}
 	}
 	
 	private void showSituation() {
-		System.out.println("actual situation:");
+		System.out.println("Current situation:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
 				Cell cell = gamefield.getCellByCoordinates(j, i);
@@ -82,7 +108,6 @@ public final class Game {
 			}
 			System.out.println();
 		}
-		System.out.println();
 		if (moveCount%2 != 0){
 			blackTurn = true;
 			System.out.println("Blacks turn.");
@@ -104,6 +129,13 @@ public final class Game {
 			}
 			System.out.println();
 		}		
+	}
+	
+	private static boolean validateInput(int w, int x, int y, int z){
+		if (w < 0 || w >= fieldsize || x < 0 || x >= fieldsize || y < 0 || y >= fieldsize ||z < 0 || z >= fieldsize){
+			return false;
+		}
+		return true;
 	}
 	
 	
