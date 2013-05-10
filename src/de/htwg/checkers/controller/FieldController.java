@@ -95,4 +95,8 @@ public class FieldController {
 			return false;
 		}
 	}
+	
+	public boolean isValidCoordinate(int x, int y) {
+		return x < 0 || y < 0 || x > size-1 || y > size-1;
+	}
 }

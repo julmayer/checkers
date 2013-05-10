@@ -31,24 +31,22 @@ public class FigureController {
 		Cell upperLeft = null, upperRight = null, lowerLeft = null, lowerRight = null;
 		List<Cell> neighbourCells = new LinkedList<Cell>();
 		
-		int size = fieldController.getFieldSize();
-		
-		if (x > 0 && y < size-1){
+		if (fieldController.isValidCoordinate(x-1, y+1)){
 			upperLeft = fieldController.getField().getCellByCoordinates(x-1, y+1);
 			neighbourCells.add(upperLeft);
 		}
 
-		if (x < size-1 && y < size-1){
+		if (fieldController.isValidCoordinate(x+1, y-1)){
 			upperRight = fieldController.getField().getCellByCoordinates(x+1, y+1);
 			neighbourCells.add(upperRight);
 		}
 		
-		if (x > 0 && y > 0){
+		if (fieldController.isValidCoordinate(x-1, y-1)){
 			lowerLeft = fieldController.getField().getCellByCoordinates(x-1, y-1);
 			neighbourCells.add(lowerLeft);
 		}
 		
-		if (x < size-1 && y > 0){
+		if (fieldController.isValidCoordinate(x+1, y-1)){
 			lowerRight = fieldController.getField().getCellByCoordinates(x+1, y-1);
 			neighbourCells.add(lowerRight);
 		}
@@ -113,6 +111,14 @@ public class FigureController {
 			destY = srcX + 2;
 		}
 		
+		if (!fieldController.isValidCoordinate(destX, destY)) {
+			return false;
+		}
 		return fieldController.getField().getCellByCoordinates(destX, destY).isOccupied();
+	}
+	
+	public void move(Cell from, Cell to) {
+		Figure figure = from.getOccupier();
+		
 	}
 }
