@@ -15,7 +15,7 @@ public class GameController {
 	public GameController(int size) {
 		final int minSize = 4;
 		if (size < minSize){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Minimun size is 4!");
 		} else {
 			rowsToFill = size/2 - 1;
 		}

@@ -11,10 +11,10 @@ import de.htwg.checkers.models.Figure;
 public final class Game {
 
 	private Game() { }
-	private static int fieldsize = 4;
+	private static int fieldsize;
 	private static Field gamefield;
 	private static Scanner scanner = new Scanner(System.in);
-	private static int moveCount = 1;
+	private static int moveCount = 0;
 	private static boolean blackTurn = true;
 	private static Figure currentFigure;
 
@@ -27,6 +27,10 @@ public final class Game {
 		int moveFromY;
 		int moveToX;
 		int moveToY;
+		
+		print("Welcome to checkers!");
+		print("Please enter size of field (minimun size is 4):");
+		fieldsize = scanner.nextInt();
 		
 		FigureController figureController = new FigureController();
 		GameController gameController = new GameController(fieldsize);
@@ -77,9 +81,6 @@ public final class Game {
 				print(stringOutput.toString());
 				continue;
 			}
-			
-			
-			
 			moveCount++;
 			return;
 		}
@@ -87,21 +88,24 @@ public final class Game {
 	}
 	
 	private void showSituation() {
+		String s = "";
 		print("Current situation:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
 				Cell cell = gamefield.getCellByCoordinates(j, i);
 				Figure figure = cell.getOccupier();
 				if (figure == null) {
-					System.out.printf(" - ");
+					s = (s + " - ");
 				} else if (figure.getColor().equals(Figure.COLOR.black)) {
-					System.out.printf(" X ");
+					s = (s + " X ");
 				} else {
-					System.out.printf(" O ");
+					s = (s + " O ");
 				}
 			}
-			print(null);
+			print(s);
+			s = "";
 		}
+		print(String.format("Overall number of moves in game: %d", moveCount));
 		if (moveCount%2 != 0){
 			blackTurn = true;
 			print("Blacks turn.");
@@ -116,12 +120,14 @@ public final class Game {
 	}
 	
 	private void showPositions() {
+		String s = "";
 		print("Gamefiled positions:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
-				System.out.printf("%d%d ", j, i);
+				s = s + String.format("%d%d ",j,i);
 			}
-			print(null);
+			print(s);
+			s = "";
 		}		
 	}
 	
