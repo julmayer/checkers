@@ -2,6 +2,7 @@ package de.htwg.checkers.controller;
 
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.Figure.COLOR;
 
 public class GameController {
 	
@@ -67,12 +68,12 @@ public class GameController {
 		}
 	}
 	
-	public boolean checkIfWin(){
+	public boolean checkIfWin(StringBuilder stringOutput){
 		if (countBlackFigures == 0){
-			System.out.println("White wins! Congratulations!");
+			stringOutput.append("White wins! Congratulations!");
 			return true;
 		} else if (countWhiteFigures == 0){
-			System.out.println("Black wins! Congratulations!");
+			stringOutput.append("Black wins! Congratulations!");
 			return true;
 		} else {
 			return false;
@@ -85,5 +86,35 @@ public class GameController {
 	
 	public boolean isValidCoordinate(int x, int y) {
 		return x > 0 && y > 0 && x < size-1 && y < size-1;
+	}
+	
+	public boolean validateSelectedFigure(Figure figure, boolean blackTurn, StringBuilder stringOutput, int x, int y){
+		if (figure.getColor() == COLOR.black && !blackTurn){
+			stringOutput.delete(0, stringOutput.length());
+			stringOutput.append("Please select a white figure!");
+			return false;
+		} else if (figure.getColor() == COLOR.white && blackTurn){
+			stringOutput.delete(0, stringOutput.length());
+			stringOutput.append("Please select a black figure!");
+			return false;
+		} else if (figure.getPossibleMoves().contains(field.getCellByCoordinates(x, y))){
+			stringOutput.delete(0, stringOutput.length());
+			stringOutput.append("BLAAAAAARGH GNAAAAAARF");
+			return true;
+		} else {
+			stringOutput.delete(0, stringOutput.length());
+			stringOutput.append("This is no possible move!");
+			return false;
+		}
+	}
+	
+	public boolean isAFigureSelected (Figure figure, StringBuilder stringOutput){
+		if (figure == null){
+			stringOutput.delete(0, stringOutput.length());
+			stringOutput.append("No figure selected!");
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

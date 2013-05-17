@@ -7,7 +7,6 @@ import de.htwg.checkers.controller.FigureController;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
-import de.htwg.checkers.models.Figure.COLOR;
 
 public final class Game {
 
@@ -30,70 +29,65 @@ public final class Game {
 		int moveToY;
 		
 		FigureController figureController = new FigureController();
-		GameController fieldController = new GameController(fieldsize);
-		figureController.setFieldController(fieldController);
+		GameController gameController = new GameController(fieldsize);
+		figureController.setFieldController(gameController);
 		
-		fieldController.gameInit();
+		gameController.gameInit();
 		
 		Game game = new Game();
-		gamefield = fieldController.getField();
+		gamefield = gameController.getField();
+		StringBuilder stringOutput = new StringBuilder();
 				
-		System.out.println("Black begins, have fun!");
-		System.out.println();
+		print("Black begins, have fun!");
+		print(null);
 		game.showPositions();
-		System.out.println();
+		print(null);
 		game.showLegend();
-		System.out.println();
+		print(null);
+		
 
 		
-		while (!fieldController.checkIfWin()) {
+		while (!gameController.checkIfWin(stringOutput)) {
 			
 			game.showSituation();
-			System.out.print("Please enter your move (fromX fromY toX toY): ");
+			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
 			moveToX = scanner.nextInt();
 			moveToY = scanner.nextInt();
-			System.out.println();
+			print(null);
 			
 			if (!validateInput(moveFromX,moveFromY) || !validateInput(moveToX,moveToY)){
-				System.out.println("No Valid Input!");
+				print("No Valid Input!");
 				continue;
 			}
 			
-			currentFigure = fieldController.getFigureOnField(moveFromX, moveFromY);
+			currentFigure = gameController.getFigureOnField(moveFromX, moveFromY);
+			
+			if (!gameController.isAFigureSelected(currentFigure, stringOutput)){
+				print(stringOutput.toString());
+				continue;
+			}
+			
 			figureController.createPossibleMoves(currentFigure);
 			
-			if (currentFigure == null) {
-				System.out.println("No figure selected!");
-				continue;
-			}
-			
-			if (currentFigure.getColor() == COLOR.black && !blackTurn){
-				System.out.println("Please select a white figure!");
-				continue;
-			}
-			
-			if (currentFigure.getColor() == COLOR.white && blackTurn){
-				System.out.println("Please select a black figure!");
-				continue;
-			}
- 
-			if(currentFigure.getPossibleMoves().contains(gamefield.getCellByCoordinates(moveToX, moveToY))){
-				System.out.println("YAYAY");
-				
+			if (gameController.validateSelectedFigure(currentFigure, blackTurn, stringOutput, moveToX, moveToY)){
+				print(stringOutput.toString());
 			} else {
-				System.out.println("This is no possible move!");
+				print(stringOutput.toString());
 				continue;
 			}
+			
+			
 			
 			moveCount++;
 			return;
 		}
+		print(stringOutput.toString());
 	}
 	
 	private void showSituation() {
-		System.out.println("Current situation:");
+		print("Current situation:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
 				Cell cell = gamefield.getCellByCoordinates(j, i);
@@ -106,28 +100,28 @@ public final class Game {
 					System.out.printf(" O ");
 				}
 			}
-			System.out.println();
+			print(null);
 		}
 		if (moveCount%2 != 0){
 			blackTurn = true;
-			System.out.println("Blacks turn.");
+			print("Blacks turn.");
 		} else{
 			blackTurn = false;
-			System.out.println("Whites turn.");
+			print("Whites turn.");
 		}
 	}
 	
 	private void showLegend() {
-		System.out.println("X = Black, O = White, - = Empty");
+		print("X = Black, O = White, - = Empty");
 	}
 	
 	private void showPositions() {
-		System.out.println("Gamefiled positions:");
+		print("Gamefiled positions:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
 				System.out.printf("%d%d ", j, i);
 			}
-			System.out.println();
+			print(null);
 		}		
 	}
 	
@@ -140,6 +134,11 @@ public final class Game {
 		return true;
 	}
 	
-	
-
+	private static void print(String string){
+		if (string == null){
+			System.out.println();
+		} else {
+			System.out.println(string);
+		}
+	}
 }
