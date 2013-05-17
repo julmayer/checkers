@@ -4,19 +4,17 @@ import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.FigureController;
-import de.htwg.checkers.models.Cell;
-import de.htwg.checkers.models.Field;
-import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.Figure.COLOR;
+
 
 public final class Game {
 
 	private Game() { }
 	private static int fieldsize;
-	private static Field gamefield;
 	private static Scanner scanner = new Scanner(System.in);
 	private static int moveCount = 0;
 	private static boolean blackTurn = true;
-	private static Figure currentFigure;
+
 
 	/**
 	 * @param args
@@ -32,14 +30,13 @@ public final class Game {
 		print("Please enter size of field (minimun size is 4):");
 		fieldsize = scanner.nextInt();
 		
-		FigureController figureController = new FigureController();
 		GameController gameController = new GameController(fieldsize);
+		FigureController figureController = new FigureController();
 		figureController.setFieldController(gameController);
 		
 		gameController.gameInit();
 		
 		Game game = new Game();
-		gamefield = gameController.getField();
 		StringBuilder stringOutput = new StringBuilder();
 				
 		print("Black begins, have fun!");
@@ -53,7 +50,7 @@ public final class Game {
 		
 		while (!gameController.checkIfWin(stringOutput)) {
 			
-			game.showSituation();
+			game.showSituation(gameController);
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
@@ -65,17 +62,17 @@ public final class Game {
 				print("No Valid Input!");
 				continue;
 			}
+
+			gameController.isOccupiedByCoordinates(moveFromX, moveFromY);
 			
-			currentFigure = gameController.getFigureOnField(moveFromX, moveFromY);
-			
-			if (!gameController.isAFigureSelected(currentFigure, stringOutput)){
+			if (!gameController.isAFigureSelected(gameController.getFigureOnField(moveFromX, moveFromY), stringOutput)){
 				print(stringOutput.toString());
 				continue;
 			}
 			
-			figureController.createPossibleMoves(currentFigure);
+			figureController.createPossibleMoves(gameController.getFigureOnField(moveFromX, moveFromY));
 			
-			if (gameController.validateSelectedFigure(currentFigure, blackTurn, stringOutput, moveToX, moveToY)){
+			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), blackTurn, stringOutput, moveToX, moveToY)){
 				print(stringOutput.toString());
 			} else {
 				print(stringOutput.toString());
@@ -87,16 +84,14 @@ public final class Game {
 		print(stringOutput.toString());
 	}
 	
-	private void showSituation() {
+	private void showSituation(GameController gameController) {
 		String s = "";
 		print("Current situation:");
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
-				Cell cell = gamefield.getCellByCoordinates(j, i);
-				Figure figure = cell.getOccupier();
-				if (figure == null) {
+				if (gameController.getFigureOnField(j,i) == null) {
 					s = (s + " - ");
-				} else if (figure.getColor().equals(Figure.COLOR.black)) {
+				} else if (gameController.getColorOfOccupierByCoordinates(j, i).equals(COLOR.black)) {
 					s = (s + " X ");
 				} else {
 					s = (s + " O ");
@@ -107,11 +102,11 @@ public final class Game {
 		}
 		print(String.format("Overall number of moves in game: %d", moveCount));
 		if (moveCount%2 != 0){
+			blackTurn = false;
+			print("Whites turn");
+		} else{
 			blackTurn = true;
 			print("Blacks turn.");
-		} else{
-			blackTurn = false;
-			print("Whites turn.");
 		}
 	}
 	

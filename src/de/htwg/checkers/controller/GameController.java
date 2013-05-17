@@ -1,5 +1,6 @@
 package de.htwg.checkers.controller;
 
+
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
@@ -117,4 +118,13 @@ public class GameController {
 			return true;
 		}
 	}
+	
+	public boolean isOccupiedByCoordinates(int x, int y){
+		return field.getCellByCoordinates(x, y).isOccupied();
+	}
+	
+	public COLOR getColorOfOccupierByCoordinates(int x, int y){
+		return getFigureOnField(x, y).getColor();
+	}
+	
 }
