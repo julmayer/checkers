@@ -1,6 +1,8 @@
 *.class
 /bin
 *sonar*
+/settings/*
+.gitignore
 
 # Package Files #
 *.jar
