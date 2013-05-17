@@ -2,7 +2,7 @@ package de.htwg.checkers.view;
 
 import java.util.Scanner;
 
-import de.htwg.checkers.controller.FieldController;
+import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.FigureController;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
@@ -30,7 +30,7 @@ public final class Game {
 		int moveToY;
 		
 		FigureController figureController = new FigureController();
-		FieldController fieldController = new FieldController(fieldsize);
+		GameController fieldController = new GameController(fieldsize);
 		figureController.setFieldController(fieldController);
 		
 		fieldController.gameInit();
@@ -61,7 +61,7 @@ public final class Game {
 				continue;
 			}
 			
-			currentFigure = gamefield.getCellByCoordinates(moveFromX, moveFromY).getOccupier();
+			currentFigure = fieldController.getFigureOnField(moveFromX, moveFromY);
 			figureController.createPossibleMoves(currentFigure);
 			
 			if (currentFigure == null) {

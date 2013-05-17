@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.htwg.checkers.controller.FieldController;
+import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
@@ -13,7 +13,7 @@ public class FieldControllerTest {
 
 	@Test
 	public void methodTest(){
-		FieldController fc = new FieldController(4);
+		GameController fc = new GameController(4);
 		fc.gameInit();
 		assertNotNull(fc);
 		
@@ -41,7 +41,7 @@ public class FieldControllerTest {
 		assertEquals(Figure.COLOR.black, field.getCellByCoordinates(0, 3).getOccupier().getColor());
 		assertEquals(Figure.COLOR.black, field.getCellByCoordinates(2, 3).getOccupier().getColor());
 		
-		FieldController fc5 = new FieldController(5);
+		GameController fc5 = new GameController(5);
 		fc5.gameInit();
 		Field field5 = fc5.getField();
 		for (int x = 0; x < 5; ++x) {

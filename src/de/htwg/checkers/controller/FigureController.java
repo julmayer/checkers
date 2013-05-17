@@ -10,9 +10,9 @@ import de.htwg.checkers.models.Figure.COLOR;
 
 public class FigureController {
 	
-	private FieldController fieldController;
+	private GameController fieldController;
 	
-	public void setFieldController(FieldController fieldController) {
+	public void setFieldController(GameController fieldController) {
 		this.fieldController = fieldController;
 	}
 	

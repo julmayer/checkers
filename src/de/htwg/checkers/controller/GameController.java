@@ -3,7 +3,7 @@ package de.htwg.checkers.controller;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 
-public class FieldController {
+public class GameController {
 	
 	private Field field;
 	private final int rowsToFill;
@@ -11,7 +11,7 @@ public class FieldController {
 	private static int countWhiteFigures;
 	private static int countBlackFigures;
 	
-	public FieldController(int size) {
+	public GameController(int size) {
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException();
@@ -22,21 +22,21 @@ public class FieldController {
 		this.size = size;
 	}
 
-	private void createWhiteFigures(int size) {
+	private void createWhiteFigures() {
 		for (int y = 0; y < rowsToFill; y++){
 			fillRow(y,Figure.COLOR.white);
 		}
 	}
 	
-	private void createBlackFigures(int size) {
+	private void createBlackFigures() {
 		for (int y = size - rowsToFill;y < size; y++){
 			fillRow(y,Figure.COLOR.black);
 		}
 	}
 	
 	public void gameInit(){
-		createBlackFigures(size);
-		createWhiteFigures(size);
+		createBlackFigures();
+		createWhiteFigures();
 	}
 	
 	public Field getField() {
@@ -77,6 +77,10 @@ public class FieldController {
 		} else {
 			return false;
 		}
+	}
+	
+	public Figure getFigureOnField(int x, int y){
+		return field.getCellByCoordinates(x, y).getOccupier();
 	}
 	
 	public boolean isValidCoordinate(int x, int y) {
