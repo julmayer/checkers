@@ -30,8 +30,7 @@ public final class Game {
 		fieldsize = scanner.nextInt();
 		
 		GameController gameController = new GameController(fieldsize);
-		FigureController figureController = new FigureController();
-		figureController.setFieldController(gameController);
+		FigureController figureController = new FigureController(gameController);
 		
 		gameController.gameInit();
 		
