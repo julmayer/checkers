@@ -1,5 +1,6 @@
 package de.htwg.checkers.controller;
 
+
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
@@ -15,7 +16,7 @@ public class GameController {
 	public GameController(int size) {
 		final int minSize = 4;
 		if (size < minSize){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Minimun size is 4!");
 		} else {
 			rowsToFill = size/2 - 1;
 		}
@@ -116,5 +117,17 @@ public class GameController {
 		} else {
 			return true;
 		}
+	}
+	
+	public boolean isOccupiedByCoordinates(int x, int y){
+		return field.getCellByCoordinates(x, y).isOccupied();
+	}
+	
+	public COLOR getColorOfOccupierByCoordinates(int x, int y){
+		return getFigureOnField(x, y).getColor();
+	}
+	
+	public boolean isColorBlack(Figure figure){
+		return figure.getColor().equals(COLOR.black);
 	}
 }
