@@ -127,4 +127,7 @@ public class GameController {
 		return getFigureOnField(x, y).getColor();
 	}
 	
+	public boolean isColorBlack(Figure figure){
+		return figure.getColor().equals(COLOR.black);
+	}
 }

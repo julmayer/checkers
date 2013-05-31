@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.FigureController;
-import de.htwg.checkers.models.Figure.COLOR;
 
 
 public final class Game {
@@ -91,7 +90,7 @@ public final class Game {
 			for (int j = 0; j < fieldsize; ++j) {
 				if (gameController.getFigureOnField(j,i) == null) {
 					s = (s + " - ");
-				} else if (gameController.getColorOfOccupierByCoordinates(j, i).equals(COLOR.black)) {
+				} else if (gameController.isColorBlack(gameController.getFigureOnField(j, i))) {
 					s = (s + " X ");
 				} else {
 					s = (s + " O ");
