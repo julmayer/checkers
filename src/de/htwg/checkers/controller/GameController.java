@@ -86,7 +86,7 @@ public class GameController {
 	}
 	
 	public boolean isValidCoordinate(int x, int y) {
-		return x > 0 && y > 0 && x < size-1 && y < size-1;
+		return x >= 0 && y >= 0 && x < size && y < size;
 	}
 	
 	public boolean validateSelectedFigure(Figure figure, boolean blackTurn, StringBuilder stringOutput, int x, int y){
@@ -129,5 +129,10 @@ public class GameController {
 	
 	public boolean isColorBlack(Figure figure){
 		return figure.getColor().equals(COLOR.black);
+	}
+	
+	public void move(Figure from,int toX,int toY){
+		from.setPosition(field.getCellByCoordinates(toX, toY));
+		
 	}
 }

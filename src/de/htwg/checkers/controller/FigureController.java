@@ -30,6 +30,7 @@ public class FigureController {
 		} else {
 			figure.setPossibleMoves(regulareMoves(figure));
 		}
+		
 	}
 	
 	private List<Cell> regulareMoves(Figure figure) {
@@ -57,8 +58,8 @@ public class FigureController {
 		return possibleMoves;
 	}
 	
-	public void move(Cell from, Cell to) {
+	//public void move(Cell from, Cell to) {
 		//Figure figure = from.getOccupier();
 		
-	}
+	//}
 }

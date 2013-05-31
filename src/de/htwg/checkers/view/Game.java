@@ -71,13 +71,15 @@ public final class Game {
 			figureController.createPossibleMoves(gameController.getFigureOnField(moveFromX, moveFromY));
 			
 			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), blackTurn, stringOutput, moveToX, moveToY)){
+				//possible move
+				gameController.move(gameController.getFigureOnField(moveFromX, moveFromY),moveToX,moveToY);
 				print(stringOutput.toString());
 			} else {
 				print(stringOutput.toString());
 				continue;
 			}
 			moveCount++;
-			return;
+			continue;
 		}
 		print(stringOutput.toString());
 	}
