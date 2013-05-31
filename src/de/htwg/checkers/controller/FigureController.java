@@ -26,9 +26,9 @@ public class FigureController {
 	
 	public void createPossibleMoves(Figure figure) {
 		if (figure.isCrowned()) {
-			crownedMoves(figure);
+			figure.setPossibleMoves(crownedMoves(figure));
 		} else {
-			regulareMoves(figure);
+			figure.setPossibleMoves(regulareMoves(figure));
 		}
 	}
 	
