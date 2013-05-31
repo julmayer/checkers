@@ -9,7 +9,7 @@ import de.htwg.checkers.models.Figure.COLOR;
 
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
 
-	protected GameController gameController;
+	private GameController gameController;
 	private boolean isCrowned;
 	
 	public AbstractPossibleMovesDirection(GameController gameController) {
@@ -56,6 +56,10 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		}
 		
 		return result;
+	}
+	
+	public GameController getGameController() {
+		return gameController;
 	}
 	
 	protected abstract Cell nextCell(Cell cell);

@@ -12,9 +12,9 @@ public class PossibleMovesUpperRight extends AbstractPossibleMovesDirection {
 	protected Cell nextCell(Cell cell) {
 		int nextX = cell.getX() + 1;
 		int nextY = cell.getY() + 1;
-		if (!gameController.isValidCoordinate(nextX, nextY)) {
+		if (!getGameController().isValidCoordinate(nextX, nextY)) {
 			return null;
 		}
-		return gameController.getField().getCellByCoordinates(nextX, nextY);
+		return getGameController().getField().getCellByCoordinates(nextX, nextY);
 	}
 }
