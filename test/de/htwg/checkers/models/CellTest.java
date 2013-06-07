@@ -23,7 +23,7 @@ public class CellTest {
 		assertEquals(0, cell1.getY());
 		assertNull(cell1.getOccupier());
 		assertFalse(cell1.isOccupied());
-		Figure occupier1 = new Figure(cell1, Figure.COLOR.black);
+		Figure occupier1 = new Figure(cell1, true);
 		assertTrue(cell1.isOccupied());
 		assertNotNull(cell1.getOccupier());
 		assertEquals(occupier1, cell1.getOccupier());
@@ -40,7 +40,7 @@ public class CellTest {
 		assertFalse(cell2.equals(cell3));
 		assertEquals(cell1, cell1);
 		assertEquals(cell1.hashCode(), cell1.hashCode());
-		Figure occupier1 = new Figure(cell1, Figure.COLOR.white);
+		Figure occupier1 = new Figure(cell1, false);
 		assertFalse(cell1.equals(occupier1));
 		assertEquals(cell4, cell1);
 		assertEquals(cell4.hashCode(), cell1.hashCode());

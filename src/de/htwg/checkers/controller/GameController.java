@@ -12,7 +12,6 @@ import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperRight;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
-import de.htwg.checkers.models.Figure.COLOR;
 import de.htwg.checkers.models.Move;
 
 public class GameController {
@@ -22,7 +21,7 @@ public class GameController {
 	private int size;
 	private List<Figure> blacks;
 	private List<Figure> whites;
-	private COLOR activeColor;
+	private boolean blackTurn;
 	private int moveCount;
 	private PossibleMovesLowerLeft lowerLeft;
 	private PossibleMovesLowerRight lowerRight;
@@ -52,27 +51,31 @@ public class GameController {
 		return this.size;
 	}
 
-	public COLOR getActiveColor() {
-		return activeColor;
+	public boolean isBlackTurn() {
+		return blackTurn;
 	}
-
+	
+	public void increaseMoveCount(){
+		moveCount++;
+	}
+	
+	public int getMoveCount(){
+		return moveCount;
+	}
+	
 	public void changeColor() {
-		if (activeColor.equals(COLOR.black)) {
-			activeColor = COLOR.white;
-		} else {
-			activeColor = COLOR.black;
-		}
+		blackTurn = !blackTurn;
 	}
 
 	private void createWhiteFigures() {
 		for (int y = 0; y < rowsToFill; y++){
-			fillRow(y,Figure.COLOR.white);
+			fillRow(y,false);
 		}
 	}
 	
 	private void createBlackFigures() {
 		for (int y = size - rowsToFill;y < size; y++){
-			fillRow(y,Figure.COLOR.black);
+			fillRow(y,true);
 		}
 	}
 	
@@ -82,21 +85,21 @@ public class GameController {
 		createBlackFigures();
 		createWhiteFigures();
 		// black starts
-		activeColor = COLOR.black;
+		blackTurn = true;
 	}
 	
-	private void fillRow(int y, Figure.COLOR color){
+	private void fillRow(int y, boolean isBlack){
 		for (int x = 0; x < size; x++) {
 			if (x % 2 == 0 && y % 2 != 0 ){
-				fillList(new Figure(field.getCellByCoordinates(x, y),color));
+				fillList(new Figure(field.getCellByCoordinates(x, y),isBlack));
 			} else if (x % 2 != 0 && y % 2 == 0 ){
-				fillList(new Figure(field.getCellByCoordinates(x, y),color));
+				fillList(new Figure(field.getCellByCoordinates(x, y),isBlack));
 			}
 		}
 	}
 	
 	private void fillList(Figure figure){
-		if (figure.getColor() == Figure.COLOR.black){
+		if (figure.isBlack()){
 			blacks.add(figure);
 		} else {
 			whites.add(figure);
@@ -107,7 +110,7 @@ public class GameController {
 		createAllMoves();
 		List<Figure> list;
 		boolean hasMoves = false;
-		if(activeColor == COLOR.black){
+		if(blackTurn){
 			list = blacks;
 		} else {
 			list = whites;
@@ -118,8 +121,6 @@ public class GameController {
 				break;
 			}
 		}
-		
-		
 		
 		if (blacks.size() == 0 || (list.equals(blacks) && !hasMoves)){
 			stringOutput.append("White wins! Congratulations!");
@@ -142,11 +143,11 @@ public class GameController {
 	
 	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y){
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
-		if (figure.getColor() == COLOR.black && activeColor == COLOR.white){
+		if (figure.isBlack() && !blackTurn){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a white figure!");
 			return false;
-		} else if (figure.getColor() == COLOR.white && activeColor == COLOR.black){
+		} else if (!figure.isBlack() && blackTurn){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a black figure!");
 			return false;
@@ -169,18 +170,6 @@ public class GameController {
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean isOccupiedByCoordinates(int x, int y){
-		return field.getCellByCoordinates(x, y).isOccupied();
-	}
-	
-	public COLOR getColorOfOccupierByCoordinates(int x, int y){
-		return getFigureOnField(x, y).getColor();
-	}
-	
-	public boolean isColorBlack(Figure figure) {
-		return figure.getColor().equals(COLOR.black);
 	}
 	
 	public boolean move(Figure from,int toX,int toY) {
@@ -211,7 +200,7 @@ public class GameController {
 	
 	public void deleteAllMovesWithoutFigure(Figure figure){
 		List<Figure> list;
-		if (figure.getColor().equals(Figure.COLOR.black)) {
+		if (blackTurn) {
 			list = blacks;
 		} else {
 			list = whites;
@@ -224,7 +213,11 @@ public class GameController {
 	}
 	
 	public void createAllMoves() {
-		createAllMoves(activeColor.equals(COLOR.black) ? blacks : whites);
+		if (blackTurn) {
+			createAllMoves(blacks);
+		} else {
+			createAllMoves(whites);
+		}
 	}
 	
 	private void createAllMoves(List<Figure> figures) {
@@ -259,7 +252,7 @@ public class GameController {
 	}
 	
 	private void regulareMoves(Figure figure) {
-		if (figure.getColor().equals(Figure.COLOR.black)) {
+		if (figure.isBlack()) {
 			lowerLeft.getPossibleMoves(figure);
 			lowerRight.getPossibleMoves(figure);
 		} else {
@@ -276,19 +269,11 @@ public class GameController {
 	}
 	
 	public void crownFigureIfNeeded(Figure figure){
-		if(activeColor.equals(COLOR.black) && figure.getPosition().getY() == 0){
+		if(figure.isBlack() && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}
-		if(activeColor.equals(COLOR.white) && figure.getPosition().getY() == size-1){
+		if(!figure.isBlack() && figure.getPosition().getY() == size-1){
 			figure.setCrowned(true);
 		}
-	}
-	
-	public void increaseMoveCount(){
-		moveCount++;
-	}
-	
-	public int getMoveCount(){
-		return moveCount;
 	}
 }

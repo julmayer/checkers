@@ -23,8 +23,8 @@ public class FigureTest {
 	@Before 
 	public void setUp() {
 		startPosition = new Cell(0, 0);
-		blackFigure = new Figure(startPosition, Figure.COLOR.black);
-		whiteFigure = new Figure(startPosition, Figure.COLOR.white);
+		blackFigure = new Figure(startPosition, true);
+		whiteFigure = new Figure(startPosition, false);
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class FigureTest {
 		assertFalse(blackFigure.isCrowned());
 		assertNotNull(blackFigure.getPossibleMoves());
 		assertEquals(startPosition, blackFigure.getPosition());
-		assertEquals(Figure.COLOR.black, blackFigure.getColor());
+		assertTrue(blackFigure.isBlack());
 		assertNotSame(whiteFigure, blackFigure);
 	}
 	
@@ -47,7 +47,7 @@ public class FigureTest {
 		assertFalse(whiteFigure.isCrowned());
 		assertNotNull(whiteFigure.getPossibleMoves());
 		assertEquals(startPosition, whiteFigure.getPosition());
-		assertEquals(Figure.COLOR.white, whiteFigure.getColor());
+		assertFalse(whiteFigure.isBlack());
 		assertNotSame(blackFigure, whiteFigure);
 	}
 
@@ -92,32 +92,17 @@ public class FigureTest {
 	
 	@Test
 	public void equalityAndHashCode() {
-		Figure otherPosition = new Figure(new Cell(1, 1), Figure.COLOR.black);
-		Figure notAlive = new Figure(startPosition, Figure.COLOR.black);
-		notAlive.kill();
-		Figure same = new Figure(startPosition, Figure.COLOR.black);
+		Figure otherPosition = new Figure(new Cell(1, 1), true);
+		Figure same = new Figure(startPosition, true);
 		assertEquals(blackFigure, blackFigure);
 		assertEquals(blackFigure.hashCode(), blackFigure.hashCode());
 		assertFalse(blackFigure.equals(whiteFigure));
 		assertFalse(blackFigure.equals(startPosition));
 		assertFalse(blackFigure.equals(otherPosition));
-		assertFalse(blackFigure.equals(notAlive));
 		assertFalse(blackFigure.equals(null));
 		assertEquals(same, blackFigure);
 		assertEquals(same.hashCode(), blackFigure.hashCode());
 		blackFigure.kill();
-		assertEquals(notAlive, blackFigure);
-	}
-	
-	@Test
-	public void enumTest() {
-		Figure.COLOR[] colors = Figure.COLOR.values();
-		Figure.COLOR[] testcolors = new Figure.COLOR[2];
-		Figure.COLOR white = Figure.COLOR.valueOf("white");
-		Figure.COLOR black = Figure.COLOR.valueOf(Figure.COLOR.class, "black");
-		testcolors[0] = white;
-		testcolors[1] = black;
-		assertArrayEquals(testcolors, colors);		
 	}
 	
 	@Test

@@ -4,20 +4,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Figure {
-	public enum COLOR{
-		white,
-		black};
-	
 	private Cell position;
 	private boolean crowned;
 	private boolean alive;
-	private COLOR color;
+	private boolean black;
 	private List<Move> possibleMoves;
 	
-	public Figure(Cell position, COLOR color) {
+	public Figure(Cell position, boolean black) {
 		this.position = position;
 		this.position.setOccupier(this);
-		this.color = color;
+		this.black = black;
 		this.alive = true;
 		this.crowned = false;
 		this.possibleMoves = new LinkedList<Move>();
@@ -61,8 +57,8 @@ public class Figure {
 		this.possibleMoves = possibleMoves;
 	}
 
-	public COLOR getColor() {
-		return color;
+	public boolean isBlack() {
+		return black;
 	}
 	
 	public boolean hasKillMoves() {
@@ -87,11 +83,10 @@ public class Figure {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		final int isAliveKey = 1231;
-		final int notAliveKey = 1237;
+		final int isBlack = 1231;
+		final int isWhite = 1237;
 		int result = 1;
-		result = prime * result + (alive ? isAliveKey : notAliveKey);
-		result = prime * result + (color.hashCode());
+		result = prime * result + (black ? isBlack : isWhite);
 		result = prime * result
 				+ ((position == null) ? 0 : position.hashCode());
 		return result;
@@ -109,13 +104,14 @@ public class Figure {
 			return false;
 		}
 		Figure other = (Figure) obj;
-		if (alive != other.alive) {
+		if (black != other.black) {
 			return false;
 		}
-		if (color != other.color) {
-			return false;
-		}
-		if (position != null && !position.equals(other.position)) {
+		if (position == null) {
+			if (other.position != null) {
+				return false;
+			}
+		} else if (!position.equals(other.position)) {
 			return false;
 		}
 		return true;

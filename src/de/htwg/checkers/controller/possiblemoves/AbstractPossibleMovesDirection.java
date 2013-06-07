@@ -6,7 +6,6 @@ import java.util.List;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
-import de.htwg.checkers.models.Figure.COLOR;
 import de.htwg.checkers.models.Move;
 
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
@@ -20,13 +19,13 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	@Override
 	public void getPossibleMoves(Figure figure) {
 		Cell cell = figure.getPosition();
-		COLOR myColor = figure.getColor();
+		boolean iAmBlack = figure.isBlack();
 		boolean lastFieldOccupied = false;
 		List<Move> result = new LinkedList<Move>();
 		boolean isCrowned = figure.isCrowned();
 		while ((cell = nextCell(cell)) != null) {
 			if (cell.isOccupied()) {
-				if (cell.getOccupier().getColor().equals(myColor)) {
+				if (cell.getOccupier().isBlack() == iAmBlack) {
 					// same colored figure -> no more moves
 					break;
 				} else {

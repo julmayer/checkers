@@ -44,7 +44,13 @@ public final class Game {
 		while (true) {
 			
 			game.showSituation(gameController);
-			print("Active color: " + gameController.getActiveColor().toString());
+			String activeColor;
+			if (gameController.isBlackTurn()) {
+				activeColor = "black";
+			} else {
+				activeColor = "white";
+			}
+			print("Active color: " + activeColor);
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
@@ -95,7 +101,7 @@ public final class Game {
 			for (int j = 0; j < fieldsize; ++j) {
 				if (gameController.getFigureOnField(j,i) == null) {
 					s = (s + " - ");
-				} else if (gameController.isColorBlack(gameController.getFigureOnField(j, i))) {
+				} else if (gameController.getFigureOnField(j, i).isBlack()) {
 					if (!gameController.getFigureOnField(j, i).isCrowned()){
 						s = (s + " x ");
 					} else {
