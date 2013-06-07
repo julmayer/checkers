@@ -37,7 +37,6 @@ public class FigureTest {
 		assertEquals(startPosition, blackFigure.getPosition());
 		assertEquals(Figure.COLOR.black, blackFigure.getColor());
 		assertNotSame(whiteFigure, blackFigure);
-		assertFalse(blackFigure.isMustKillMoves());
 	}
 	
 	@Test
@@ -50,7 +49,6 @@ public class FigureTest {
 		assertEquals(startPosition, whiteFigure.getPosition());
 		assertEquals(Figure.COLOR.white, whiteFigure.getColor());
 		assertNotSame(blackFigure, whiteFigure);
-		assertFalse(blackFigure.isMustKillMoves());
 	}
 
 	@Test
@@ -120,5 +118,13 @@ public class FigureTest {
 		testcolors[0] = white;
 		testcolors[1] = black;
 		assertArrayEquals(testcolors, colors);		
+	}
+	
+	@Test
+	public void killMoves() {
+		assertFalse(blackFigure.hasKillMoves());
+		Move move = new Move(true, blackFigure.getPosition(), new Cell(2, 2));
+		blackFigure.getPossibleMoves().add(move);
+		assertTrue(blackFigure.hasKillMoves());
 	}
 }

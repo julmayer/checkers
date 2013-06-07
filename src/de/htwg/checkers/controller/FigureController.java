@@ -24,7 +24,6 @@ public class FigureController {
 	}
 	
 	public void createPossibleMoves(Figure figure) {
-		figure.setMustKillMoves(false);
 		figure.setPossibleMoves(new LinkedList<Move>());
 		if (figure.isCrowned()) {
 			crownedMoves(figure);

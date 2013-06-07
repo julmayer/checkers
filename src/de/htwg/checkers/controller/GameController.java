@@ -112,6 +112,7 @@ public class GameController {
 	}
 	
 	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y){
+		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
 		if (figure.getColor() == COLOR.black && activeColor == COLOR.white){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a white figure!");
@@ -120,7 +121,7 @@ public class GameController {
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a black figure!");
 			return false;
-		} else if (figure.getPossibleMoves().contains(field.getCellByCoordinates(x, y))){
+		} else if (figure.getPossibleMoves().contains(selectedMove)){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("BLAAAAAARGH GNAAAAAARF");
 			return true;
@@ -205,7 +206,7 @@ public class GameController {
 		}
 		// check if moves are must kills
 		for (Figure figure : figures) {
-			if (figure.isMustKillMoves()) {
+			if (figure.hasKillMoves()) {
 				mustkill = true;
 				break;
 			}
@@ -213,9 +214,7 @@ public class GameController {
 		// remove regular moves if only must kills are allowed
 		if (mustkill) {
 			for (Figure figure : figures) {
-				if (!figure.isMustKillMoves()) {
-					figure.setPossibleMoves(new LinkedList<Move>());
-				}
+				figure.removeNonkillMoves();
 			}
 		}
 	}
