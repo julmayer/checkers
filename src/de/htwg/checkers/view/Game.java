@@ -1,6 +1,5 @@
 package de.htwg.checkers.view;
 
-import java.awt.Color;
 import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;
@@ -11,9 +10,6 @@ public final class Game {
 	private Game() { }
 	private static int fieldsize;
 	private static Scanner scanner = new Scanner(System.in);
-	private static int moveCount = 0;
-	private static boolean blackTurn = true;
-
 
 	/**
 	 * @param args
@@ -47,7 +43,7 @@ public final class Game {
 		while (true) {
 			
 			game.showSituation(gameController);
-			print("active color: " + gameController.getActiveColor().toString());
+			print("Active color: " + gameController.getActiveColor().toString());
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
@@ -67,7 +63,7 @@ public final class Game {
 			
 			gameController.createAllMoves();
 			
-			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), blackTurn, stringOutput, moveToX, moveToY)){
+			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), stringOutput, moveToX, moveToY)){
 				//possible move
 				gameController.move(gameController.getFigureOnField(moveFromX, moveFromY),moveToX,moveToY);
 				print(stringOutput.toString());
@@ -81,7 +77,7 @@ public final class Game {
 				print(stringOutput.toString());
 				continue;
 			}
-			moveCount++;
+			gameController.increaseMoveCount();
 			continue;
 		}
 	}
@@ -102,14 +98,7 @@ public final class Game {
 			print(s);
 			s = "";
 		}
-		print(String.format("Overall number of moves in game: %d", moveCount));
-		if (moveCount%2 != 0){
-			blackTurn = false;
-			print("Whites turn");
-		} else{
-			blackTurn = true;
-			print("Blacks turn.");
-		}
+		print(String.format("Overall number of moves in game: %d", gameController.getMoveCount()));
 	}
 	
 	private void showLegend() {
@@ -127,8 +116,7 @@ public final class Game {
 			s = "";
 		}		
 	}
-	
-	
+
 	private static void print(String string){
 		if (string == null){
 			System.out.println();

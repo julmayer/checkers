@@ -18,6 +18,7 @@ public class GameController {
 	private List<Figure> whites;
 	private COLOR activeColor;
 	private FigureController figureController = new FigureController(this);
+	private int moveCount;
 	
 	public GameController(int size) {
 		final int minSize = 4;
@@ -108,12 +109,12 @@ public class GameController {
 		return x >= 0 && y >= 0 && x < size && y < size;
 	}
 	
-	public boolean validateSelectedFigure(Figure figure, boolean blackTurn, StringBuilder stringOutput, int x, int y){
-		if (figure.getColor() == COLOR.black && !blackTurn){
+	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y){
+		if (figure.getColor() == COLOR.black && activeColor == COLOR.white){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a white figure!");
 			return false;
-		} else if (figure.getColor() == COLOR.white && blackTurn){
+		} else if (figure.getColor() == COLOR.white && activeColor == COLOR.black){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a black figure!");
 			return false;
@@ -157,7 +158,6 @@ public class GameController {
 	
 	public void createAllMoves() {
 		createAllMoves(activeColor.equals(COLOR.black) ? blacks : whites);
-		
 	}
 	
 	private void createAllMoves(List<Figure> figures) {
@@ -181,5 +181,13 @@ public class GameController {
 				}
 			}
 		}
+	}
+	
+	public void increaseMoveCount(){
+		moveCount++;
+	}
+	
+	public int getMoveCount(){
+		return moveCount;
 	}
 }
