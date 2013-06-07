@@ -4,10 +4,10 @@ package de.htwg.checkers.controller;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
+import de.htwg.checkers.models.Move;
 
 public class GameController {
 	
@@ -177,7 +177,7 @@ public class GameController {
 		if (mustkill) {
 			for (Figure figure : figures) {
 				if (!figure.isMustKillMoves()) {
-					figure.setPossibleMoves(new LinkedList<Cell>());
+					figure.setPossibleMoves(new LinkedList<Move>());
 				}
 			}
 		}

@@ -1,11 +1,9 @@
 package de.htwg.checkers.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-
-import de.htwg.checkers.models.Cell;
-import de.htwg.checkers.models.Field;
 
 public class FieldTest {
 

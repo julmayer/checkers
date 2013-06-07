@@ -7,6 +7,7 @@ import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
+import de.htwg.checkers.models.Move;
 
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
 
@@ -24,7 +25,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		int y = cell.getY();
 		COLOR myColor = gameController.getFigureOnField(x, y).getColor();
 		boolean lastFieldOccupied = false;
-		List<Cell> result = new LinkedList<Cell>();
+		List<Move> result = new LinkedList<Move>();
 		isCrowned = figure.isCrowned();
 		while ((cell = nextCell(cell)) != null) {
 			if (cell.isOccupied()) {
@@ -42,11 +43,11 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 				if (lastFieldOccupied) {
 					// mustKill move = only possible move
 					result.clear();
-					result.add(cell);
+					result.add(new Move(true, figure.getPosition(), cell));
 					figure.setMustKillMoves(true);
 					break;
 				} else {
-					result.add(cell);
+					result.add(new Move(false, figure.getPosition(), cell));
 					if (!isCrowned) {
 						// normal figure, no more moves
 						break;
@@ -55,7 +56,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 				lastFieldOccupied = false;
 			}
 		}
-		List<Cell> moves = figure.getPossibleMoves();
+		List<Move> moves = figure.getPossibleMoves();
 		moves.addAll(result);
 		figure.setPossibleMoves(moves);
 	}
