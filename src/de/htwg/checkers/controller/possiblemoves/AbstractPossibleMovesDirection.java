@@ -20,9 +20,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	@Override
 	public void getPossibleMoves(Figure figure) {
 		Cell cell = figure.getPosition();
-		int x = cell.getX();
-		int y = cell.getY();
-		COLOR myColor = gamefield.getCellByCoordinates(x, y).getOccupier().getColor();
+		COLOR myColor = figure.getColor();
 		boolean lastFieldOccupied = false;
 		List<Move> result = new LinkedList<Move>();
 		boolean isCrowned = figure.isCrowned();

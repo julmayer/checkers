@@ -105,10 +105,27 @@ public class GameController {
 	}
 	
 	public boolean checkIfWin(StringBuilder stringOutput){
-		if (blacks.size() == 0){
+		createAllMoves();
+		List<Figure> list;
+		boolean hasMoves = false;
+		if(activeColor == COLOR.black){
+			list = blacks;
+		} else {
+			list = whites;
+		}
+		for(Figure figure : list){
+			if (figure.getPossibleMoves().size() != 0) {
+				hasMoves = true;
+				break;
+			}
+		}
+		
+		
+		
+		if (blacks.size() == 0 || (list.equals(blacks) && !hasMoves)){
 			stringOutput.append("White wins! Congratulations!");
 			return true;
-		} else if (whites.size() == 0){
+		} else if (whites.size() == 0 || (list.equals(whites) && !hasMoves)){
 			stringOutput.append("Black wins! Congratulations!");
 			return true;
 		} else {
