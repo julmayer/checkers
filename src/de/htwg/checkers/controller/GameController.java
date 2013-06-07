@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
+import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
+import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
+import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperRight;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
@@ -19,10 +23,18 @@ public class GameController {
 	private List<Figure> blacks;
 	private List<Figure> whites;
 	private COLOR activeColor;
-	private FigureController figureController = new FigureController(this);
 	private int moveCount;
+	private PossibleMovesLowerLeft lowerLeft;
+	private PossibleMovesLowerRight lowerRight;
+	private PossibleMovesUpperLeft upperLeft;
+	private PossibleMovesUpperRight upperRight;
 	
 	public GameController(int size) {
+		this.lowerLeft = new PossibleMovesLowerLeft(this);
+		this.lowerRight = new PossibleMovesLowerRight(this);
+		this.upperLeft = new PossibleMovesUpperLeft(this);
+		this.upperRight = new PossibleMovesUpperRight(this);
+		
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException("Minimun size is 4!");
@@ -70,7 +82,8 @@ public class GameController {
 		blacks = new LinkedList<Figure>();
 		createBlackFigures();
 		createWhiteFigures();
-		activeColor = COLOR.black; // black starts
+		// black starts
+		activeColor = COLOR.black;
 	}
 	
 	private void fillRow(int y, Figure.COLOR color){
@@ -169,7 +182,7 @@ public class GameController {
 			 blacks.remove(occupier);
 			 whites.remove(occupier);
 			 occupier.kill();
-			 figureController.createPossibleMoves(from);
+			 createPossibleMoves(from);
 			 if (from.hasKillMoves()){
 				 deleteAllMovesWithoutFigure(from);
 				 return true;
@@ -202,7 +215,7 @@ public class GameController {
 		boolean mustkill = false;
 		// create all Moves
 		for (Figure figure : figures) {
-			figureController.createPossibleMoves(figure);
+			createPossibleMoves(figure);
 		}
 		// check if moves are must kills
 		for (Figure figure : figures) {
@@ -217,6 +230,33 @@ public class GameController {
 				figure.removeNonkillMoves();
 			}
 		}
+	}
+	
+	private void createPossibleMoves(Figure figure) {
+		figure.setPossibleMoves(new LinkedList<Move>());
+		if (figure.isCrowned()) {
+			crownedMoves(figure);
+		} else {
+			regulareMoves(figure);
+		}
+		
+	}
+	
+	private void regulareMoves(Figure figure) {
+		if (figure.getColor().equals(Figure.COLOR.black)) {
+			lowerLeft.getPossibleMoves(figure);
+			lowerRight.getPossibleMoves(figure);
+		} else {
+			upperLeft.getPossibleMoves(figure);
+			upperRight.getPossibleMoves(figure);
+		}
+	}
+	
+	private void crownedMoves(Figure figure) {
+		upperLeft.getPossibleMoves(figure);
+		upperRight.getPossibleMoves(figure);
+		lowerLeft.getPossibleMoves(figure);
+		lowerRight.getPossibleMoves(figure);
 	}
 	
 	public void crownFigureIfNeeded(Figure figure){

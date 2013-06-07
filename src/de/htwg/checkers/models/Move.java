@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Move {
-	boolean kill;
-	Cell from;
-	Cell to;
+	private boolean kill;
+	private Cell from;
+	private Cell to;
+	
 	public Move(boolean kill, Cell from, Cell to) {
 		super();
 		this.kill = kill;

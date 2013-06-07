@@ -12,7 +12,6 @@ import de.htwg.checkers.models.Move;
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
 
 	private GameController gameController;
-	private boolean isCrowned;
 	
 	public AbstractPossibleMovesDirection(GameController gameController) {
 		this.gameController = gameController;
@@ -26,7 +25,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		COLOR myColor = gameController.getFigureOnField(x, y).getColor();
 		boolean lastFieldOccupied = false;
 		List<Move> result = new LinkedList<Move>();
-		isCrowned = figure.isCrowned();
+		boolean isCrowned = figure.isCrowned();
 		while ((cell = nextCell(cell)) != null) {
 			if (cell.isOccupied()) {
 				if (cell.getOccupier().getColor().equals(myColor)) {
