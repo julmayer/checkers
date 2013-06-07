@@ -29,12 +29,7 @@ public class GameController {
 	private PossibleMovesUpperLeft upperLeft;
 	private PossibleMovesUpperRight upperRight;
 	
-	public GameController(int size) {
-		this.lowerLeft = new PossibleMovesLowerLeft(field);
-		this.lowerRight = new PossibleMovesLowerRight(field);
-		this.upperLeft = new PossibleMovesUpperLeft(field);
-		this.upperRight = new PossibleMovesUpperRight(field);
-		
+	public GameController(int size) {		
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException("Minimun size is 4!");
@@ -42,6 +37,10 @@ public class GameController {
 			rowsToFill = size/2 - 1;
 		}
 		field = new Field(size);
+		this.lowerLeft = new PossibleMovesLowerLeft(field);
+		this.lowerRight = new PossibleMovesLowerRight(field);
+		this.upperLeft = new PossibleMovesUpperLeft(field);
+		this.upperRight = new PossibleMovesUpperRight(field);
 		this.size = size;
 	}
 	
