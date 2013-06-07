@@ -169,7 +169,7 @@ public class GameController {
 		}
 		// check if moves are must kills
 		for (Figure figure : figures) {
-			if (figure.isMustKillMoves()) {
+			if (figure.hasKillMoves()) {
 				mustkill = true;
 				break;
 			}
@@ -177,10 +177,7 @@ public class GameController {
 		// remove regular moves if only must kills are allowed
 		if (mustkill) {
 			for (Figure figure : figures) {
-				if (!figure.isMustKillMoves()) {
-					figure.setPossibleMoves(new LinkedList<Move>());
-				}
-				blacks.remo
+				figure.removeNonkillMoves();
 			}
 		}
 	}

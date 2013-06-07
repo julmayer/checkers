@@ -44,7 +44,6 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 					// mustKill move = only possible move
 					result.clear();
 					result.add(new Move(true, figure.getPosition(), cell));
-					figure.setMustKillMoves(true);
 					break;
 				} else {
 					result.add(new Move(false, figure.getPosition(), cell));

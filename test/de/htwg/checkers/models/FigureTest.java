@@ -37,7 +37,6 @@ public class FigureTest {
 		assertEquals(startPosition, blackFigure.getPosition());
 		assertEquals(Figure.COLOR.black, blackFigure.getColor());
 		assertNotSame(whiteFigure, blackFigure);
-		assertFalse(blackFigure.isMustKillMoves());
 	}
 	
 	@Test
@@ -50,7 +49,6 @@ public class FigureTest {
 		assertEquals(startPosition, whiteFigure.getPosition());
 		assertEquals(Figure.COLOR.white, whiteFigure.getColor());
 		assertNotSame(blackFigure, whiteFigure);
-		assertFalse(blackFigure.isMustKillMoves());
 	}
 
 	@Test

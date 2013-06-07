@@ -13,7 +13,6 @@ public class Figure {
 	private boolean alive;
 	private COLOR color;
 	private List<Move> possibleMoves;
-	private boolean mustKillMoves;
 	
 	public Figure(Cell position, COLOR color) {
 		this.position = position;
@@ -22,7 +21,6 @@ public class Figure {
 		this.alive = true;
 		this.crowned = false;
 		this.possibleMoves = new LinkedList<Move>();
-		this.mustKillMoves = false;
 	}
 
 	public Cell getPosition() {
@@ -66,14 +64,6 @@ public class Figure {
 	public COLOR getColor() {
 		return color;
 	}
-
-	public boolean isMustKillMoves() {
-		return mustKillMoves;
-	}
-
-	public void setMustKillMoves(boolean mustKillMoves) {
-		this.mustKillMoves = mustKillMoves;
-	}
 	
 	public boolean hasKillMoves() {
 		for (Move move : possibleMoves) {
@@ -82,6 +72,16 @@ public class Figure {
 			}
 		}
 		return false;
+	}
+	
+	public void removeNonkillMoves() {
+		List<Move> nonkills = new LinkedList<Move>();
+		for (Move move : possibleMoves) {
+			if (!move.isKill()) {
+				nonkills.add(move);
+			}
+		}
+		possibleMoves.removeAll(nonkills);
 	}
 
 	@Override
