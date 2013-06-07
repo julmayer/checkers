@@ -121,4 +121,12 @@ public class FigureTest {
 		testcolors[1] = black;
 		assertArrayEquals(testcolors, colors);		
 	}
+	
+	@Test
+	public void killMoves() {
+		assertFalse(blackFigure.hasKillMoves());
+		Move move = new Move(true, blackFigure.getPosition(), new Cell(2, 2));
+		blackFigure.getPossibleMoves().add(move);
+		assertTrue(blackFigure.hasKillMoves());
+	}
 }
