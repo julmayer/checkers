@@ -74,6 +74,15 @@ public class Figure {
 	public void setMustKillMoves(boolean mustKillMoves) {
 		this.mustKillMoves = mustKillMoves;
 	}
+	
+	public boolean hasKillMoves() {
+		for (Move move : possibleMoves) {
+			if (move.isKill()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public int hashCode() {
