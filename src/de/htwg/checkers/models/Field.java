@@ -2,8 +2,10 @@ package de.htwg.checkers.models;
 
 public class Field {
 	private Cell[][] field;
+	private int size;
 	
 	public Field(int size){
+		this.size = size;
 		this.field = new Cell[size][size];
 		initCells(size);
 	}
@@ -23,6 +25,8 @@ public class Field {
 			}
 		}
 	}
-
 	
+	public boolean isValidCoordinate(int x, int y) {
+		return x >= 0 && y >= 0 && x < size && y < size;
+	}	
 }

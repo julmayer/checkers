@@ -30,10 +30,10 @@ public class GameController {
 	private PossibleMovesUpperRight upperRight;
 	
 	public GameController(int size) {
-		this.lowerLeft = new PossibleMovesLowerLeft(this);
-		this.lowerRight = new PossibleMovesLowerRight(this);
-		this.upperLeft = new PossibleMovesUpperLeft(this);
-		this.upperRight = new PossibleMovesUpperRight(this);
+		this.lowerLeft = new PossibleMovesLowerLeft(field);
+		this.lowerRight = new PossibleMovesLowerRight(field);
+		this.upperLeft = new PossibleMovesUpperLeft(field);
+		this.upperRight = new PossibleMovesUpperRight(field);
 		
 		final int minSize = 4;
 		if (size < minSize){
@@ -121,7 +121,7 @@ public class GameController {
 	}
 	
 	public boolean isValidCoordinate(int x, int y) {
-		return x >= 0 && y >= 0 && x < size && y < size;
+		return field.isValidCoordinate(x, y);
 	}
 	
 	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y){

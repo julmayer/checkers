@@ -3,18 +3,18 @@ package de.htwg.checkers.controller.possiblemoves;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.models.Cell;
+import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
 import de.htwg.checkers.models.Move;
 
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
 
-	private GameController gameController;
+	private Field gamefield;
 	
-	public AbstractPossibleMovesDirection(GameController gameController) {
-		this.gameController = gameController;
+	public AbstractPossibleMovesDirection(Field gamefield) {
+		this.gamefield = gamefield;
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		Cell cell = figure.getPosition();
 		int x = cell.getX();
 		int y = cell.getY();
-		COLOR myColor = gameController.getFigureOnField(x, y).getColor();
+		COLOR myColor = gamefield.getCellByCoordinates(x, y).getOccupier().getColor();
 		boolean lastFieldOccupied = false;
 		List<Move> result = new LinkedList<Move>();
 		boolean isCrowned = figure.isCrowned();
@@ -59,8 +59,8 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		figure.setPossibleMoves(moves);
 	}
 	
-	public GameController getGameController() {
-		return gameController;
+	public Field getGamefield() {
+		return gamefield;
 	}
 	
 	protected abstract Cell nextCell(Cell cell);
