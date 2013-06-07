@@ -74,7 +74,7 @@ public class GameControllerTest {
 		}
 	}
 	
-	@Test
+	
 	public void regularWhiteMoves() {
 		Field gamefield = gameController.getField();
 		gameController.gameInit();
