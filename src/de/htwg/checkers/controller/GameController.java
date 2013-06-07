@@ -122,8 +122,8 @@ public class GameController {
 			stringOutput.append("Please select a black figure!");
 			return false;
 		} else if (figure.getPossibleMoves().contains(selectedMove)){
+			//possible move
 			stringOutput.delete(0, stringOutput.length());
-			stringOutput.append("BLAAAAAARGH GNAAAAAARF");
 			return true;
 		} else {
 			stringOutput.delete(0, stringOutput.length());
@@ -160,6 +160,7 @@ public class GameController {
 		Move currentMove = from.getPossibleMoves().get(index);
 		from.setPosition(currentMove.getTo());
 		if (!currentMove.isKill()){
+			crownFigureIfNeeded(from,activeColor);
 			changeColor();
 			return false;
 		} else {
@@ -173,9 +174,9 @@ public class GameController {
 				 deleteAllMovesWithoutFigure(from);
 				 return true;
 			 } else {
+				 crownFigureIfNeeded(from,activeColor);
 				 changeColor();
 				 return false;
-				 
 			 }
 		}
 	}
@@ -216,6 +217,15 @@ public class GameController {
 			for (Figure figure : figures) {
 				figure.removeNonkillMoves();
 			}
+		}
+	}
+	
+	public void crownFigureIfNeeded(Figure figure, COLOR color){
+		if(color.equals(COLOR.black) && figure.getPosition().getY() == 0){
+			figure.setCrowned(true);
+		}
+		if(color.equals(COLOR.white) && figure.getPosition().getY() == size-1){
+			figure.setCrowned(true);
 		}
 	}
 	

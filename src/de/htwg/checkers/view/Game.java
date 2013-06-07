@@ -22,7 +22,6 @@ public final class Game {
 		int moveToY;
 		boolean hasMoreKills = false;
 		
-		
 		print("Welcome to checkers!");
 		print("Please enter size of field (minimun size is 4):");
 		fieldsize = scanner.nextInt();
@@ -76,6 +75,7 @@ public final class Game {
 				
 				print(stringOutput.toString());
 				if (gameController.checkIfWin(stringOutput)) {
+					game.showSituation(gameController);
 					print(stringOutput.toString());
 					break;
 				}
@@ -91,14 +91,23 @@ public final class Game {
 	private void showSituation(GameController gameController) {
 		String s = "";
 		print("Current situation:");
+		
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
 				if (gameController.getFigureOnField(j,i) == null) {
 					s = (s + " - ");
 				} else if (gameController.isColorBlack(gameController.getFigureOnField(j, i))) {
-					s = (s + " X ");
+					if (!gameController.getFigureOnField(j, i).isCrowned()){
+						s = (s + " x ");
+					} else {
+						s = (s + " X ");
+					}
 				} else {
-					s = (s + " O ");
+					if (!gameController.getFigureOnField(j, i).isCrowned()){
+						s = (s + " o ");
+					} else {
+						s = (s + " O ");
+					}
 				}
 			}
 			print(s);
@@ -108,7 +117,8 @@ public final class Game {
 	}
 	
 	private void showLegend() {
-		print("X = Black, O = White, - = Empty");
+		print("x = Black, o = White, - = Empty");
+		print("X = Black crowned, O = White crowned");
 	}
 	
 	private void showPositions() {
