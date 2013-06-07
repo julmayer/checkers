@@ -34,8 +34,6 @@ public final class Game {
 				
 		print("Black begins, have fun!");
 		print(null);
-		game.showPositions();
-		print(null);
 		game.showLegend();
 		print(null);
 		
@@ -43,6 +41,8 @@ public final class Game {
 		
 		while (true) {
 			
+			game.showPositions();
+			print(null);
 			game.showSituation(gameController);
 			String activeColor;
 			if (gameController.isBlackTurn()) {
@@ -99,26 +99,31 @@ public final class Game {
 		
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
-				if (gameController.getFigureOnField(j,i) == null) {
-					s = (s + " - ");
-				} else if (gameController.getFigureOnField(j, i).isBlack()) {
-					if (!gameController.getFigureOnField(j, i).isCrowned()){
-						s = (s + " x ");
-					} else {
-						s = (s + " X ");
-					}
-				} else {
-					if (!gameController.getFigureOnField(j, i).isCrowned()){
-						s = (s + " o ");
-					} else {
-						s = (s + " O ");
-					}
-				}
+				s = fillFigureString(j,i,gameController,s);
 			}
 			print(s);
 			s = "";
 		}
 		print(String.format("Overall number of moves in game: %d", gameController.getMoveCount()));
+	}
+	
+	public String fillFigureString(int j, int i, GameController gameController,String s){
+		if (gameController.getFigureOnField(j,i) == null) {
+			s = (s + " - ");
+		} else if (gameController.getFigureOnField(j, i).isBlack()) {
+			if (!gameController.getFigureOnField(j, i).isCrowned()){
+				s = (s + " x ");
+			} else {
+				s = (s + " X ");
+			}
+		} else {
+			if (!gameController.getFigureOnField(j, i).isCrowned()){
+				s = (s + " o ");
+			} else {
+				s = (s + " O ");
+			}
+		}
+		return s;
 	}
 	
 	private void showLegend() {
