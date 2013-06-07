@@ -73,7 +73,6 @@ public final class Game {
 					continue;
 				}
 				
-				print(stringOutput.toString());
 				if (gameController.checkIfWin(stringOutput)) {
 					game.showSituation(gameController);
 					print(stringOutput.toString());

@@ -159,8 +159,8 @@ public class GameController {
 		int index = from.getPossibleMoves().indexOf(dummyMove);
 		Move currentMove = from.getPossibleMoves().get(index);
 		from.setPosition(currentMove.getTo());
+		crownFigureIfNeeded(from);
 		if (!currentMove.isKill()){
-			crownFigureIfNeeded(from,activeColor);
 			changeColor();
 			return false;
 		} else {
@@ -174,7 +174,6 @@ public class GameController {
 				 deleteAllMovesWithoutFigure(from);
 				 return true;
 			 } else {
-				 crownFigureIfNeeded(from,activeColor);
 				 changeColor();
 				 return false;
 			 }
@@ -220,11 +219,11 @@ public class GameController {
 		}
 	}
 	
-	public void crownFigureIfNeeded(Figure figure, COLOR color){
-		if(color.equals(COLOR.black) && figure.getPosition().getY() == 0){
+	public void crownFigureIfNeeded(Figure figure){
+		if(activeColor.equals(COLOR.black) && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}
-		if(color.equals(COLOR.white) && figure.getPosition().getY() == size-1){
+		if(activeColor.equals(COLOR.white) && figure.getPosition().getY() == size-1){
 			figure.setCrowned(true);
 		}
 	}
