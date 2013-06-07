@@ -12,7 +12,7 @@ public class Figure {
 	private boolean crowned;
 	private boolean alive;
 	private COLOR color;
-	private List<Cell> possibleMoves;
+	private List<Move> possibleMoves;
 	private boolean mustKillMoves;
 	
 	public Figure(Cell position, COLOR color) {
@@ -21,7 +21,7 @@ public class Figure {
 		this.color = color;
 		this.alive = true;
 		this.crowned = false;
-		this.possibleMoves = new LinkedList<Cell>();
+		this.possibleMoves = new LinkedList<Move>();
 		this.mustKillMoves = false;
 	}
 
@@ -55,11 +55,11 @@ public class Figure {
 		this.position = null;
 	}
 
-	public List<Cell> getPossibleMoves() {
+	public List<Move> getPossibleMoves() {
 		return possibleMoves;
 	}
 	
-	public void setPossibleMoves(List<Cell> possibleMoves) {
+	public void setPossibleMoves(List<Move> possibleMoves) {
 		this.possibleMoves = possibleMoves;
 	}
 

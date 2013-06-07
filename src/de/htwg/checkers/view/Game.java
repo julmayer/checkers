@@ -1,6 +1,5 @@
 package de.htwg.checkers.view;
 
-import java.awt.Color;
 import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;

@@ -1,15 +1,18 @@
 package de.htwg.checkers.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import de.htwg.checkers.models.Cell;
-import de.htwg.checkers.models.Figure;
 
 public class FigureTest {
 	
@@ -80,9 +83,9 @@ public class FigureTest {
 	
 	@Test
 	public void changePossibleMoves() {
-		List<Cell> possibles = new LinkedList<Cell>();
-		possibles.add(new Cell(5, 5));
-		possibles.add(new Cell(6, 6));
+		List<Move> possibles = new LinkedList<Move>();
+		possibles.add(new Move(blackFigure.getPosition(), new Cell(5, 5)));
+		possibles.add(new Move(blackFigure.getPosition(), new Cell(6, 6)));
 		blackFigure.setPossibleMoves(possibles);
 		
 		assertEquals(possibles, blackFigure.getPossibleMoves());

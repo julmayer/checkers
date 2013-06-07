@@ -1,12 +1,13 @@
 package de.htwg.checkers.controller;
 
 import java.util.LinkedList;
+
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperRight;
-import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.Move;
 
 public class FigureController {
 	
@@ -24,7 +25,7 @@ public class FigureController {
 	
 	public void createPossibleMoves(Figure figure) {
 		figure.setMustKillMoves(false);
-		figure.setPossibleMoves(new LinkedList<Cell>());
+		figure.setPossibleMoves(new LinkedList<Move>());
 		if (figure.isCrowned()) {
 			crownedMoves(figure);
 		} else {
@@ -51,7 +52,6 @@ public class FigureController {
 	}
 	
 	//public void move(Cell from, Cell to) {
-		//Figure figure = from.getOccupier();
-		
+		//Figure figure = from.getOccupier();		
 	//}
 }
