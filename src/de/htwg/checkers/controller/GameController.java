@@ -3,7 +3,9 @@ package de.htwg.checkers.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
@@ -151,9 +153,44 @@ public class GameController {
 		return figure.getColor().equals(COLOR.black);
 	}
 	
-	public void move(Figure from,int toX,int toY) {
-		from.setPosition(field.getCellByCoordinates(toX, toY));
-		
+	public boolean move(Figure from,int toX,int toY) {
+		Move dummyMove = new Move(from.getPosition(),new Cell(toX,toY));
+		int index = from.getPossibleMoves().indexOf(dummyMove);
+		Move currentMove = from.getPossibleMoves().get(index);
+		from.setPosition(currentMove.getTo());
+		if (!currentMove.isKill()){
+			changeColor();
+			return false;
+		} else {
+			 Map<String,Integer> moveMap = currentMove.getCoordinatesLastSkipedCell();
+			 Figure occupier = field.getCellByCoordinates(moveMap.get("X"), moveMap.get("Y")).getOccupier();
+			 blacks.remove(occupier);
+			 whites.remove(occupier);
+			 occupier.kill();
+			 figureController.createPossibleMoves(from);
+			 if (from.hasKillMoves()){
+				 deleteAllMovesWithoutFigure(from);
+				 return true;
+			 } else {
+				 changeColor();
+				 return false;
+				 
+			 }
+		}
+	}
+	
+	public void deleteAllMovesWithoutFigure(Figure figure){
+		List<Figure> list;
+		if (figure.getColor().equals(Figure.COLOR.black)) {
+			list = blacks;
+		} else {
+			list = whites;
+		}
+		for (Figure current : list) {
+			if (!current.equals(figure)) {
+				current.setPossibleMoves(new LinkedList<Move>());
+			}
+		}
 	}
 	
 	public void createAllMoves() {

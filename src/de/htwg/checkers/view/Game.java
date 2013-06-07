@@ -20,6 +20,8 @@ public final class Game {
 		int moveFromY;
 		int moveToX;
 		int moveToY;
+		boolean hasMoreKills = false;
+		
 		
 		print("Welcome to checkers!");
 		print("Please enter size of field (minimun size is 4):");
@@ -60,19 +62,23 @@ public final class Game {
 				print(stringOutput.toString());
 				continue;
 			}
-			
-			gameController.createAllMoves();
-			
+			if (!hasMoreKills){
+				gameController.createAllMoves();
+			}
+				
 			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), stringOutput, moveToX, moveToY)){
 				//possible move
-				gameController.move(gameController.getFigureOnField(moveFromX, moveFromY),moveToX,moveToY);
+				hasMoreKills = gameController.move(gameController.getFigureOnField(moveFromX, moveFromY),moveToX,moveToY);
+				
+				if(hasMoreKills){
+					continue;
+				}
+				
 				print(stringOutput.toString());
 				if (gameController.checkIfWin(stringOutput)) {
 					print(stringOutput.toString());
 					break;
 				}
-				// TODO: if killed, multikill?
-				gameController.changeColor();
 			} else {
 				print(stringOutput.toString());
 				continue;
