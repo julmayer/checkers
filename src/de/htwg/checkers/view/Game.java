@@ -1,9 +1,9 @@
 package de.htwg.checkers.view;
 
+import java.awt.Color;
 import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;
-import de.htwg.checkers.controller.FigureController;
 
 
 public final class Game {
@@ -30,8 +30,6 @@ public final class Game {
 		fieldsize = scanner.nextInt();
 		
 		GameController gameController = new GameController(fieldsize);
-		FigureController figureController = new FigureController(gameController);
-		
 		gameController.gameInit();
 		
 		Game game = new Game();
@@ -46,9 +44,10 @@ public final class Game {
 		
 
 		
-		while (!gameController.checkIfWin(stringOutput)) {
+		while (true) {
 			
 			game.showSituation(gameController);
+			print("active color: " + gameController.getActiveColor().toString());
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
@@ -56,24 +55,28 @@ public final class Game {
 			moveToY = scanner.nextInt();
 			print(null);
 			
-			if (!validateInput(moveFromX,moveFromY) || !validateInput(moveToX,moveToY)){
+			if (!gameController.isValidCoordinate(moveFromX,moveFromY) || !gameController.isValidCoordinate(moveToX,moveToY)){
 				print("No Valid Input!");
 				continue;
 			}
 
-			gameController.isOccupiedByCoordinates(moveFromX, moveFromY);
-			
 			if (!gameController.isAFigureSelected(gameController.getFigureOnField(moveFromX, moveFromY), stringOutput)){
 				print(stringOutput.toString());
 				continue;
 			}
 			
-			figureController.createPossibleMoves(gameController.getFigureOnField(moveFromX, moveFromY));
+			gameController.createAllMoves();
 			
 			if (gameController.validateSelectedFigure(gameController.getFigureOnField(moveFromX, moveFromY), blackTurn, stringOutput, moveToX, moveToY)){
 				//possible move
 				gameController.move(gameController.getFigureOnField(moveFromX, moveFromY),moveToX,moveToY);
 				print(stringOutput.toString());
+				if (gameController.checkIfWin(stringOutput)) {
+					print(stringOutput.toString());
+					break;
+				}
+				// TODO: if killed, multikill?
+				gameController.changeColor();
 			} else {
 				print(stringOutput.toString());
 				continue;
@@ -81,7 +84,6 @@ public final class Game {
 			moveCount++;
 			continue;
 		}
-		print(stringOutput.toString());
 	}
 	
 	private void showSituation(GameController gameController) {
@@ -126,14 +128,6 @@ public final class Game {
 		}		
 	}
 	
-	private static boolean validateInput(int x, int y){
-		if (x < 0 || x >= fieldsize){
-			return false;
-		} else if (y < 0 || y >= fieldsize){
-			return false;
-		}
-		return true;
-	}
 	
 	private static void print(String string){
 		if (string == null){

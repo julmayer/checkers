@@ -13,6 +13,7 @@ public class Figure {
 	private boolean alive;
 	private COLOR color;
 	private List<Cell> possibleMoves;
+	private boolean mustKillMoves;
 	
 	public Figure(Cell position, COLOR color) {
 		this.position = position;
@@ -21,6 +22,7 @@ public class Figure {
 		this.alive = true;
 		this.crowned = false;
 		this.possibleMoves = new LinkedList<Cell>();
+		this.mustKillMoves = false;
 	}
 
 	public Cell getPosition() {
@@ -49,6 +51,7 @@ public class Figure {
 
 	public void kill() {
 		this.alive = false;
+		this.position.setOccupier(null);
 		this.position = null;
 	}
 
@@ -62,6 +65,14 @@ public class Figure {
 
 	public COLOR getColor() {
 		return color;
+	}
+
+	public boolean isMustKillMoves() {
+		return mustKillMoves;
+	}
+
+	public void setMustKillMoves(boolean mustKillMoves) {
+		this.mustKillMoves = mustKillMoves;
 	}
 
 	@Override

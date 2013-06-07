@@ -1,9 +1,7 @@
 package de.htwg.checkers.controller.possiblemoves;
 
-import java.util.List;
-
-import de.htwg.checkers.models.Cell;
+import de.htwg.checkers.models.Figure;
 
 public interface PossibleMovesDirection {
-	List<Cell> getPossibleMoves(Cell sourceCell);
+	void getPossibleMoves(Figure figure);
 }

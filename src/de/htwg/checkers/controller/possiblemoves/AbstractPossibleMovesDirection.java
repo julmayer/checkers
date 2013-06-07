@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.models.Cell;
+import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Figure.COLOR;
 
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
@@ -17,15 +18,14 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	}
 	
 	@Override
-	public List<Cell> getPossibleMoves(Cell sourceCell) {
-		Cell cell = sourceCell;
-		int x = sourceCell.getX();
-		int y = sourceCell.getY();
+	public void getPossibleMoves(Figure figure) {
+		Cell cell = figure.getPosition();
+		int x = cell.getX();
+		int y = cell.getY();
 		COLOR myColor = gameController.getFigureOnField(x, y).getColor();
 		boolean lastFieldOccupied = false;
 		List<Cell> result = new LinkedList<Cell>();
-		isCrowned = gameController.getFigureOnField(x, y).isCrowned();
-		
+		isCrowned = figure.isCrowned();
 		while ((cell = nextCell(cell)) != null) {
 			if (cell.isOccupied()) {
 				if (cell.getOccupier().getColor().equals(myColor)) {
@@ -43,6 +43,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 					// mustKill move = only possible move
 					result.clear();
 					result.add(cell);
+					figure.setMustKillMoves(true);
 					break;
 				} else {
 					result.add(cell);
@@ -54,8 +55,9 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 				lastFieldOccupied = false;
 			}
 		}
-		
-		return result;
+		List<Cell> moves = figure.getPossibleMoves();
+		moves.addAll(result);
+		figure.setPossibleMoves(moves);
 	}
 	
 	public GameController getGameController() {

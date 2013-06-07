@@ -34,6 +34,7 @@ public class FigureTest {
 		assertEquals(startPosition, blackFigure.getPosition());
 		assertEquals(Figure.COLOR.black, blackFigure.getColor());
 		assertNotSame(whiteFigure, blackFigure);
+		assertFalse(blackFigure.isMustKillMoves());
 	}
 	
 	@Test
@@ -46,17 +47,18 @@ public class FigureTest {
 		assertEquals(startPosition, whiteFigure.getPosition());
 		assertEquals(Figure.COLOR.white, whiteFigure.getColor());
 		assertNotSame(blackFigure, whiteFigure);
+		assertFalse(blackFigure.isMustKillMoves());
 	}
 
 	@Test
 	public void killFigure() {
+		Cell oldPosition = blackFigure.getPosition();
 		blackFigure.kill();
 		assertFalse(blackFigure.isAlive());
 		assertNull(blackFigure.getPosition());
 		assertTrue(whiteFigure.isAlive());
 		assertNotNull(blackFigure.hashCode());
-		blackFigure.setPosition(startPosition);
-		
+		assertNull(oldPosition.getOccupier());		
 	}
 	
 	@Test

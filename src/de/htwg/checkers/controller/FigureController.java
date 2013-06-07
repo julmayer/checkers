@@ -1,8 +1,6 @@
 package de.htwg.checkers.controller;
 
 import java.util.LinkedList;
-import java.util.List;
-
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
@@ -25,37 +23,31 @@ public class FigureController {
 	}
 	
 	public void createPossibleMoves(Figure figure) {
+		figure.setMustKillMoves(false);
+		figure.setPossibleMoves(new LinkedList<Cell>());
 		if (figure.isCrowned()) {
-			figure.setPossibleMoves(crownedMoves(figure));
+			crownedMoves(figure);
 		} else {
-			figure.setPossibleMoves(regulareMoves(figure));
+			regulareMoves(figure);
 		}
 		
 	}
 	
-	private List<Cell> regulareMoves(Figure figure) {
-		List<Cell> possibleMoves = new LinkedList<Cell>();
-		
+	private void regulareMoves(Figure figure) {
 		if (figure.getColor().equals(Figure.COLOR.black)) {
-			possibleMoves.addAll(lowerLeft.getPossibleMoves(figure.getPosition()));
-			possibleMoves.addAll(lowerRight.getPossibleMoves(figure.getPosition()));
+			lowerLeft.getPossibleMoves(figure);
+			lowerRight.getPossibleMoves(figure);
 		} else {
-			possibleMoves.addAll(upperLeft.getPossibleMoves(figure.getPosition()));
-			possibleMoves.addAll(upperRight.getPossibleMoves(figure.getPosition()));
+			upperLeft.getPossibleMoves(figure);
+			upperRight.getPossibleMoves(figure);
 		}
-		
-		return possibleMoves;
 	}
 	
-	private List<Cell> crownedMoves(Figure figure) {
-		List<Cell> possibleMoves = new LinkedList<Cell>();
-		
-		possibleMoves.addAll(upperLeft.getPossibleMoves(figure.getPosition()));
-		possibleMoves.addAll(upperRight.getPossibleMoves(figure.getPosition()));
-		possibleMoves.addAll(lowerLeft.getPossibleMoves(figure.getPosition()));
-		possibleMoves.addAll(lowerRight.getPossibleMoves(figure.getPosition()));
-		
-		return possibleMoves;
+	private void crownedMoves(Figure figure) {
+		upperLeft.getPossibleMoves(figure);
+		upperRight.getPossibleMoves(figure);
+		lowerLeft.getPossibleMoves(figure);
+		lowerRight.getPossibleMoves(figure);
 	}
 	
 	//public void move(Cell from, Cell to) {
