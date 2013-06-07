@@ -9,7 +9,7 @@ import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 
-public class FieldControllerTest {
+public class GameControllerTest {
 
 	@Test
 	public void methodTest(){
