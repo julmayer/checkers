@@ -33,30 +33,22 @@ public final class Game {
 		StringBuilder stringOutput = new StringBuilder();
 				
 		print("Black begins, have fun!");
-		print(null);
+		print("");
 		game.showLegend();
-		print(null);
+		print("");
 		
 
 		
 		while (true) {
 			
-			game.showPositions();
-			print(null);
-			game.showSituation(gameController);
-			String activeColor;
-			if (gameController.isBlackTurn()) {
-				activeColor = "black";
-			} else {
-				activeColor = "white";
-			}
-			print("Active color: " + activeColor);
+			Game.preMovePrints(gameController, game);
+			
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
 			moveFromY = scanner.nextInt();
 			moveToX = scanner.nextInt();
 			moveToY = scanner.nextInt();
-			print(null);
+			print("");
 			
 			if (!gameController.isValidCoordinate(moveFromX,moveFromY) || !gameController.isValidCoordinate(moveToX,moveToY)){
 				print("No Valid Input!");
@@ -94,36 +86,35 @@ public final class Game {
 	}
 	
 	private void showSituation(GameController gameController) {
-		String s = "";
+		StringBuilder sb = new StringBuilder();
 		print("Current situation:");
 		
 		for (int i = fieldsize-1; i >= 0; --i) {
 			for (int j = 0; j < fieldsize; ++j) {
-				s = fillFigureString(j,i,gameController,s);
+				fillFigureString(j,i,gameController,sb);
 			}
-			print(s);
-			s = "";
+			print(sb.toString());
+			sb = new StringBuilder();
 		}
 		print(String.format("Overall number of moves in game: %d", gameController.getMoveCount()));
 	}
 	
-	public String fillFigureString(int j, int i, GameController gameController,String s){
+	public void fillFigureString(int j, int i, GameController gameController, StringBuilder sb){
 		if (gameController.getFigureOnField(j,i) == null) {
-			s = (s + " - ");
+			sb.append(" - ");
 		} else if (gameController.getFigureOnField(j, i).isBlack()) {
 			if (!gameController.getFigureOnField(j, i).isCrowned()){
-				s = (s + " x ");
+				sb.append(" x ");
 			} else {
-				s = (s + " X ");
+				sb.append(" X ");
 			}
 		} else {
 			if (!gameController.getFigureOnField(j, i).isCrowned()){
-				s = (s + " o ");
+				sb.append(" o ");
 			} else {
-				s = (s + " O ");
+				sb.append(" O ");
 			}
 		}
-		return s;
 	}
 	
 	private void showLegend() {
@@ -144,10 +135,19 @@ public final class Game {
 	}
 
 	private static void print(String string){
-		if (string == null){
-			System.out.println();
+		System.out.println(string);
+	}
+	
+	private static void preMovePrints(GameController gameController, Game game) {
+		game.showPositions();
+		print("");
+		game.showSituation(gameController);
+		String activeColor;
+		if (gameController.isBlackTurn()) {
+			activeColor = "black";
 		} else {
-			System.out.println(string);
+			activeColor = "white";
 		}
+		print("Active color: " + activeColor);
 	}
 }
