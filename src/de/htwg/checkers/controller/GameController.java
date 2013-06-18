@@ -86,6 +86,7 @@ public class GameController {
 		createWhiteFigures();
 		// black starts
 		blackTurn = true;
+		moveCount = 0;
 	}
 	
 	private void fillRow(int y, boolean isBlack){

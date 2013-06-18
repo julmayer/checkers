@@ -76,6 +76,10 @@ public class FigureTest {
 		
 		assertEquals(newPosition, blackFigure.getPosition());
 		assertNotSame(blackFigure.getPosition(), startPosition);
+		
+		Figure nullPosition = new Figure(null, true);
+		nullPosition.setPosition(startPosition);
+		assertNotNull(nullPosition.getPosition());
 	}
 	
 	@Test
@@ -101,14 +105,40 @@ public class FigureTest {
 		assertFalse(blackFigure.equals(null));
 		assertEquals(same, blackFigure);
 		assertEquals(same.hashCode(), blackFigure.hashCode());
-		blackFigure.kill();
+		
+		Figure sameWhite = new Figure(startPosition, false);
+		assertEquals(sameWhite.hashCode(), whiteFigure.hashCode());
+		
+		Figure nullPosition1 = new Figure(null, true);
+		Figure nullPosition2 = new Figure(null, true);
+		assertEquals(nullPosition1, nullPosition2);
+		
+		assertFalse(nullPosition1.equals(blackFigure));
 	}
 	
 	@Test
 	public void killMoves() {
+		Move nonkill = new Move(blackFigure.getPosition(), new Cell(2, 2));
+		blackFigure.getPossibleMoves().add(nonkill);
 		assertFalse(blackFigure.hasKillMoves());
 		Move move = new Move(true, blackFigure.getPosition(), new Cell(2, 2));
 		blackFigure.getPossibleMoves().add(move);
 		assertTrue(blackFigure.hasKillMoves());
+	}
+	
+	@Test
+	public void removeNonkillMoves() {
+		Move kill = new Move(true, blackFigure.getPosition(), new Cell(2, 2));
+		Move nonKill = new Move(false, blackFigure.getPosition(), new Cell(1,1));
+		
+		blackFigure.getPossibleMoves().add(kill);
+		blackFigure.getPossibleMoves().add(nonKill);
+		
+		assertEquals(2, blackFigure.getPossibleMoves().size());
+		
+		blackFigure.removeNonkillMoves();
+		
+		assertEquals(1, blackFigure.getPossibleMoves().size());
+		assertTrue(blackFigure.getPossibleMoves().contains(kill));		
 	}
 }

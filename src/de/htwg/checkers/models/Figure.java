@@ -12,7 +12,9 @@ public class Figure {
 	
 	public Figure(Cell position, boolean black) {
 		this.position = position;
-		this.position.setOccupier(this);
+		if (this.position != null) {
+			this.position.setOccupier(this);
+		}
 		this.black = black;
 		this.alive = true;
 		this.crowned = false;
