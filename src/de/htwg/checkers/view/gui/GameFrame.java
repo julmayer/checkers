@@ -148,20 +148,14 @@ public class GameFrame implements ActionListener, Observer{
 	private void setFigureOnButton(int i, int j) {
 		if (gameController.getFigureOnField(i, j) == null) {
 			buttons[i][j].setIcon(null);
-		} else if (gameController.getFigureOnField(i, j).isBlack()){
-			buttons[i][j].setIcon(new ImageIcon("black_fig_skal.jpg"));
 		} else if (gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned()){
 			buttons[i][j].setIcon(new ImageIcon("black_checker_fig_skal.jpg"));
-		} else if (!gameController.getFigureOnField(i, j).isBlack()){
-			buttons[i][j].setIcon(new ImageIcon("white_fig_skal.jpg"));
 		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
 			buttons[i][j].setIcon(new ImageIcon("white_checker_fig_skal.jpg"));
+		} else if (gameController.getFigureOnField(i, j).isBlack() ){
+			buttons[i][j].setIcon(new ImageIcon("black_fig_skal.jpg"));
+		} else if (!gameController.getFigureOnField(i, j).isBlack()){
+			buttons[i][j].setIcon(new ImageIcon("white_fig_skal.jpg"));
 		}
-	}
-	
-	public static void main(String[] args){
-		GameController gc = new GameController(8);
-		gc.gameInit();
-		new GameFrame(gc);
 	}
 }
