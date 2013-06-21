@@ -118,4 +118,20 @@ public class Figure {
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		String s;
+		if (black) {
+			s = " x ";
+		} else {
+			s = " o ";
+		}
+		
+		if (crowned) {
+			s.toUpperCase();
+		}
+		
+		return s;
+	}
 }

@@ -22,18 +22,20 @@ public class Checkers implements Observer {
 		initFrame.addObserver(checkers);
 	}
 	
-	
 	@Override
 	public void update() {
 		Injector injector = Guice.createInjector(new CheckersModel(initFrame.getSize()));
 		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		
-		TUI tui = new TUI(gameController);
+		new TUI(gameController);
+		
+		gameController.gameInit();
+		
 		boolean finished = false;
 		
 		while (!finished) {
-			finished = tui.input(scanner.next("[0-9]{1,2} [0-9]{1,2} [0-9]{1,2}"));
+			finished = gameController.input(scanner.next("[0-9]{1,2} [0-9]{1,2} [0-9]{1,2}"));
 		}
 	}
 }
