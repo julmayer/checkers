@@ -3,11 +3,10 @@ package de.htwg.checkers.view.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
 
 import javax.swing.*;
 
-import de.htwg.checkers.Checkers;
+import de.htwg.checkers.util.observer.Observable;
 
 
 public class InitFrame extends Observable implements ActionListener {
