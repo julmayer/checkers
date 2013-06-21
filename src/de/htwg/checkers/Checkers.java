@@ -33,8 +33,9 @@ public class Checkers {
 		
 		scanner = new Scanner(System.in);
 		
-		new GameFrame(gameController);
 		new TUI(gameController);
+		new GameFrame(gameController);
+		
 		
 		boolean finished = false;
 		

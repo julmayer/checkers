@@ -119,6 +119,7 @@ public class GameFrame implements ActionListener, Observer{
 	public void update() {
 		String error = gameController.getError();
 		if (error == null) {
+			errorLabel.setText("");
 			paint();
 						
 			int moveCount = gameController.getMoveCount();
