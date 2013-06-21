@@ -128,7 +128,7 @@ public class GameController extends Observable implements IGameController {
 		
 		if (splitInput.length != 4) {
 			error = "Input to short, must be fromX formY toX toY: " + input;
-			notify();
+			notifyObservers();
 			return true;
 		}
 		
@@ -139,7 +139,7 @@ public class GameController extends Observable implements IGameController {
 						
 		if (!isValidCoordinate(moveFromX,moveFromY) || !isValidCoordinate(moveToX,moveToY)){
 			error = "Input not valid, coordinates not in field!: " + input;
-			notify();
+			notifyObservers();
 			return true;
 		}
 		
@@ -147,7 +147,7 @@ public class GameController extends Observable implements IGameController {
 
 		if (figure == null) {
 			error = "No figure selected!" + input;
-			notify();
+			notifyObservers();
 			return true;
 		}
 		
@@ -160,7 +160,7 @@ public class GameController extends Observable implements IGameController {
 			hasMoreKills = move(figure, moveToX, moveToY);
 		} else {
 			error = sb.toString() + input;
-			notify();
+			notifyObservers();
 			return true;
 		}
 		
