@@ -68,16 +68,8 @@ public class GameController extends Observable implements IGameController {
 		return error;
 	}
 	
-	public void increaseMoveCount() {
-		moveCount++;
-	}
-	
 	public int getMoveCount() {
 		return moveCount;
-	}
-	
-	public void changeColor() {
-		blackTurn = !blackTurn;
 	}
 
 	public void gameInit() {
@@ -129,7 +121,7 @@ public class GameController extends Observable implements IGameController {
 		if (splitInput.length != 4) {
 			error = "Input to short, must be fromX formY toX toY: " + input;
 			notifyObservers();
-			return true;
+			return false;
 		}
 		
 		moveFromX = Integer.valueOf(splitInput[0]);
@@ -137,10 +129,10 @@ public class GameController extends Observable implements IGameController {
 		moveToX = Integer.valueOf(splitInput[2]);
 		moveToY = Integer.valueOf(splitInput[3]);
 						
-		if (!isValidCoordinate(moveFromX,moveFromY) || !isValidCoordinate(moveToX,moveToY)){
+		if (!field.isValidCoordinate(moveFromX,moveFromY) || !field.isValidCoordinate(moveToX,moveToY)){
 			error = "Input not valid, coordinates not in field!: " + input;
 			notifyObservers();
-			return true;
+			return false;
 		}
 		
 		Figure figure = field.getCellByCoordinates(moveFromX, moveFromY).getOccupier();
@@ -148,7 +140,7 @@ public class GameController extends Observable implements IGameController {
 		if (figure == null) {
 			error = "No figure selected!" + input;
 			notifyObservers();
-			return true;
+			return false;
 		}
 		
 		if (!hasMoreKills) {
@@ -161,16 +153,16 @@ public class GameController extends Observable implements IGameController {
 		} else {
 			error = sb.toString() + input;
 			notifyObservers();
-			return true;
+			return false;
 		}
 		
 		if (!hasMoreKills) {
-			changeColor();
+			blackTurn = !blackTurn;
 		}
 		
 		error = null;
-		increaseMoveCount();
-		notify();
+		moveCount++;
+		notifyObservers();
 		return checkIfWin(sb);
 	}
 	
@@ -205,11 +197,7 @@ public class GameController extends Observable implements IGameController {
 		return field.getCellByCoordinates(x, y).getOccupier();
 	}
 	
-	public boolean isValidCoordinate(int x, int y) {
-		return field.isValidCoordinate(x, y);
-	}
-	
-	public boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y) {
+	private boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y) {
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
 		if (figure.isBlack() && !blackTurn){
 			stringOutput.append("Please select a white figure!");
@@ -226,24 +214,13 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
-	public boolean isAFigureSelected (Figure figure, StringBuilder stringOutput) {
-		if (figure == null){
-			stringOutput.delete(0, stringOutput.length());
-			stringOutput.append("No figure selected!");
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	public boolean move(Figure from,int toX,int toY) {
+	private boolean move(Figure from,int toX,int toY) {
 		Move dummyMove = new Move(from.getPosition(),new Cell(toX,toY));
 		int index = from.getPossibleMoves().indexOf(dummyMove);
 		Move currentMove = from.getPossibleMoves().get(index);
 		from.setPosition(currentMove.getTo());
 		crownFigureIfNeeded(from);
 		if (!currentMove.isKill()){
-			changeColor();
 			return false;
 		} else {
 			 Map<String,Integer> moveMap = currentMove.getCoordinatesLastSkipedCell();
@@ -256,13 +233,12 @@ public class GameController extends Observable implements IGameController {
 				 deleteAllMovesWithoutFigure(from);
 				 return true;
 			 } else {
-				 changeColor();
 				 return false;
 			 }
 		}
 	}
 	
-	public void deleteAllMovesWithoutFigure(Figure figure) {
+	private void deleteAllMovesWithoutFigure(Figure figure) {
 		List<Figure> list;
 		if (blackTurn) {
 			list = blacks;
@@ -332,7 +308,7 @@ public class GameController extends Observable implements IGameController {
 		lowerRight.getPossibleMoves(figure);
 	}
 	
-	public void crownFigureIfNeeded(Figure figure) {
+	private void crownFigureIfNeeded(Figure figure) {
 		if(figure.isBlack() && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}

@@ -36,8 +36,12 @@ public class Field {
 		sb.append("Current situation:\n");
 		
 		for (int i = size-1; i >= -1; --i) {
-			sb.append(i);
-			sb.append(" ");
+			if (i == -1) {
+				sb.append("  ");
+			} else {
+				sb.append(i);
+				sb.append(" ");
+			}
 			for (int j = 0; j < size; ++j) {
 				if (i == -1) {
 					sb.append(" ");

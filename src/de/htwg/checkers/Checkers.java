@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
+import de.htwg.checkers.view.gui.GameFrame;
 import de.htwg.checkers.view.gui.InitFrame;
 import de.htwg.checkers.view.tui.TUI;
 
@@ -28,14 +29,15 @@ public class Checkers implements Observer {
 		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		
-		new TUI(gameController);
-		
 		gameController.gameInit();
+		
+		new GameFrame(gameController);
+		new TUI(gameController);		
 		
 		boolean finished = false;
 		
 		while (!finished) {
-			finished = gameController.input(scanner.next("[0-9]{1,2} [0-9]{1,2} [0-9]{1,2}"));
+			finished = gameController.input(scanner.nextLine());
 		}
 	}
 }

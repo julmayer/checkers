@@ -12,11 +12,7 @@ public interface IGameController extends IObservable {
 	
 	boolean isBlackTurn();
 	
-	void increaseMoveCount();
-	
 	int getMoveCount();
-	
-	void changeColor();
 	
 	void gameInit();
 	
@@ -24,19 +20,7 @@ public interface IGameController extends IObservable {
 	
 	Figure getFigureOnField(int x, int y);
 	
-	boolean isValidCoordinate(int x, int y);
-	
-	boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y);
-	
-	boolean isAFigureSelected (Figure figure, StringBuilder stringOutput);
-	
-	boolean move(Figure from,int toX,int toY);
-	
-	void deleteAllMovesWithoutFigure(Figure figure);
-	
 	void createAllMoves();
-	
-	void crownFigureIfNeeded(Figure figure);
 	
 	boolean input(String input);
 	

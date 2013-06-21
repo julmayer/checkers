@@ -77,7 +77,7 @@ public class InitFrame extends Observable implements ActionListener {
 			size = sizeTwelve;
 		}
 		
-		notify();
+		notifyObservers();
 		
 	}
 	

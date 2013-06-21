@@ -129,7 +129,7 @@ public class Figure {
 		}
 		
 		if (crowned) {
-			s.toUpperCase();
+			s = s.toUpperCase();
 		}
 		
 		return s;

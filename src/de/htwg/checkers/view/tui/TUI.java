@@ -47,7 +47,7 @@ public final class TUI implements Observer {
 		StringBuilder sb = new StringBuilder();
 		String error = gameController.getError();
 		
-		if (error != null) {
+		if (error == null) {
 			printTui();
 			if (gameController.checkIfWin(sb)) {
 				print(sb.toString());

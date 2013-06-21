@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.google.inject.Inject;
+
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
@@ -17,6 +19,7 @@ public class GameFrame implements ActionListener, Observer{
 	private JLabel moveCountLabel;
 	private JLabel errorLabel;
 	private JLabel turnLabel;
+	private JFrame gameFrame;
 	
 	private int fieldSize;
 	private int clickCount = 0;
@@ -24,11 +27,9 @@ public class GameFrame implements ActionListener, Observer{
 	StringBuilder sB = new StringBuilder();
 	StringBuilder stringOutput = new StringBuilder();
 	
-	
+	@Inject
 	public GameFrame(IGameController gameController){
 		
-		
-		JFrame gameFrame;
 		JPanel panel;
 		JPanel statusPanel;
 		JPanel gamePanel;	
@@ -91,7 +92,7 @@ public class GameFrame implements ActionListener, Observer{
 		gamePanel.add(statusPanel,BorderLayout.SOUTH);
 
 		
-		gameFrame.getContentPane().add(gamePanel);
+		gameFrame.setContentPane(gamePanel);
 		gameFrame.setResizable(false);
 		gameFrame.setVisible(true);
 		paint();
@@ -125,19 +126,20 @@ public class GameFrame implements ActionListener, Observer{
 				setFigureOnButton(i, j);
 			}
 		}
+		
 	}
 	
-	private void setFigureOnButton(int i, int j){
-		if (gameController.getFigureOnField(i, j).isBlack()){
-			buttons[i][j].setIcon(new ImageIcon("/checkers/black_fig_skal.jpg"));
-		} else if (gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned()){
-			buttons[i][j].setIcon(new ImageIcon("checkers/black_checker_fig_skal.jpg"));
-		} else if (!gameController.getFigureOnField(i, j).isBlack()){
-			buttons[i][j].setIcon(new ImageIcon("checkers/white_fig_skal.jpg"));
-		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
-			buttons[i][j].setIcon(new ImageIcon("checkers/white_checker_fig_skal.jpg"));
-		} else {
+	private void setFigureOnButton(int i, int j) {
+		if (gameController.getFigureOnField(i, j) == null) {
 			buttons[i][j].setIcon(null);
+		} else if (gameController.getFigureOnField(i, j).isBlack()){
+			buttons[i][j].setIcon(new ImageIcon("black_fig_skal.jpg"));
+		} else if (gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned()){
+			buttons[i][j].setIcon(new ImageIcon("black_checker_fig_skal.jpg"));
+		} else if (!gameController.getFigureOnField(i, j).isBlack()){
+			buttons[i][j].setIcon(new ImageIcon("white_fig_skal.jpg"));
+		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
+			buttons[i][j].setIcon(new ImageIcon("white_checker_fig_skal.jpg"));
 		}
 	}
 }

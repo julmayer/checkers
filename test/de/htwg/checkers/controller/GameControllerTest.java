@@ -89,29 +89,10 @@ public class GameControllerTest {
 	}
 	
 	@Test
-	public void moveCount() {
-		gameController4.gameInit();
-		assertEquals(0, gameController4.getMoveCount());
-		gameController4.increaseMoveCount();
-		assertEquals(1, gameController4.getMoveCount());
-	}
-	
-	@Test
-	public void turnColor()
-	{
-		gameController4.gameInit();
-		gameController4.changeColor();
-		gameController4.changeColor();
-		assertTrue(gameController4.isBlackTurn());
-		gameController4.changeColor();
-		assertFalse(gameController4.isBlackTurn());
-	}
-	
-	@Test
 	public void regularWhiteMoves() {
 		Field gamefield = gameController7.getField();
 		gameController7.gameInit();
-		gameController7.changeColor();
+		gameController7.input("6 5 5 4");
 		gameController7.createAllMoves();
 		
 		// both Cells free
