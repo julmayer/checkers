@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
@@ -30,9 +31,11 @@ public class GameController extends Observable implements IGameController {
 	private PossibleMovesLowerRight lowerRight;
 	private PossibleMovesUpperLeft upperLeft;
 	private PossibleMovesUpperRight upperRight;
+	private String error;
+	private boolean hasMoreKills;
 	
 	@Inject
-	public GameController(int size) {		
+	public GameController(@Named("size") int size) {		
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException("Minimun size is 4!");
@@ -45,6 +48,8 @@ public class GameController extends Observable implements IGameController {
 		this.upperLeft = new PossibleMovesUpperLeft(field);
 		this.upperRight = new PossibleMovesUpperRight(field);
 		this.size = size;
+		this.error = null;
+		this.hasMoreKills = false;
 	}
 	
 	public Field getField() {
@@ -59,6 +64,10 @@ public class GameController extends Observable implements IGameController {
 		return blackTurn;
 	}
 	
+	public String getError() {
+		return error;
+	}
+	
 	public void increaseMoveCount() {
 		moveCount++;
 	}
@@ -71,6 +80,16 @@ public class GameController extends Observable implements IGameController {
 		blackTurn = !blackTurn;
 	}
 
+	public void gameInit() {
+		whites = new LinkedList<Figure>();
+		blacks = new LinkedList<Figure>();
+		createBlackFigures();
+		createWhiteFigures();
+		// black starts
+		blackTurn = true;
+		moveCount = 0;
+	}
+	
 	private void createWhiteFigures() {
 		for (int y = 0; y < rowsToFill; y++){
 			fillRow(y,false);
@@ -81,16 +100,6 @@ public class GameController extends Observable implements IGameController {
 		for (int y = size - rowsToFill;y < size; y++){
 			fillRow(y,true);
 		}
-	}
-	
-	public void gameInit() {
-		whites = new LinkedList<Figure>();
-		blacks = new LinkedList<Figure>();
-		createBlackFigures();
-		createWhiteFigures();
-		// black starts
-		blackTurn = true;
-		moveCount = 0;
 	}
 	
 	private void fillRow(int y, boolean isBlack) {
@@ -109,6 +118,60 @@ public class GameController extends Observable implements IGameController {
 		} else {
 			whites.add(figure);
 		}
+	}
+	
+	public boolean input(String input) {
+		
+		int moveFromX, moveFromY, moveToX, moveToY;
+		StringBuilder sb = new StringBuilder();
+		String[] splitInput = input.split(" ");
+		
+		if (splitInput.length != 4) {
+			error = "Input to short, must be fromX formY toX toY: " + input;
+			notify();
+			return true;
+		}
+		
+		moveFromX = Integer.valueOf(splitInput[0]);
+		moveFromY = Integer.valueOf(splitInput[1]);
+		moveToX = Integer.valueOf(splitInput[2]);
+		moveToY = Integer.valueOf(splitInput[3]);
+						
+		if (!isValidCoordinate(moveFromX,moveFromY) || !isValidCoordinate(moveToX,moveToY)){
+			error = "Input not valid, coordinates not in field!: " + input;
+			notify();
+			return true;
+		}
+		
+		Figure figure = field.getCellByCoordinates(moveFromX, moveFromY).getOccupier();
+
+		if (figure == null) {
+			error = "No figure selected!" + input;
+			notify();
+			return true;
+		}
+		
+		if (!hasMoreKills) {
+			createAllMoves();
+		}
+			
+		if (validateSelectedMove(figure, sb, moveToX, moveToY)){
+			//possible move
+			hasMoreKills = move(figure, moveToX, moveToY);
+		} else {
+			error = sb.toString() + input;
+			notify();
+			return true;
+		}
+		
+		if (!hasMoreKills) {
+			changeColor();
+		}
+		
+		error = null;
+		increaseMoveCount();
+		notify();
+		return checkIfWin(sb);
 	}
 	
 	public boolean checkIfWin(StringBuilder stringOutput) {
@@ -146,22 +209,18 @@ public class GameController extends Observable implements IGameController {
 		return field.isValidCoordinate(x, y);
 	}
 	
-	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y) {
+	public boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y) {
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
 		if (figure.isBlack() && !blackTurn){
-			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a white figure!");
 			return false;
 		} else if (!figure.isBlack() && blackTurn){
-			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("Please select a black figure!");
 			return false;
 		} else if (figure.getPossibleMoves().contains(selectedMove)){
 			//possible move
-			stringOutput.delete(0, stringOutput.length());
 			return true;
 		} else {
-			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("This is no possible move!");
 			return false;
 		}

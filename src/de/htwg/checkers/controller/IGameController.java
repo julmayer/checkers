@@ -26,7 +26,7 @@ public interface IGameController extends IObservable {
 	
 	boolean isValidCoordinate(int x, int y);
 	
-	boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y);
+	boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y);
 	
 	boolean isAFigureSelected (Figure figure, StringBuilder stringOutput);
 	
@@ -37,4 +37,8 @@ public interface IGameController extends IObservable {
 	void createAllMoves();
 	
 	void crownFigureIfNeeded(Figure figure);
+	
+	boolean input(String input);
+	
+	String getError();
 }
