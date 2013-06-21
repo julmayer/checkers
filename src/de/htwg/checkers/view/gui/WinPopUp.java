@@ -1,10 +1,12 @@
 package de.htwg.checkers.view.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 
 public class WinPopUp implements ActionListener {
 

@@ -1,14 +1,20 @@
 package de.htwg.checkers.view.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import com.google.inject.Inject;
 
-import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
@@ -157,11 +163,5 @@ public class GameFrame implements ActionListener, Observer{
 		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
 			buttons[i][j].setIcon(new ImageIcon("white_checker_fig_skal.jpg"));
 		}
-	}
-	
-	public static void main(String[] args){
-		GameController gc = new GameController(8);
-		gc.gameInit();
-		new GameFrame(gc);
 	}
 }
