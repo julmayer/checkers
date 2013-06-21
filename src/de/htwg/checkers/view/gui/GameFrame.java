@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import com.google.inject.Inject;
 
+import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
@@ -56,26 +57,26 @@ public class GameFrame implements ActionListener, Observer{
 		gamePanel = new JPanel();
 		
 		panel.setLayout(new GridLayout(fieldSize,fieldSize));
-		statusPanel.setLayout(new FlowLayout());
+		statusPanel.setLayout(new GridLayout(1,3));
 		gamePanel.setLayout(new BorderLayout());
 		
-		for (int i = 0; i < fieldSize; i++){
-			for (int j = 0; j < fieldSize; j++){
+		for (int j = fieldSize-1; j > -1; j--){
+			for (int i = 0; i < fieldSize; i++){
 				buttons[i][j] = new JButton();
 				buttons[i][j].setName(i + " " + j + " ");
 				
 				buttons[i][j].addActionListener(this); 
 				if(i % 2 == j % 2){
 					if (fieldSize % 2 == 0){
-						buttons[i][j].setBackground(Color.gray);
-					} else {
 						buttons[i][j].setBackground(Color.white);
+					} else {
+						buttons[i][j].setBackground(Color.gray);
 					}
 				} else {
 					if (fieldSize % 2 == 0){
-						buttons[i][j].setBackground(Color.white);
-					} else {
 						buttons[i][j].setBackground(Color.gray);
+					} else {
+						buttons[i][j].setBackground(Color.white);
 					}
 				}
 				panel.add(buttons[i][j]);
@@ -93,7 +94,7 @@ public class GameFrame implements ActionListener, Observer{
 
 		
 		gameFrame.setContentPane(gamePanel);
-		gameFrame.setResizable(false);
+		gameFrame.setResizable(true);
 		gameFrame.setVisible(true);
 		paint();
 	}
@@ -141,5 +142,11 @@ public class GameFrame implements ActionListener, Observer{
 		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
 			buttons[i][j].setIcon(new ImageIcon("white_checker_fig_skal.jpg"));
 		}
+	}
+	
+	public static void main(String[] args){
+		GameController gc = new GameController(8);
+		gc.gameInit();
+		new GameFrame(gc);
 	}
 }
