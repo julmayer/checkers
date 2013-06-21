@@ -11,23 +11,25 @@ import de.htwg.checkers.util.observer.Observable;
 
 public class InitFrame extends Observable implements ActionListener {
 	
-	private JFrame initFrame;
-	private JPanel panel;
-	private JButton startButton;
 	private JRadioButton radioButton8x8;
 	private JRadioButton radioButton10x10;
 	private JRadioButton radioButton12x12;
-	private JLabel label1;
-	private JLabel label2;
 	private int size;
-	//private JTextField gameSizeTextField;
+	private JFrame initFrame;
 	
 	public InitFrame(){
 
+		JPanel panel;
+		JButton startButton;
+		JLabel label1;
+		JLabel label2;
+		
 		initFrame = new JFrame("Checkers");
 		initFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initFrame.setLocationRelativeTo(null);
-		initFrame.setSize(325,125);
+		int frameSizeX = 325;
+		int frameSizeY = 125;
+		initFrame.setSize(frameSizeX,frameSizeY);
 	
 		panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -39,13 +41,12 @@ public class InitFrame extends Observable implements ActionListener {
 		radioButton8x8 = new JRadioButton("8x8");
 		radioButton10x10 = new JRadioButton("10x10");
 		radioButton12x12 = new JRadioButton("12x12");
-		//gameSizeTextField = new JTextField("8",15);	
+		radioButton8x8.setSelected(true);
 		
 		startButton.addActionListener(this); 
 		
 		panel.add(label1);
 		panel.add(label2);
-		//panel.add(gameSizeTextField);
 		panel.add(radioButton8x8);
 		panel.add(radioButton10x10);
 		panel.add(radioButton12x12);
@@ -63,8 +64,18 @@ public class InitFrame extends Observable implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//int fieldSize =  Integer.parseInt(gameSizeTextField.getText());	
-		//GameFrame gameFrame = new GameFrame(fieldSize);
+		
+		int sizeEight = 8;
+		int sizeTen = 8;
+		int sizeTwelve = 8;
+
+		if (radioButton8x8.isSelected()){
+			size = sizeEight;
+		} else if (radioButton10x10.isSelected()){
+			size = sizeTen;
+		} else {
+			size = sizeTwelve;
+		}
 		
 		notify();
 		
@@ -76,5 +87,6 @@ public class InitFrame extends Observable implements ActionListener {
 	
 	public void exit(){
 		initFrame.dispose();
+		initFrame.setVisible(false);
 	}
 }
