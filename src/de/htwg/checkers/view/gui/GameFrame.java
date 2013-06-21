@@ -24,7 +24,6 @@ public class GameFrame implements ActionListener, Observer{
 	
 	private int fieldSize;
 	private int clickCount = 0;
-	private String input = "";
 	StringBuilder sB = new StringBuilder();
 	StringBuilder stringOutput = new StringBuilder();
 	
@@ -46,9 +45,9 @@ public class GameFrame implements ActionListener, Observer{
 		int gameFrameExtenderInt = 50;
 		gameFrame.setSize(fieldSize*gameFrameExtenderInt,fieldSize*gameFrameExtenderInt);
 		
-		moveCountLabel = new JLabel("Move Count");
-		errorLabel = new JLabel("Error");
-		turnLabel = new JLabel("Whos turn");
+		moveCountLabel = new JLabel("Overall number of moves: 0");
+		errorLabel = new JLabel("");
+		turnLabel = new JLabel("Active color is black!");
 		
 		buttons = new JButton[fieldSize][fieldSize];
 		
@@ -57,7 +56,7 @@ public class GameFrame implements ActionListener, Observer{
 		gamePanel = new JPanel();
 		
 		panel.setLayout(new GridLayout(fieldSize,fieldSize));
-		statusPanel.setLayout(new GridLayout(1,3));
+		statusPanel.setLayout(new GridLayout(3,1));
 		gamePanel.setLayout(new BorderLayout());
 		
 		for (int j = fieldSize-1; j > -1; j--){
@@ -83,7 +82,7 @@ public class GameFrame implements ActionListener, Observer{
 			}
 		}		
 		
-		panel.setBorder(BorderFactory.createLineBorder(Color.black));
+		gamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		statusPanel.add(turnLabel);
 		statusPanel.add(moveCountLabel);
@@ -104,7 +103,7 @@ public class GameFrame implements ActionListener, Observer{
 		clickCount++;
 		sB.append(((JButton) e.getSource()).getName());
 		if (clickCount == 2){
-			gameController.input(input);
+			gameController.input(sB.toString());
 			clickCount = 0;
 			sB.delete(0, sB.length());
 		}
@@ -112,10 +111,26 @@ public class GameFrame implements ActionListener, Observer{
 
 	@Override
 	public void update() {
-		paint();
-		if (gameController.checkIfWin(stringOutput)){
-			errorLabel.setText(stringOutput.toString());
-			new WinPopUp(stringOutput);
+		String error = gameController.getError();
+		if (error == null) {
+			paint();
+						
+			int moveCount = gameController.getMoveCount();
+			String s = ("Overall number of moves: " + moveCount);
+			moveCountLabel.setText(s);
+			
+			if (gameController.isBlackTurn()){
+				turnLabel.setText("Active color is black!");
+			} else {
+				turnLabel.setText("Active color is white!");
+			}
+			
+			if (gameController.checkIfWin(stringOutput)){
+				errorLabel.setText(stringOutput.toString());
+				new WinPopUp(stringOutput);
+			}
+		} else {
+				errorLabel.setText(error);
 		}
 	}
 	
