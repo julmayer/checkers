@@ -36,6 +36,7 @@ public class FigureTest {
 		assertEquals(startPosition, blackFigure.getPosition());
 		assertTrue(blackFigure.isBlack());
 		assertNotSame(whiteFigure, blackFigure);
+		assertNotNull(blackFigure.toString());
 	}
 	
 	@Test
@@ -48,6 +49,7 @@ public class FigureTest {
 		assertEquals(startPosition, whiteFigure.getPosition());
 		assertFalse(whiteFigure.isBlack());
 		assertNotSame(blackFigure, whiteFigure);
+		assertNotNull(whiteFigure.toString());
 	}
 
 	@Test
@@ -67,6 +69,10 @@ public class FigureTest {
 		
 		assertTrue(blackFigure.isCrowned());
 		assertFalse(whiteFigure.isCrowned());
+		
+		whiteFigure.setCrowned(true);
+		assertNotNull(blackFigure.toString());
+		assertNotNull(whiteFigure.toString());
 	}
 	
 	@Test

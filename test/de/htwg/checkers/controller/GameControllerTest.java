@@ -39,6 +39,10 @@ public class GameControllerTest {
 	public void gameInit() {
 		gameController4.gameInit();
 		
+		assertTrue(gameController4.isBlackTurn());
+		assertEquals(0, gameController4.getMoveCount());
+		assertEquals(null, gameController4.getError());
+		
 		Field field = gameController4.getField();
 		assertTrue(field.getCellByCoordinates(1, 0).isOccupied());
 		assertTrue(field.getCellByCoordinates(3, 0).isOccupied());
@@ -394,5 +398,113 @@ public class GameControllerTest {
 		
 		assertEquals(1, queen25.getPossibleMoves().size());
 		assertTrue(queen25.getPossibleMoves().contains(q2c52));
+	}
+	
+	@Test
+	public void input() {
+		gameController7.gameInit();
+		
+		assertFalse(gameController7.input("a"));
+		assertFalse(gameController7.input("-1 0 0 0"));
+		assertFalse(gameController7.input("0 -1 0 0"));
+		assertFalse(gameController7.input("0 0 -1 0"));
+		assertFalse(gameController7.input("0 0 0 -1"));
+		assertFalse(gameController7.input("6 2 0 0"));
+		assertFalse(gameController7.input("6 1 5 2"));
+		
+		gameController7.getFigureOnField(6, 1).kill();
+		
+		Figure e1 = new Figure(gameController7.getField().getCellByCoordinates(5, 4), false);
+		Figure e2 = new Figure(gameController7.getField().getCellByCoordinates(5, 2), false);
+		
+		assertFalse(gameController7.input("6 5 4 3"));
+		assertFalse(gameController7.input("4 3 6 1"));
+		
+		assertFalse(gameController7.input("0 1 1 2"));
+				
+	}
+	
+	@Test
+	public void blackKillsWhite() {
+		gameController4.gameInit();
+		StringBuilder sb = new StringBuilder();
+		
+		assertFalse(gameController4.checkIfWin(sb));
+		gameController4.input("0 3 1 2");
+		gameController4.input("3 0 2 1");
+		gameController4.input("1 2 3 0");
+		gameController4.input("1 0 2 1");
+		gameController4.input("3 0 1 2");
+		assertTrue(gameController4.checkIfWin(sb));
+	}
+	
+	@Test
+	public void WhiteKillsBlack() {
+		gameController4.gameInit();
+		StringBuilder sb = new StringBuilder();
+		
+		assertFalse(gameController4.checkIfWin(sb));
+		gameController4.input("2 3 1 2");
+		gameController4.input("1 0 2 1");
+		gameController4.input("1 2 0 1");
+		gameController4.input("2 1 3 2");
+		gameController4.input("0 3 1 2");
+		gameController4.input("3 2 2 3");
+		gameController4.input("1 2 2 1");
+		gameController4.input("3 0 1 2");
+		gameController4.input("0 1 1 0");
+		gameController4.input("1 2 0 3");
+		gameController4.input("1 0 2 1");
+		gameController4.input("0 3 3 0");
+		assertTrue(gameController4.checkIfWin(sb));
+	}
+	
+	@Test
+	public void BlackBlocksWhite() {
+		StringBuilder sb = new StringBuilder();
+		gameController4.gameInit();
+		gameController4.input("0 3 1 2");
+		
+		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
+		Figure f1 = new Figure(gameController4.getField().getCellByCoordinates(2, 1), false);
+		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
+		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(0, 3), false);
+		
+		assertTrue(gameController4.checkIfWin(sb));
+	}
+	
+	@Test
+	public void WhiteBlocksBlack() {
+		StringBuilder sb = new StringBuilder();
+		gameController4.gameInit();
+				
+		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
+		Figure f1 = new Figure(gameController4.getField().getCellByCoordinates(2, 1), false);
+		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
+		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(1, 2), false);
+		
+		assertTrue(gameController4.checkIfWin(sb));
+	}
+	
+	@Test
+	public void validateSelectedMove() {
+		gameController4.gameInit();
+		
+		gameController4.input("0 3 1 2");
+		gameController4.input("1 2 2 1");
+		
+		assertFalse(gameController4.input("3 0 0 3"));
+	}
+	
+	@Test
+	public void deleteAllMovesWithoutFigure() {
+		gameController7.gameInit();
+		gameController7.input("6 5 5 4");
+		
+		gameController7.getField().getCellByCoordinates(4, 5).getOccupier().kill();
+		Figure f = new Figure(gameController7.getField().getCellByCoordinates(1, 2), true);
+		Figure f1 = new Figure(gameController7.getField().getCellByCoordinates(3, 4), true);
+		gameController7.input("0 1 2 3");
+		assertFalse(gameController7.input("2 3 4 5"));
 	}
 }

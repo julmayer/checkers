@@ -19,6 +19,9 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	@Override
 	public void getPossibleMoves(Figure figure) {
 		Cell cell = figure.getPosition();
+		if (cell == null) {
+			return;
+		}
 		boolean iAmBlack = figure.isBlack();
 		boolean lastFieldOccupied = false;
 		List<Move> result = new LinkedList<Move>();

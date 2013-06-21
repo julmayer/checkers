@@ -15,4 +15,11 @@ public class FieldTest {
 		assertNotNull(field.getField());
 		assertEquals(field.getCellByCoordinates(5, 4), cell);
 	}
+	
+	@Test
+	public void toStringTest() {
+		Field field = new Field(8);
+		Figure figure = new Figure(field.getCellByCoordinates(0, 0), true);
+		assertNotNull(field.toString());
+	}
 }

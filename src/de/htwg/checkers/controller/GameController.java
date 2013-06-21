@@ -48,7 +48,6 @@ public class GameController extends Observable implements IGameController {
 		this.upperLeft = new PossibleMovesUpperLeft(field);
 		this.upperRight = new PossibleMovesUpperRight(field);
 		this.size = size;
-		this.error = null;
 		this.hasMoreKills = false;
 	}
 	
@@ -80,6 +79,7 @@ public class GameController extends Observable implements IGameController {
 		// black starts
 		blackTurn = true;
 		moveCount = 0;
+		error = null;
 	}
 	
 	private void createWhiteFigures() {
