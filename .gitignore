@@ -5,7 +5,7 @@
 .gitignore
 
 # Package Files #
-*.jar
+
 *.war
 *.ear
 /bin

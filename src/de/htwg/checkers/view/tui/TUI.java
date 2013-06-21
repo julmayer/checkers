@@ -1,16 +1,28 @@
-package de.htwg.checkers.view;
+package de.htwg.checkers.view.tui;
 
 import java.util.Scanner;
 
 import de.htwg.checkers.controller.GameController;
+import de.htwg.checkers.controller.IGameController;
+import de.htwg.checkers.util.observer.Observer;
 
 
-public final class Game {
+public final class TUI implements Observer {
 
-	private Game() { }
+	
 	private static int fieldsize;
-	private static Scanner scanner = new Scanner(System.in);
-
+	
+	private IGameController gameController;
+	
+	public TUI(IGameController gameController) {
+		this.gameController = gameController;
+		this.gameController.addObserver(this);
+	}
+	
+	public boolean input (String input) {
+		return false;
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -29,19 +41,19 @@ public final class Game {
 		GameController gameController = new GameController(fieldsize);
 		gameController.gameInit();
 		
-		Game game = new Game();
+		TUI tui = new TUI();
 		StringBuilder stringOutput = new StringBuilder();
 				
 		print("Black begins, have fun!");
 		print("");
-		game.showLegend();
+		tui.showLegend();
 		print("");
 		
 
 		
 		while (true) {
 			
-			Game.preMovePrints(gameController, game);
+			TUI.preMovePrints(gameController, tui);
 			
 			print("Please enter your move (fromX fromY toX toY): ");
 			moveFromX = scanner.nextInt();
@@ -72,7 +84,7 @@ public final class Game {
 				}
 				
 				if (gameController.checkIfWin(stringOutput)) {
-					game.showSituation(gameController);
+					tui.showSituation(gameController);
 					print(stringOutput.toString());
 					break;
 				}
@@ -138,10 +150,10 @@ public final class Game {
 		System.out.println(string);
 	}
 	
-	private static void preMovePrints(GameController gameController, Game game) {
-		game.showPositions();
+	private static void preMovePrints(GameController gameController, TUI tUI) {
+		tUI.showPositions();
 		print("");
-		game.showSituation(gameController);
+		tUI.showSituation(gameController);
 		String activeColor;
 		if (gameController.isBlackTurn()) {
 			activeColor = "black";
@@ -149,5 +161,11 @@ public final class Game {
 			activeColor = "white";
 		}
 		print("Active color: " + activeColor);
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 }

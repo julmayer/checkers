@@ -1,4 +1,4 @@
-package de.htwg.checkers.view;
+package de.htwg.checkers.view.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

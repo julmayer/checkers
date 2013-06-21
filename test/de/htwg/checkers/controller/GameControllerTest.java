@@ -100,6 +100,8 @@ public class GameControllerTest {
 	public void turnColor()
 	{
 		gameController4.gameInit();
+		gameController4.changeColor();
+		gameController4.changeColor();
 		assertTrue(gameController4.isBlackTurn());
 		gameController4.changeColor();
 		assertFalse(gameController4.isBlackTurn());

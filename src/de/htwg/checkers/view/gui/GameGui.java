@@ -1,4 +1,5 @@
-package de.htwg.checkers.view;
+package de.htwg.checkers.view.gui;
+
 
 public class GameGui {
 	

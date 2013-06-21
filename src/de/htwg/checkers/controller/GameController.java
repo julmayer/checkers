@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
@@ -13,8 +15,9 @@ import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Move;
+import de.htwg.checkers.util.observer.Observable;
 
-public class GameController {
+public class GameController extends Observable implements IGameController {
 	
 	private Field field;
 	private final int rowsToFill;
@@ -28,6 +31,7 @@ public class GameController {
 	private PossibleMovesUpperLeft upperLeft;
 	private PossibleMovesUpperRight upperRight;
 	
+	@Inject
 	public GameController(int size) {		
 		final int minSize = 4;
 		if (size < minSize){
@@ -47,7 +51,7 @@ public class GameController {
 		return this.field;
 	}
 	
-	public int getFieldSize(){
+	public int getFieldSize() {
 		return this.size;
 	}
 
@@ -55,11 +59,11 @@ public class GameController {
 		return blackTurn;
 	}
 	
-	public void increaseMoveCount(){
+	public void increaseMoveCount() {
 		moveCount++;
 	}
 	
-	public int getMoveCount(){
+	public int getMoveCount() {
 		return moveCount;
 	}
 	
@@ -79,7 +83,7 @@ public class GameController {
 		}
 	}
 	
-	public void gameInit(){
+	public void gameInit() {
 		whites = new LinkedList<Figure>();
 		blacks = new LinkedList<Figure>();
 		createBlackFigures();
@@ -89,7 +93,7 @@ public class GameController {
 		moveCount = 0;
 	}
 	
-	private void fillRow(int y, boolean isBlack){
+	private void fillRow(int y, boolean isBlack) {
 		for (int x = 0; x < size; x++) {
 			if (x % 2 == 0 && y % 2 != 0 ){
 				fillList(new Figure(field.getCellByCoordinates(x, y),isBlack));
@@ -99,7 +103,7 @@ public class GameController {
 		}
 	}
 	
-	private void fillList(Figure figure){
+	private void fillList(Figure figure) {
 		if (figure.isBlack()){
 			blacks.add(figure);
 		} else {
@@ -107,7 +111,7 @@ public class GameController {
 		}
 	}
 	
-	public boolean checkIfWin(StringBuilder stringOutput){
+	public boolean checkIfWin(StringBuilder stringOutput) {
 		createAllMoves();
 		List<Figure> list;
 		boolean hasMoves = false;
@@ -134,7 +138,7 @@ public class GameController {
 		}
 	}
 	
-	public Figure getFigureOnField(int x, int y){
+	public Figure getFigureOnField(int x, int y) {
 		return field.getCellByCoordinates(x, y).getOccupier();
 	}
 	
@@ -142,7 +146,7 @@ public class GameController {
 		return field.isValidCoordinate(x, y);
 	}
 	
-	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y){
+	public boolean validateSelectedFigure(Figure figure, StringBuilder stringOutput, int x, int y) {
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
 		if (figure.isBlack() && !blackTurn){
 			stringOutput.delete(0, stringOutput.length());
@@ -163,7 +167,7 @@ public class GameController {
 		}
 	}
 	
-	public boolean isAFigureSelected (Figure figure, StringBuilder stringOutput){
+	public boolean isAFigureSelected (Figure figure, StringBuilder stringOutput) {
 		if (figure == null){
 			stringOutput.delete(0, stringOutput.length());
 			stringOutput.append("No figure selected!");
@@ -199,7 +203,7 @@ public class GameController {
 		}
 	}
 	
-	public void deleteAllMovesWithoutFigure(Figure figure){
+	public void deleteAllMovesWithoutFigure(Figure figure) {
 		List<Figure> list;
 		if (blackTurn) {
 			list = blacks;
@@ -269,7 +273,7 @@ public class GameController {
 		lowerRight.getPossibleMoves(figure);
 	}
 	
-	public void crownFigureIfNeeded(Figure figure){
+	public void crownFigureIfNeeded(Figure figure) {
 		if(figure.isBlack() && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}
