@@ -13,7 +13,6 @@ import de.htwg.checkers.view.tui.TUI;
 public class Checkers {
 	
 	private static Scanner scanner;
-	private static InitFrame initFrame;
 	
 	public static void main(final String[] args0) {
 		// Set up Google Guice Dependency Injector

@@ -117,17 +117,19 @@ public class GameController extends Observable implements IGameController {
 		int moveFromX, moveFromY, moveToX, moveToY;
 		StringBuilder sb = new StringBuilder();
 		String[] splitInput = input.split(" ");
+		final int four = 4;
 		
-		if (splitInput.length != 4) {
+		if (splitInput.length != four) {
 			error = "Input to short, must be fromX formY toX toY: " + input;
 			notifyObservers();
 			return false;
 		}
 		
+		final int three = 3;
 		moveFromX = Integer.valueOf(splitInput[0]);
 		moveFromY = Integer.valueOf(splitInput[1]);
 		moveToX = Integer.valueOf(splitInput[2]);
-		moveToY = Integer.valueOf(splitInput[3]);
+		moveToY = Integer.valueOf(splitInput[three]);
 						
 		if (!field.isValidCoordinate(moveFromX,moveFromY) || !field.isValidCoordinate(moveToX,moveToY)){
 			error = "Input not valid, coordinates not in field!: " + input;

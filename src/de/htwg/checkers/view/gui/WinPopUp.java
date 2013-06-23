@@ -12,8 +12,8 @@ public class WinPopUp implements ActionListener {
 
 	
 	public WinPopUp(StringBuilder sb) {
-		int dialogSizeX = 200;
-		int dialogSizeY = 100;
+		final int dialogSizeX = 200;
+		final int dialogSizeY = 100;
 		
 		JDialog dialog = new JDialog();
 		JButton close = new JButton();
