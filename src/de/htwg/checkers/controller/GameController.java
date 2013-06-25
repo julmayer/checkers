@@ -138,6 +138,12 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	/**
+	 * validate input, move, do stuff
+	 * @param input
+     * @return if there was an error
+     */
+	
 	public boolean input(String input) {
 		
 		int moveFromX, moveFromY, moveToX, moveToY;
@@ -194,6 +200,9 @@ public class GameController extends Observable implements IGameController {
 		return checkIfWin(sb);
 	}
 	
+	/**
+     * @return if someone has won or not
+     */
 	public boolean checkIfWin(StringBuilder stringOutput) {
 		createAllMoves();
 		List<Figure> list;
@@ -221,6 +230,11 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	/**
+     * @return the figure on the field
+     * @param x
+     * @param y
+     */
 	public Figure getFigureOnField(int x, int y) {
 		return field.getCellByCoordinates(x, y).getOccupier();
 	}
@@ -280,6 +294,10 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	
+	/**
+     * method to create all moves
+     */
 	public void createAllMoves() {
 		if (blackTurn) {
 			createAllMoves(blacks);
