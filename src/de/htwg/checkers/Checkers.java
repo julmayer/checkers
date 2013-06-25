@@ -10,10 +10,14 @@ import de.htwg.checkers.view.gui.GameFrame;
 import de.htwg.checkers.view.gui.InitFrame;
 import de.htwg.checkers.view.tui.TUI;
 
-public class Checkers {
+public final class Checkers {
 	
 	private static Scanner scanner;
 	private static InitFrame initFrame;
+	
+	private Checkers() {
+		
+	}
 	
 	public static void main(final String[] args0) {
 		// Set up Google Guice Dependency Injector
@@ -22,7 +26,7 @@ public class Checkers {
 			try {
 				initFrame.wait();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		Injector injector = Guice.createInjector(new CheckersModel(initFrame.getSize()));
