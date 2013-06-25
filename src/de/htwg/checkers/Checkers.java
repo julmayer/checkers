@@ -19,7 +19,7 @@ public final class Checkers {
 	}
 	
 	/**
-     *
+     *main method, starts the programm
      * @param args0
      */
     public static void main(final String[] args0) {

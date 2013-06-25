@@ -10,15 +10,15 @@ import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.IGameController;
 
 /**
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  *
  */
 public class CheckersModel extends AbstractModule {
 	
 	private int size;
 	
-	/**
-     *
+	/** 
+     * Constructor for the checkersmodel
      * @param size
      */
     public CheckersModel(int size) {
@@ -26,7 +26,7 @@ public class CheckersModel extends AbstractModule {
 	}
 
 	/**
-     *
+     * method to configure 
      */
     @Override
 	protected void configure() {

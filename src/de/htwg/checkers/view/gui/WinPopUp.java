@@ -9,14 +9,14 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 /**
- *
- * @author jmayer
+ * PopUp frame when game is over
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class WinPopUp implements ActionListener {
 
 	
 	/**
-     *
+     *contructor for the frame
      * @param sb
      */
     public WinPopUp(StringBuilder sb) {

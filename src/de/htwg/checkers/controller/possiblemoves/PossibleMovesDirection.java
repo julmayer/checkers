@@ -4,7 +4,7 @@ import de.htwg.checkers.models.Figure;
 
 /**
  * Interfaces for possible Moves in any Direction.
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public interface PossibleMovesDirection {
     /**

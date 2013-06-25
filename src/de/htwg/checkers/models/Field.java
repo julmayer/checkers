@@ -2,14 +2,14 @@ package de.htwg.checkers.models;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class Field {
 	private Cell[][] field;
 	private int size;
 	
 	/**
-     *
+     * constructor for the gamefield
      * @param size
      */
     public Field(int size){
@@ -20,17 +20,17 @@ public class Field {
 
 	/**
      *
-     * @return
+     * @return the field
      */
     public Cell[][] getField(){
 		return field;
 	}
 	
 	/**
-     *
+     * 
      * @param x
      * @param y
-     * @return
+     * @return specified cell
      */
     public Cell getCellByCoordinates(int x, int y){
 		return field[x][y];
@@ -45,10 +45,10 @@ public class Field {
 	}
 	
 	/**
-     *
+     * method to validate a given coordinate
      * @param x
      * @param y
-     * @return
+     * @return if is valid or not
      */
     public boolean isValidCoordinate(int x, int y) {
 		return x >= 0 && y >= 0 && x < size && y < size;

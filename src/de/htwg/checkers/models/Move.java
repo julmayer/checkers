@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * @author jmayer
+ * move for a figure
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class Move {
 	private boolean kill;
 	private Cell from;
 	private Cell to;
-	
+
 	/**
-     *
+     * constructor for a killmove
      * @param kill
      * @param from
      * @param to
@@ -26,7 +26,7 @@ public class Move {
 	}
 	
 	/**
-     *
+     * constructor for a move
      * @param from
      * @param to
      */
@@ -38,21 +38,21 @@ public class Move {
 	
 	/**
      *
-     * @return
+     * @return if is a kill or not
      */
     public boolean isKill() {
 		return kill;
 	}
 	/**
      *
-     * @return
+     * @return cell from
      */
     public Cell getFrom() {
 		return from;
 	}
 	/**
      *
-     * @return
+     * @return cell to
      */
     public Cell getTo() {
 		return to;
@@ -60,7 +60,7 @@ public class Move {
 	
 	/**
      *
-     * @return
+     * @return coordiates of the last skiped cell
      */
     public Map<String, Integer> getCoordinatesLastSkipedCell() {
 		Map<String, Integer> result = new HashMap<String, Integer>();

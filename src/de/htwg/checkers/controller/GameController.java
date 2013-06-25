@@ -20,7 +20,7 @@ import de.htwg.checkers.util.observer.Observable;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class GameController extends Observable implements IGameController {
 	
@@ -39,7 +39,7 @@ public class GameController extends Observable implements IGameController {
 	private boolean hasMoreKills;
 	
 	/**
-     *
+     *Construcor for the gamecontroller
      * @param size
      */
     @Inject

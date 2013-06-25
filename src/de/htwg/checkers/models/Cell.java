@@ -2,16 +2,15 @@ package de.htwg.checkers.models;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class Cell {
 	private int x;
 	private int y;
 	private Figure occupier;
 	
-	//constructor
 	/**
-     *
+     * constructor for a cell
      * @param x
      * @param y
      */
@@ -23,16 +22,15 @@ public class Cell {
 	
 	/**
      *
-     * @return
+     * @return if cell is occupied or not
      */
     public boolean isOccupied(){
 		return occupier != null;
 	}
 	
-	//getter
 	/**
      *
-     * @return
+     * @return x coordinate of the cell
      */
     public int getX(){
 		return x;
@@ -40,7 +38,7 @@ public class Cell {
 	
 	/**
      *
-     * @return
+     * @return y coordinate of the cell
      */
     public int getY(){
 		return y;
@@ -48,15 +46,14 @@ public class Cell {
 	
 	/**
      *
-     * @return
+     * @return the occupier of the cell
      */
     public Figure getOccupier() {
 		return occupier;
 	}
 	
-	//setter
 	/**
-     *
+     * method to set a occupier to this cell
      * @param occupier
      */
     public void setOccupier(Figure occupier) {
