@@ -13,7 +13,6 @@ import de.htwg.checkers.view.tui.TUI;
 public final class Checkers {
 	
 	private static Scanner scanner;
-	private static InitFrame initFrame;
 	
 	private Checkers() {
 		

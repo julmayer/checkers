@@ -26,12 +26,11 @@ public class GameFrame implements ActionListener, Observer{
 	private JLabel moveCountLabel;
 	private JLabel errorLabel;
 	private JLabel turnLabel;
-	private JFrame gameFrame;
 	
 	private int fieldSize;
 	private int clickCount = 0;
-	StringBuilder sB = new StringBuilder();
-	StringBuilder stringOutput = new StringBuilder();
+	private StringBuilder sB = new StringBuilder();
+	private StringBuilder stringOutput = new StringBuilder();
 	
 	@Inject
 	public GameFrame(IGameController gameController){
@@ -39,6 +38,7 @@ public class GameFrame implements ActionListener, Observer{
 		JPanel panel;
 		JPanel statusPanel;
 		JPanel gamePanel;	
+		JFrame gameFrame;
 		
 		this.gameController = gameController;
 		this.gameController.addObserver(this);
@@ -48,7 +48,7 @@ public class GameFrame implements ActionListener, Observer{
 		gameFrame = new JFrame("Checkers the game");
 		gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		gameFrame.setLocationRelativeTo(null);
-		int gameFrameExtenderInt = 50;
+		final int gameFrameExtenderInt = 50;
 		gameFrame.setSize(fieldSize*gameFrameExtenderInt,fieldSize*gameFrameExtenderInt);
 		
 		moveCountLabel = new JLabel("Overall number of moves: 0");
@@ -62,7 +62,8 @@ public class GameFrame implements ActionListener, Observer{
 		gamePanel = new JPanel();
 		
 		panel.setLayout(new GridLayout(fieldSize,fieldSize));
-		statusPanel.setLayout(new GridLayout(3,1));
+		final int three = 3;
+		statusPanel.setLayout(new GridLayout(three,1));
 		gamePanel.setLayout(new BorderLayout());
 		
 		for (int j = fieldSize-1; j > -1; j--){

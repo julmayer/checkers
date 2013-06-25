@@ -32,8 +32,8 @@ public class InitFrame  implements ActionListener {
 		initFrame = new JFrame("Checkers");
 		initFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initFrame.setLocationRelativeTo(null);
-		int frameSizeX = 325;
-		int frameSizeY = 125;
+		final int frameSizeX = 325;
+		final int frameSizeY = 125;
 		initFrame.setSize(frameSizeX,frameSizeY);
 	
 		panel = new JPanel();
@@ -73,10 +73,10 @@ public class InitFrame  implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		int sizeFour = 4;
-		int sizeEight = 8;
-		int sizeTen = 10;
-		int sizeTwelve = 12;
+		final int sizeFour = 4;
+		final int sizeEight = 8;
+		final int sizeTen = 10;
+		final int sizeTwelve = 12;
 
 		if (radioButton8x8.isSelected()){
 			size = sizeEight;
@@ -84,7 +84,7 @@ public class InitFrame  implements ActionListener {
 			size = sizeTen;
 		} else if (radioButton4x4.isSelected()) {
 			size = sizeFour;
-		} else {
+		} else if (radioButton12x12.isSelected()){
 			size = sizeTwelve;
 		}
 		synchronized (this) {
