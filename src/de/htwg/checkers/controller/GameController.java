@@ -18,6 +18,10 @@ import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Move;
 import de.htwg.checkers.util.observer.Observable;
 
+/**
+ *
+ * @author jmayer
+ */
 public class GameController extends Observable implements IGameController {
 	
 	private Field field;
@@ -34,7 +38,11 @@ public class GameController extends Observable implements IGameController {
 	private String error;
 	private boolean hasMoreKills;
 	
-	@Inject
+	/**
+     *
+     * @param size
+     */
+    @Inject
 	public GameController(@Named("size") int size) {		
 		final int minSize = 4;
 		if (size < minSize){

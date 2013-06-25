@@ -8,11 +8,19 @@ import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Move;
 
+/**
+ * Abstraction for possible Moves.
+ * @author jmayer
+ */
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
-
-	private Field gamefield;
+    
+    private Field gamefield;
 	
-	public AbstractPossibleMovesDirection(Field gamefield) {
+    /**
+     * Constructor to create new Moves.
+     * @param gamefield Field on which the Moves were calculated.
+     */
+    public AbstractPossibleMovesDirection(Field gamefield) {
 		this.gamefield = gamefield;
 	}
 	
@@ -59,9 +67,18 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 		figure.setPossibleMoves(moves);
 	}
 	
-	public Field getGamefield() {
+	/**
+     *
+     * @return
+     */
+    public Field getGamefield() {
 		return gamefield;
 	}
 	
-	protected abstract Cell nextCell(Cell cell);
+	/**
+     *
+     * @param cell
+     * @return
+     */
+    protected abstract Cell nextCell(Cell cell);
 }

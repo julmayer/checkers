@@ -4,25 +4,71 @@ import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.util.observer.IObservable;
 
+/**
+ *
+ * @author jmayer
+ */
 public interface IGameController extends IObservable {
 	
-	Field getField();
+	/**
+     *
+     * @return
+     */
+    Field getField();
 	
-	int getFieldSize();
+	/**
+     *
+     * @return
+     */
+    int getFieldSize();
 	
-	boolean isBlackTurn();
+	/**
+     *
+     * @return
+     */
+    boolean isBlackTurn();
 	
-	int getMoveCount();
+	/**
+     *
+     * @return
+     */
+    int getMoveCount();
 	
-	void gameInit();
+	/**
+     *
+     */
+    void gameInit();
 	
-	boolean checkIfWin(StringBuilder stringOutput);
+	/**
+     *
+     * @param stringOutput
+     * @return
+     */
+    boolean checkIfWin(StringBuilder stringOutput);
 	
-	Figure getFigureOnField(int x, int y);
+	/**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    Figure getFigureOnField(int x, int y);
 	
-	void createAllMoves();
+	/**
+     *
+     */
+    void createAllMoves();
 	
-	boolean input(String input);
+	/**
+     *
+     * @param input
+     * @return
+     */
+    boolean input(String input);
 	
-	String getError();
+	/**
+     *
+     * @return
+     */
+    String getError();
 }

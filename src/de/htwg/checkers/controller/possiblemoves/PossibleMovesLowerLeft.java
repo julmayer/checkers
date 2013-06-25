@@ -3,9 +3,17 @@ package de.htwg.checkers.controller.possiblemoves;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 
+/**
+ *
+ * @author jmayer
+ */
 public class PossibleMovesLowerLeft extends AbstractPossibleMovesDirection {
 
-	public PossibleMovesLowerLeft(Field gamefield) {
+	/**
+     *
+     * @param gamefield
+     */
+    public PossibleMovesLowerLeft(Field gamefield) {
 		super(gamefield);
 	}
 

@@ -6,11 +6,19 @@ import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
 
+/**
+ *
+ * @author jmayer
+ */
 public final class TUI implements Observer {
 
 	private IGameController gameController;
 	
-	@Inject
+	/**
+     *
+     * @param gameController
+     */
+    @Inject
 	public TUI(IGameController gameController) {
 		this.gameController = gameController;
 		this.gameController.addObserver(this);
@@ -42,7 +50,10 @@ public final class TUI implements Observer {
 		System.out.println(string);
 	}
 	
-	@Override
+	/**
+     *
+     */
+    @Override
 	public void update() {
 		StringBuilder sb = new StringBuilder();
 		String error = gameController.getError();

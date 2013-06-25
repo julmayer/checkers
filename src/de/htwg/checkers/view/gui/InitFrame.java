@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 
+/**
+ *
+ * @author jmayer
+ */
 public class InitFrame  implements ActionListener {
 	
 	private JRadioButton radioButton4x4;
@@ -22,7 +26,10 @@ public class InitFrame  implements ActionListener {
 	private int size;
 	private JFrame initFrame;
 	
-	public InitFrame(){
+	/**
+     *
+     */
+    public InitFrame(){
 
 		JPanel panel;
 		JButton startButton;
@@ -92,11 +99,18 @@ public class InitFrame  implements ActionListener {
 		}
 	}
 	
-	public int getSize() {
+	/**
+     *
+     * @return
+     */
+    public int getSize() {
 		return size;
 	}
 	
-	public void exit(){
+	/**
+     *
+     */
+    public void exit(){
 		initFrame.dispose();
 		initFrame.setVisible(false);
 	}

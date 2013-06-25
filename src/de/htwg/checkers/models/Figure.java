@@ -3,6 +3,10 @@ package de.htwg.checkers.models;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ * @author jmayer
+ */
 public class Figure {
 	private Cell position;
 	private boolean crowned;
@@ -10,7 +14,12 @@ public class Figure {
 	private boolean black;
 	private List<Move> possibleMoves;
 	
-	public Figure(Cell position, boolean black) {
+	/**
+     *
+     * @param position
+     * @param black
+     */
+    public Figure(Cell position, boolean black) {
 		this.position = position;
 		if (this.position != null) {
 			this.position.setOccupier(this);
@@ -21,11 +30,19 @@ public class Figure {
 		this.possibleMoves = new LinkedList<Move>();
 	}
 
-	public Cell getPosition() {
+	/**
+     *
+     * @return
+     */
+    public Cell getPosition() {
 		return position;
 	}
 
-	public void setPosition(Cell position) {
+	/**
+     *
+     * @param position
+     */
+    public void setPosition(Cell position) {
 		if (this.position != null) {
 			this.position.setOccupier(null);
 		}
@@ -33,37 +50,68 @@ public class Figure {
 		this.position.setOccupier(this);
 	}
 
-	public boolean isCrowned() {
+	/**
+     *
+     * @return
+     */
+    public boolean isCrowned() {
 		return crowned;
 	}
 
-	public void setCrowned(boolean crowned) {
+	/**
+     *
+     * @param crowned
+     */
+    public void setCrowned(boolean crowned) {
 		this.crowned = crowned;
 	}
 
-	public boolean isAlive() {
+	/**
+     *
+     * @return
+     */
+    public boolean isAlive() {
 		return alive;
 	}
 
-	public void kill() {
+	/**
+     *
+     */
+    public void kill() {
 		this.alive = false;
 		this.position.setOccupier(null);
 		this.position = null;
 	}
 
-	public List<Move> getPossibleMoves() {
+	/**
+     *
+     * @return
+     */
+    public List<Move> getPossibleMoves() {
 		return possibleMoves;
 	}
 	
-	public void setPossibleMoves(List<Move> possibleMoves) {
+	/**
+     *
+     * @param possibleMoves
+     */
+    public void setPossibleMoves(List<Move> possibleMoves) {
 		this.possibleMoves = possibleMoves;
 	}
 
-	public boolean isBlack() {
+	/**
+     *
+     * @return
+     */
+    public boolean isBlack() {
 		return black;
 	}
 	
-	public boolean hasKillMoves() {
+	/**
+     *
+     * @return
+     */
+    public boolean hasKillMoves() {
 		for (Move move : possibleMoves) {
 			if (move.isKill()) {
 				return true;
@@ -72,7 +120,10 @@ public class Figure {
 		return false;
 	}
 	
-	public void removeNonkillMoves() {
+	/**
+     *
+     */
+    public void removeNonkillMoves() {
 		List<Move> nonkills = new LinkedList<Move>();
 		for (Move move : possibleMoves) {
 			if (!move.isKill()) {

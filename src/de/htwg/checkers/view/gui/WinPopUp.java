@@ -8,10 +8,18 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+/**
+ *
+ * @author jmayer
+ */
 public class WinPopUp implements ActionListener {
 
 	
-	public WinPopUp(StringBuilder sb) {
+	/**
+     *
+     * @param sb
+     */
+    public WinPopUp(StringBuilder sb) {
 		final int dialogSizeX = 200;
 		final int dialogSizeY = 100;
 		

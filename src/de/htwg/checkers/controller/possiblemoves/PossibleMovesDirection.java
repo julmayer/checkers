@@ -2,6 +2,14 @@ package de.htwg.checkers.controller.possiblemoves;
 
 import de.htwg.checkers.models.Figure;
 
+/**
+ * Interfaces for possible Moves in any Direction.
+ * @author jmayer
+ */
 public interface PossibleMovesDirection {
-	void getPossibleMoves(Figure figure);
+    /**
+     * Adds the possible move for this direction to the Figure.
+     * @param figure Figure for that the Moves where added.
+     */
+    void getPossibleMoves(Figure figure);
 }

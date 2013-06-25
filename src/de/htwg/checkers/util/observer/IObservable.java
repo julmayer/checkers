@@ -1,12 +1,30 @@
 package de.htwg.checkers.util.observer;
 
+/**
+ *
+ * @author jmayer
+ */
 public interface IObservable {
 
-	void addObserver(Observer s);
+	/**
+     *
+     * @param s
+     */
+    void addObserver(Observer s);
 
-	void removeObserver(Observer s);
+	/**
+     *
+     * @param s
+     */
+    void removeObserver(Observer s);
 
-	void removeAllObservers();
+	/**
+     *
+     */
+    void removeAllObservers();
 
-	void notifyObservers();
+	/**
+     *
+     */
+    void notifyObservers();
 }

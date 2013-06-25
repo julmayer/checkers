@@ -18,6 +18,10 @@ import com.google.inject.Inject;
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
+/**
+ *
+ * @author jmayer
+ */
 public class GameFrame implements ActionListener, Observer{
 	
 	private IGameController gameController;
@@ -32,7 +36,11 @@ public class GameFrame implements ActionListener, Observer{
 	private StringBuilder sB = new StringBuilder();
 	private StringBuilder stringOutput = new StringBuilder();
 	
-	@Inject
+	/**
+     *
+     * @param gameController
+     */
+    @Inject
 	public GameFrame(IGameController gameController){
 		
 		JPanel panel;
@@ -116,7 +124,10 @@ public class GameFrame implements ActionListener, Observer{
 		}
 	}
 
-	@Override
+	/**
+     *
+     */
+    @Override
 	public void update() {
 		String error = gameController.getError();
 		if (error == null) {

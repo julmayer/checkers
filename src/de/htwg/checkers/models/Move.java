@@ -3,35 +3,66 @@ package de.htwg.checkers.models;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @author jmayer
+ */
 public class Move {
 	private boolean kill;
 	private Cell from;
 	private Cell to;
 	
-	public Move(boolean kill, Cell from, Cell to) {
+	/**
+     *
+     * @param kill
+     * @param from
+     * @param to
+     */
+    public Move(boolean kill, Cell from, Cell to) {
 		super();
 		this.kill = kill;
 		this.from = from;
 		this.to = to;
 	}
 	
-	public Move(Cell from, Cell to) {
+	/**
+     *
+     * @param from
+     * @param to
+     */
+    public Move(Cell from, Cell to) {
 		super();
 		this.from = from;
 		this.to = to;
 	}
 	
-	public boolean isKill() {
+	/**
+     *
+     * @return
+     */
+    public boolean isKill() {
 		return kill;
 	}
-	public Cell getFrom() {
+	/**
+     *
+     * @return
+     */
+    public Cell getFrom() {
 		return from;
 	}
-	public Cell getTo() {
+	/**
+     *
+     * @return
+     */
+    public Cell getTo() {
 		return to;
 	}
 	
-	public Map<String, Integer> getCoordinatesLastSkipedCell() {
+	/**
+     *
+     * @return
+     */
+    public Map<String, Integer> getCoordinatesLastSkipedCell() {
 		Map<String, Integer> result = new HashMap<String, Integer>();
 		if (!kill) {
 			result.put("X", from.getX());

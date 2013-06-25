@@ -17,11 +17,18 @@ public class CheckersModel extends AbstractModule {
 	
 	private int size;
 	
-	public CheckersModel(int size) {
+	/**
+     *
+     * @param size
+     */
+    public CheckersModel(int size) {
 		this.size = size;
 	}
 
-	@Override
+	/**
+     *
+     */
+    @Override
 	protected void configure() {
 		bind(IGameController.class).to(GameController.class);
 		

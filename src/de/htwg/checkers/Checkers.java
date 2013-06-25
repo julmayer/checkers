@@ -18,7 +18,11 @@ public final class Checkers {
 		
 	}
 	
-	public static void main(final String[] args0) {
+	/**
+     *
+     * @param args0
+     */
+    public static void main(final String[] args0) {
 		// Set up Google Guice Dependency Injector
 		InitFrame initFrame = new InitFrame();
 		synchronized (initFrame) {
