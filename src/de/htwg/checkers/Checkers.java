@@ -10,6 +10,10 @@ import de.htwg.checkers.view.gui.GameFrame;
 import de.htwg.checkers.view.gui.InitFrame;
 import de.htwg.checkers.view.tui.TUI;
 
+/**
+ * @author Julian Mayer, Marcel Loevenich
+ *
+ */
 public final class Checkers {
 	
 	private static Scanner scanner;

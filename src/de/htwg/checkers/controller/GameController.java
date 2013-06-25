@@ -59,26 +59,44 @@ public class GameController extends Observable implements IGameController {
 		this.hasMoreKills = false;
 	}
 	
+    /**
+     * @return the gamefield
+     */
 	public Field getField() {
 		return this.field;
 	}
 	
+	/**
+     * @return the gamefieldsize
+     */
 	public int getFieldSize() {
 		return this.size;
 	}
 
+	/**
+     * @return if its blackturn or not
+     */
 	public boolean isBlackTurn() {
 		return blackTurn;
 	}
 	
+	/**
+     * @return the errorstring
+     */
 	public String getError() {
 		return error;
 	}
 	
+	/**
+     * @return the actual move count
+     */
 	public int getMoveCount() {
 		return moveCount;
 	}
 
+	/**
+     * method to do a game init
+     */
 	public void gameInit() {
 		whites = new LinkedList<Figure>();
 		blacks = new LinkedList<Figure>();
