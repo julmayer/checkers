@@ -80,7 +80,6 @@ public class InitFrame  implements ActionListener {
 		easy = new JRadioButton("easy");
 		easy.setSelected(true);
 		medium = new JRadioButton("medium");
-		medium.setEnabled(false);
 		
 		startButton.addActionListener(this); 
 		

@@ -19,6 +19,7 @@ public class FieldTest {
 	@Test
 	public void toStringTest() {
 		Field field = new Field(8);
+		@SuppressWarnings("unused")
 		Figure figure = new Figure(field.getCellByCoordinates(0, 0), true);
 		assertNotNull(field.toString());
 	}

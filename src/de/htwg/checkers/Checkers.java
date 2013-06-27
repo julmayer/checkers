@@ -2,6 +2,8 @@ package de.htwg.checkers;
 
 import java.util.Scanner;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -27,6 +29,9 @@ public final class Checkers {
      * @param args0
      */
     public static void main(final String[] args0) {
+    	// Set up logging through log4j
+    	PropertyConfigurator.configure("log4j.properties");
+    	
 		// Set up Google Guice Dependency Injector
 		InitFrame initFrame = new InitFrame();
 		synchronized (initFrame) {
@@ -45,8 +50,12 @@ public final class Checkers {
 		
 		scanner = new Scanner(System.in);
 		
-		new TUI(gameController);
-		new GameFrame(gameController);
+		@SuppressWarnings("unused")
+		TUI tui = new TUI(gameController);
+		//TUI tui = injector.getInstance(TUI.class);
+		@SuppressWarnings("unused")
+		GameFrame gui = new GameFrame(gameController);
+		//GameFrame gui = injector.getInstance(GameFrame.class);
 		
 		boolean finished = false;
 		

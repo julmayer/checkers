@@ -105,4 +105,9 @@ public class MoveTest {
 		assertEquals(Integer.valueOf(4), map.get("X"));
 		assertEquals(Integer.valueOf(2), map.get("Y"));
 	}
+	
+	@Test
+	public void testToString() {
+		assertEquals(from.toString() + " " + simpleTo.toString(), compareSimpleMove.toString());
+	}
 }

@@ -10,6 +10,7 @@ import com.google.inject.name.Named;
 
 import de.htwg.checkers.controller.bot.IBot;
 import de.htwg.checkers.controller.bot.SimpleBot;
+import de.htwg.checkers.controller.bot.MediumBot;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
@@ -127,6 +128,9 @@ public class GameController extends Observable implements IGameController {
 		switch (difficulty) {
 			case 0:
 				this.bot = new SimpleBot(whites);
+				break;
+			case 1:
+				this.bot = new MediumBot(whites);
 				break;
 			default:
 				this.bot = new SimpleBot(whites);
@@ -260,6 +264,7 @@ public class GameController extends Observable implements IGameController {
 	}
 	
 	/**
+	 * 
      * @return the figure on the field
      * @param x
      * @param y

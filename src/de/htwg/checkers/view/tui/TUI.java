@@ -1,5 +1,7 @@
 package de.htwg.checkers.view.tui;
 
+import org.apache.log4j.Logger;
+
 import com.google.inject.Inject;
 
 import de.htwg.checkers.controller.IGameController;
@@ -13,6 +15,7 @@ import de.htwg.checkers.util.observer.Observer;
 public final class TUI implements Observer {
 
 	private IGameController gameController;
+	private static Logger logger = Logger.getLogger("de.htwg.checkers.view.tui");
 	
 	/**
      *constructor for the tui
@@ -26,7 +29,7 @@ public final class TUI implements Observer {
 		print("Welcome to checkers!");
 		printTui();
 	}
-	
+    
 	private void printTui() {
 		print(gameController.getField().toString());
 		print(String.format("Overall number of moves in game: %d", gameController.getMoveCount()));
@@ -47,7 +50,8 @@ public final class TUI implements Observer {
 	}
 
 	private static void print(String string){
-		System.out.println(string);
+		logger.info(string);
+		//System.out.println(string);
 	}
 	
 	/**

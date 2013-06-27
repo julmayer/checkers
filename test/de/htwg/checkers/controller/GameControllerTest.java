@@ -13,16 +13,21 @@ import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Move;
 
+@SuppressWarnings("unused")
 public class GameControllerTest {
 	GameController gameController4;
 	GameController gameController5;
 	GameController gameController7;
+	GameController controllerWithEasyBot;
+	GameController controllerWithMediumBot;
 	
 	@Before 
 	public void setUp() {
 		gameController4 = new GameController(4, false, 0);
 		gameController5 = new GameController(5, false, 0);
 		gameController7 = new GameController(7, false, 0);
+		controllerWithEasyBot = new GameController(4, true, -1);
+		controllerWithMediumBot = new GameController(4, true, 1);
 	}
 	
 	@Test
@@ -30,6 +35,7 @@ public class GameControllerTest {
 		assertNotNull(gameController4);
 		assertNotNull(gameController5);
 		assertNotNull(gameController7);
+		assertNotNull(controllerWithEasyBot);
 		assertEquals(4, gameController4.getFieldSize());
 		assertEquals(5, gameController5.getFieldSize());
 		assertEquals(7, gameController7.getFieldSize());
@@ -38,6 +44,9 @@ public class GameControllerTest {
 	@Test
 	public void gameInit() {
 		gameController4.gameInit();
+		
+		assertNotNull(gameController4.getBlacks());
+		assertNotNull(gameController4.getWhites());
 		
 		assertTrue(gameController4.isBlackTurn());
 		assertEquals(0, gameController4.getMoveCount());
@@ -506,5 +515,16 @@ public class GameControllerTest {
 		Figure f1 = new Figure(gameController7.getField().getCellByCoordinates(3, 4), true);
 		gameController7.input("0 1 2 3");
 		assertFalse(gameController7.input("2 3 4 5"));
+	}
+	
+	@Test
+	public void botMove() {
+		controllerWithEasyBot.gameInit();
+		controllerWithEasyBot.input("0 3 1 2");
+		assertTrue(controllerWithEasyBot.isBlackTurn());
+		
+		controllerWithMediumBot.gameInit();
+		controllerWithMediumBot.input("0 3 1 2");
+		assertTrue(controllerWithMediumBot.isBlackTurn());
 	}
 }
