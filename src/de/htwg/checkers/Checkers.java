@@ -51,9 +51,9 @@ public final class Checkers {
 		scanner = new Scanner(System.in);
 		
 		@SuppressWarnings("unused")
-		TUI tui = new TUI(gameController);
+		TUI tui = injector.getInstance(TUI.class);
 		@SuppressWarnings("unused")
-		GameFrame gui = new GameFrame(gameController);
+		GameFrame gui = injector.getInstance(GameFrame.class);
 		
 		boolean finished = false;
 		

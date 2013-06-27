@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import de.htwg.checkers.controller.bot.IBot;
@@ -22,9 +23,11 @@ import de.htwg.checkers.models.Move;
 import de.htwg.checkers.util.observer.Observable;
 
 /**
- *
+ * Implementation of gameController
  * @author Julian Mayer, Marcel Loevenich
  */
+
+@Singleton
 public class GameController extends Observable implements IGameController {
 	
 	private Field field;
