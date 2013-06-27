@@ -51,7 +51,6 @@ public final class TUI implements Observer {
 
 	private static void print(String string){
 		logger.info(string);
-		//System.out.println(string);
 	}
 	
 	/**

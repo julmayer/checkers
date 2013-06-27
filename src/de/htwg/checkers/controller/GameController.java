@@ -227,10 +227,15 @@ public class GameController extends Observable implements IGameController {
 		error = null;
 		moveCount++;
 		notifyObservers();
+		botmove();
+		return checkIfWin(sb);
+	}
+	
+	private void botmove() {
+		StringBuilder sb = new StringBuilder();
 		if (!checkIfWin(sb) && singelplayer && !blackTurn) {
 			input(bot.move());
 		}
-		return checkIfWin(sb);
 	}
 
 	/**

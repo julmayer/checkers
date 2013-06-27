@@ -25,7 +25,6 @@ public class InitFrame  implements ActionListener {
 	private JRadioButton radioButton10x10;
 	private JRadioButton radioButton12x12;
 	private JRadioButton singelplayer;
-	private JRadioButton multiplayer;
 	private JRadioButton easy;
 	private JRadioButton medium;
 	private int size;
@@ -47,6 +46,7 @@ public class InitFrame  implements ActionListener {
 		JButton startButton;
 		JLabel label1;
 		JLabel label2;
+		JRadioButton multiplayer;
 		
 		initFrame = new JFrame("Checkers");
 		initFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -142,7 +142,7 @@ public class InitFrame  implements ActionListener {
 		
 		if (easy.isSelected()) {
 			difficulty = 0;
-		} else {
+		} else if (medium.isSelected()) {
 			difficulty = 1;
 		}
 		

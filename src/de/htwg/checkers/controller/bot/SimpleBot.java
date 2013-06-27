@@ -4,10 +4,17 @@ import java.util.List;
 
 import de.htwg.checkers.models.Figure;
 
-
+/**
+ * Class for simple bot. Always returns first move.
+ * @author jmayer
+ *
+ */
 public class SimpleBot extends AbstractBot {
 
-	
+	/**
+	 * Constructor with List of own Figures.
+	 * @param figures List of own Figures.
+	 */
 	public SimpleBot(List<Figure> figures) {
 		super(figures);
 	}
