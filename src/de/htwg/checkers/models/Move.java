@@ -125,4 +125,13 @@ public class Move {
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(from.toString());
+		sb.append(" ");
+		sb.append(to.toString());
+		return sb.toString();
+	}
 }

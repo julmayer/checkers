@@ -32,7 +32,7 @@ public final class Checkers {
 				
 			}
 		}
-		Injector injector = Guice.createInjector(new CheckersModel(initFrame.getSize()));
+		Injector injector = Guice.createInjector(new CheckersModel(initFrame.getSize(), initFrame.isOnePlayer()));
 		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		
@@ -42,7 +42,6 @@ public final class Checkers {
 		
 		new TUI(gameController);
 		new GameFrame(gameController);
-		
 		
 		boolean finished = false;
 		

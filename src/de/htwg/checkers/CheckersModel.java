@@ -16,13 +16,15 @@ import de.htwg.checkers.controller.IGameController;
 public class CheckersModel extends AbstractModule {
 	
 	private int size;
+	private boolean onePlayer;
 	
 	/**
      *
      * @param size
      */
-    public CheckersModel(int size) {
+    public CheckersModel(int size, boolean onePlayer) {
 		this.size = size;
+		this.onePlayer = onePlayer;
 	}
 
 	/**
@@ -33,6 +35,7 @@ public class CheckersModel extends AbstractModule {
 		bind(IGameController.class).to(GameController.class);
 		
 		bindConstant().annotatedWith(Names.named("size")).to(size);
+		bindConstant().annotatedWith(Names.named("onePlayer")).to(onePlayer);
 	}
 
 }

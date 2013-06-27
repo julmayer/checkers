@@ -37,13 +37,14 @@ public class GameController extends Observable implements IGameController {
 	private PossibleMovesUpperRight upperRight;
 	private String error;
 	private boolean hasMoreKills;
+	private boolean singelplayer;
 	
 	/**
      *
      * @param size
      */
     @Inject
-	public GameController(@Named("size") int size) {		
+	public GameController(@Named("size") int size, @Named("onePlayer") boolean singelplayer) {		
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException("Minimun size is 4!");
@@ -57,6 +58,7 @@ public class GameController extends Observable implements IGameController {
 		this.upperRight = new PossibleMovesUpperRight(field);
 		this.size = size;
 		this.hasMoreKills = false;
+		this.singelplayer = singelplayer;
 	}
 	
 	public Field getField() {
@@ -173,9 +175,23 @@ public class GameController extends Observable implements IGameController {
 		error = null;
 		moveCount++;
 		notifyObservers();
+		if (!checkIfWin(sb) && singelplayer && !blackTurn) {
+			botMove();
+		}
 		return checkIfWin(sb);
 	}
 	
+	private void botMove() {
+		for (Figure figure : whites) {
+			if (figure.getPossibleMoves().size() != 0) {
+				Move move = figure.getPossibleMoves().get(0);
+				input(move.toString());
+				break;
+			}
+		}
+		
+	}
+
 	public boolean checkIfWin(StringBuilder stringOutput) {
 		createAllMoves();
 		List<Figure> list;
