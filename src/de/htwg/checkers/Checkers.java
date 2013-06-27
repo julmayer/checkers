@@ -10,6 +10,10 @@ import de.htwg.checkers.view.gui.GameFrame;
 import de.htwg.checkers.view.gui.InitFrame;
 import de.htwg.checkers.view.tui.TUI;
 
+/**
+ * @author Julian Mayer, Marcel Loevenich
+ *
+ */
 public final class Checkers {
 	
 	private static Scanner scanner;
@@ -19,7 +23,7 @@ public final class Checkers {
 	}
 	
 	/**
-     *
+     *main method, starts the programm
      * @param args0
      */
     public static void main(final String[] args0) {

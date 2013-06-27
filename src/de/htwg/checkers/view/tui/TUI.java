@@ -7,15 +7,15 @@ import de.htwg.checkers.util.observer.Observer;
 
 
 /**
- *
- * @author jmayer
+ *the tui for the game
+ * @author Julian Mayer, Marcel Loevenich
  */
 public final class TUI implements Observer {
 
 	private IGameController gameController;
 	
 	/**
-     *
+     *constructor for the tui
      * @param gameController
      */
     @Inject
@@ -51,7 +51,7 @@ public final class TUI implements Observer {
 	}
 	
 	/**
-     *
+     *method to update tui
      */
     @Override
 	public void update() {

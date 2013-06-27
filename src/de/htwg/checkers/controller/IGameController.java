@@ -5,44 +5,44 @@ import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.util.observer.IObservable;
 
 /**
- *
- * @author jmayer
+ * interface for the gamecontroller
+ * @author Julian Mayer, Marcel Loevenich
  */
 public interface IGameController extends IObservable {
 	
 	/**
-     *
-     * @return
+     * 
+     * @return the gamefield
      */
     Field getField();
 	
 	/**
      *
-     * @return
+     * @return the size of the gamefield
      */
     int getFieldSize();
 	
 	/**
      *
-     * @return
+     * @return if its black turn or not
      */
     boolean isBlackTurn();
 	
 	/**
      *
-     * @return
+     * @return the actual move count
      */
     int getMoveCount();
 	
 	/**
-     *
+     * make a game init
      */
     void gameInit();
 	
 	/**
-     *
+     * 
      * @param stringOutput
-     * @return
+     * @return if someone has won or not
      */
     boolean checkIfWin(StringBuilder stringOutput);
 	
@@ -50,17 +50,17 @@ public interface IGameController extends IObservable {
      *
      * @param x
      * @param y
-     * @return
+     * @return the figure on a field
      */
     Figure getFigureOnField(int x, int y);
 	
 	/**
-     *
+     * method to create all moves
      */
     void createAllMoves();
 	
 	/**
-     *
+     * 
      * @param input
      * @return
      */

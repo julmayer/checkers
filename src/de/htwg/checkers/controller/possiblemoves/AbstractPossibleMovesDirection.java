@@ -10,7 +10,7 @@ import de.htwg.checkers.models.Move;
 
 /**
  * Abstraction for possible Moves.
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public abstract class AbstractPossibleMovesDirection implements PossibleMovesDirection {
     
@@ -69,7 +69,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	
 	/**
      *
-     * @return
+     * @return the gamefield
      */
     public Field getGamefield() {
 		return gamefield;
@@ -77,8 +77,8 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
 	
 	/**
      *
-     * @param cell
-     * @return
+     * @param cell 
+     * @return the next cell
      */
     protected abstract Cell nextCell(Cell cell);
 }

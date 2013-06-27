@@ -16,8 +16,8 @@ import javax.swing.JRadioButton;
 
 
 /**
- *
- * @author jmayer
+ * first frame, to choose the fieldsize, after the game has started
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class InitFrame  implements ActionListener {
 	
@@ -32,7 +32,7 @@ public class InitFrame  implements ActionListener {
 	private boolean onePlayer;
 	
 	/**
-     *
+     *constructor for the frame
      */
     public InitFrame(){
 
@@ -132,8 +132,8 @@ public class InitFrame  implements ActionListener {
 	}
 	
 	/**
-     *
-     * @return
+     * 
+     * @return fieldsize
      */
     public int getSize() {
 		return size;
@@ -144,7 +144,7 @@ public class InitFrame  implements ActionListener {
     }
 	
 	/**
-     *
+     * method to close the InitFrame
      */
     public void exit(){
 		initFrame.dispose();

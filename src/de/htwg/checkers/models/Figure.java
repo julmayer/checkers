@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
- * @author jmayer
+ * 
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class Figure {
 	private Cell position;
@@ -15,7 +15,7 @@ public class Figure {
 	private List<Move> possibleMoves;
 	
 	/**
-     *
+     *constructor for a figure
      * @param position
      * @param black
      */
@@ -32,14 +32,14 @@ public class Figure {
 
 	/**
      *
-     * @return
+     * @return the position of a figure
      */
     public Cell getPosition() {
 		return position;
 	}
 
 	/**
-     *
+     * method to set the position of a cell
      * @param position
      */
     public void setPosition(Cell position) {
@@ -52,14 +52,14 @@ public class Figure {
 
 	/**
      *
-     * @return
+     * @return if figure is corwned or not
      */
     public boolean isCrowned() {
 		return crowned;
 	}
 
 	/**
-     *
+     * method to crown a figure
      * @param crowned
      */
     public void setCrowned(boolean crowned) {
@@ -68,14 +68,14 @@ public class Figure {
 
 	/**
      *
-     * @return
+     * @return if a figure is alive or not
      */
     public boolean isAlive() {
 		return alive;
 	}
 
 	/**
-     *
+     * method to kill a figure
      */
     public void kill() {
 		this.alive = false;
@@ -85,14 +85,14 @@ public class Figure {
 
 	/**
      *
-     * @return
+     * @return a list of all possible moves
      */
     public List<Move> getPossibleMoves() {
 		return possibleMoves;
 	}
 	
 	/**
-     *
+     * method to set all possible moves 
      * @param possibleMoves
      */
     public void setPossibleMoves(List<Move> possibleMoves) {
@@ -101,7 +101,7 @@ public class Figure {
 
 	/**
      *
-     * @return
+     * @return if a figure is black or not
      */
     public boolean isBlack() {
 		return black;
@@ -109,7 +109,7 @@ public class Figure {
 	
 	/**
      *
-     * @return
+     * @return if a figure has killmoves or not
      */
     public boolean hasKillMoves() {
 		for (Move move : possibleMoves) {
@@ -121,7 +121,7 @@ public class Figure {
 	}
 	
 	/**
-     *
+     *method to remove all nonkill moves
      */
     public void removeNonkillMoves() {
 		List<Move> nonkills = new LinkedList<Move>();

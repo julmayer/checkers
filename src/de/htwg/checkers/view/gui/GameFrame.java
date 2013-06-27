@@ -19,8 +19,8 @@ import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
 
 /**
- *
- * @author jmayer
+ * main frame with the game
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class GameFrame implements ActionListener, Observer{
 	
@@ -37,7 +37,7 @@ public class GameFrame implements ActionListener, Observer{
 	private StringBuilder stringOutput = new StringBuilder();
 	
 	/**
-     *
+     * constructor for the gameframe
      * @param gameController
      */
     @Inject
@@ -125,7 +125,7 @@ public class GameFrame implements ActionListener, Observer{
 	}
 
 	/**
-     *
+     * methode to update the gui
      */
     @Override
 	public void update() {

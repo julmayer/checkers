@@ -5,14 +5,14 @@ import java.util.List;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class Observable implements IObservable {
 	
 	private List<Observer> subscribers = new ArrayList<Observer>(2);
 
 	/**
-     *
+     * method to add a observer
      * @param s
      */
     @Override
@@ -21,7 +21,7 @@ public class Observable implements IObservable {
 	}
 
 	/**
-     *
+     * method to remove one specified observer
      * @param s
      */
     @Override
@@ -30,7 +30,7 @@ public class Observable implements IObservable {
 	}
 
 	/**
-     *
+     * method to remove all observers
      */
     @Override
 	public void removeAllObservers() {
@@ -38,7 +38,7 @@ public class Observable implements IObservable {
 	}
 
 	/**
-     *
+     * send notify
      */
     @Override
 	public void notifyObservers() {

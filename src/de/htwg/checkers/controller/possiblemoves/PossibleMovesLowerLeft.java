@@ -5,12 +5,12 @@ import de.htwg.checkers.models.Field;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class PossibleMovesLowerLeft extends AbstractPossibleMovesDirection {
 
 	/**
-     *
+     * 
      * @param gamefield
      */
     public PossibleMovesLowerLeft(Field gamefield) {

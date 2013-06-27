@@ -20,7 +20,7 @@ import de.htwg.checkers.util.observer.Observable;
 
 /**
  *
- * @author jmayer
+ * @author Julian Mayer, Marcel Loevenich
  */
 public class GameController extends Observable implements IGameController {
 	
@@ -40,7 +40,7 @@ public class GameController extends Observable implements IGameController {
 	private boolean singelplayer;
 	
 	/**
-     *
+     * Construcor for the gamecontroller
      * @param size
      */
     @Inject
@@ -61,26 +61,44 @@ public class GameController extends Observable implements IGameController {
 		this.singelplayer = singelplayer;
 	}
 	
+    /**
+     * @return the gamefield
+     */
 	public Field getField() {
 		return this.field;
 	}
 	
+	/**
+     * @return the gamefieldsize
+     */
 	public int getFieldSize() {
 		return this.size;
 	}
 
+	/**
+     * @return if its blackturn or not
+     */
 	public boolean isBlackTurn() {
 		return blackTurn;
 	}
 	
+	/**
+     * @return the errorstring
+     */
 	public String getError() {
 		return error;
 	}
 	
+	/**
+     * @return the actual move count
+     */
 	public int getMoveCount() {
 		return moveCount;
 	}
 
+	/**
+     * method to do a game init
+     */
 	public void gameInit() {
 		whites = new LinkedList<Figure>();
 		blacks = new LinkedList<Figure>();
@@ -121,6 +139,12 @@ public class GameController extends Observable implements IGameController {
 			whites.add(figure);
 		}
 	}
+	
+	/**
+	 * validate input, move, do stuff
+	 * @param input
+     * @return if there was an error
+     */
 	
 	public boolean input(String input) {
 		
@@ -181,6 +205,7 @@ public class GameController extends Observable implements IGameController {
 		return checkIfWin(sb);
 	}
 	
+
 	private void botMove() {
 		for (Figure figure : whites) {
 			if (figure.getPossibleMoves().size() != 0) {
@@ -192,6 +217,10 @@ public class GameController extends Observable implements IGameController {
 		
 	}
 
+
+	/**
+     * @return if someone has won or not
+     */	
 	public boolean checkIfWin(StringBuilder stringOutput) {
 		createAllMoves();
 		List<Figure> list;
@@ -219,6 +248,11 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	/**
+     * @return the figure on the field
+     * @param x
+     * @param y
+     */
 	public Figure getFigureOnField(int x, int y) {
 		return field.getCellByCoordinates(x, y).getOccupier();
 	}
@@ -278,6 +312,10 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	
+	/**
+     * method to create all moves
+     */
 	public void createAllMoves() {
 		if (blackTurn) {
 			createAllMoves(blacks);
