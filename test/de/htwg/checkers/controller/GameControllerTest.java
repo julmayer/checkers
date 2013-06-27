@@ -20,9 +20,9 @@ public class GameControllerTest {
 	
 	@Before 
 	public void setUp() {
-		gameController4 = new GameController(4, false);
-		gameController5 = new GameController(5, false);
-		gameController7 = new GameController(7, false);
+		gameController4 = new GameController(4, false, 0);
+		gameController5 = new GameController(5, false, 0);
+		gameController7 = new GameController(7, false, 0);
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class GameControllerTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testException() {
-		new GameController(2, false);
+		new GameController(2, false, 0);
 	}
 	
 	@Test

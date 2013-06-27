@@ -1,7 +1,6 @@
 package de.htwg.checkers.view.gui;
 
 import java.awt.Color;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,9 +26,12 @@ public class InitFrame  implements ActionListener {
 	private JRadioButton radioButton12x12;
 	private JRadioButton singelplayer;
 	private JRadioButton multiplayer;
+	private JRadioButton easy;
+	private JRadioButton medium;
 	private int size;
 	private JFrame initFrame;
 	private boolean onePlayer;
+	private int difficulty;
 	
 	/**
      *constructor for the frame
@@ -41,6 +43,7 @@ public class InitFrame  implements ActionListener {
 		JPanel sizePanel;
 		JPanel labelPanel;
 		JPanel buttonPanel;
+		JPanel difficultyPanel;
 		JButton startButton;
 		JLabel label1;
 		JLabel label2;
@@ -59,8 +62,9 @@ public class InitFrame  implements ActionListener {
 		playerPanel = new JPanel();
 		sizePanel = new JPanel();
 		labelPanel = new JPanel();
-		//labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.PAGE_AXIS));
 		buttonPanel = new JPanel();
+		difficultyPanel = new JPanel();
+		
 		
 		startButton = new JButton("Start");
 		label1 = new JLabel("Welcome to checkers!");
@@ -73,6 +77,10 @@ public class InitFrame  implements ActionListener {
 		singelplayer = new JRadioButton("Singelplayer");
 		singelplayer.setSelected(true);
 		multiplayer = new JRadioButton("Multiplayer");
+		easy = new JRadioButton("easy");
+		easy.setSelected(true);
+		medium = new JRadioButton("medium");
+		medium.setEnabled(false);
 		
 		startButton.addActionListener(this); 
 		
@@ -85,9 +93,12 @@ public class InitFrame  implements ActionListener {
 		buttonPanel.add(startButton);
 		labelPanel.add(label1);
 		labelPanel.add(label2);
+		difficultyPanel.add(easy);
+		difficultyPanel.add(medium);
 		
 		panel.add(labelPanel);
 		panel.add(playerPanel);
+		panel.add(difficultyPanel);
 		panel.add(sizePanel);
 		panel.add(buttonPanel);
 		
@@ -100,6 +111,10 @@ public class InitFrame  implements ActionListener {
 	    ButtonGroup player = new ButtonGroup();
 	    player.add(singelplayer);
 	    player.add(multiplayer);
+	    
+	    ButtonGroup difficultyGroup = new ButtonGroup();
+	    difficultyGroup.add(easy);
+	    difficultyGroup.add(medium);
 		
 		initFrame.getContentPane().add(panel);
 		initFrame.pack();
@@ -126,6 +141,12 @@ public class InitFrame  implements ActionListener {
 		
 		onePlayer = singelplayer.isSelected();
 		
+		if (easy.isSelected()) {
+			difficulty = 0;
+		} else {
+			difficulty = 1;
+		}
+		
 		synchronized (this) {
 			this.notify();
 		}
@@ -139,10 +160,22 @@ public class InitFrame  implements ActionListener {
 		return size;
 	}
     
+    /**
+     * Shows if singleplayer or multiplayer is selected.
+     * @return true if singelplayer is selected.
+     */
     public boolean isOnePlayer() {
     	return onePlayer;
     }
 	
+    /**
+     * Retruns selected difficulty.
+     * @return difficulty. Lower number equals easier gameplay.
+     */
+    public int getDifficulty() {
+    	return difficulty;
+    }
+    
 	/**
      * method to close the InitFrame
      */

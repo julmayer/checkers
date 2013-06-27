@@ -13,18 +13,20 @@ import de.htwg.checkers.controller.IGameController;
  * @author Julian Mayer, Marcel Loevenich
  *
  */
-public class CheckersModel extends AbstractModule {
+public class CheckersModule extends AbstractModule {
 	
 	private int size;
 	private boolean onePlayer;
+	private int difficulty;
 	
 	/** 
-     * Constructor for the checkersmodel
+     * Constructor for the checkersmodule
      * @param size
      */
-    public CheckersModel(int size, boolean onePlayer) {
+    public CheckersModule(int size, boolean onePlayer, int difficulty) {
 		this.size = size;
 		this.onePlayer = onePlayer;
+		this.difficulty = difficulty;
 	}
 
 	/**
@@ -36,6 +38,7 @@ public class CheckersModel extends AbstractModule {
 		
 		bindConstant().annotatedWith(Names.named("size")).to(size);
 		bindConstant().annotatedWith(Names.named("onePlayer")).to(onePlayer);
+		bindConstant().annotatedWith(Names.named("difficulty")).to(difficulty);
 	}
 
 }

@@ -36,7 +36,8 @@ public final class Checkers {
 				
 			}
 		}
-		Injector injector = Guice.createInjector(new CheckersModel(initFrame.getSize(), initFrame.isOnePlayer()));
+		Injector injector = Guice.createInjector(new CheckersModule(initFrame.getSize(), initFrame.isOnePlayer(),
+				initFrame.getDifficulty()));
 		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		

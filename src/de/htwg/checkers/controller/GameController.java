@@ -8,6 +8,8 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import de.htwg.checkers.controller.bot.IBot;
+import de.htwg.checkers.controller.bot.SimpleBot;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
@@ -38,13 +40,16 @@ public class GameController extends Observable implements IGameController {
 	private String error;
 	private boolean hasMoreKills;
 	private boolean singelplayer;
+	private IBot bot;
+	private int difficulty;
 	
 	/**
      * Construcor for the gamecontroller
      * @param size
      */
     @Inject
-	public GameController(@Named("size") int size, @Named("onePlayer") boolean singelplayer) {		
+	public GameController(@Named("size") int size, @Named("onePlayer") boolean singelplayer,
+			@Named("difficulty") int difficulty) {		
 		final int minSize = 4;
 		if (size < minSize){
 			throw new IllegalArgumentException("Minimun size is 4!");
@@ -59,6 +64,8 @@ public class GameController extends Observable implements IGameController {
 		this.size = size;
 		this.hasMoreKills = false;
 		this.singelplayer = singelplayer;
+		this.difficulty = difficulty;
+		
 	}
 	
     /**
@@ -95,6 +102,14 @@ public class GameController extends Observable implements IGameController {
 	public int getMoveCount() {
 		return moveCount;
 	}
+	
+	public List<Figure> getWhites() {
+		return whites;
+	}
+	
+	public List<Figure> getBlacks() {
+		return blacks;
+	}
 
 	/**
      * method to do a game init
@@ -108,6 +123,15 @@ public class GameController extends Observable implements IGameController {
 		blackTurn = true;
 		moveCount = 0;
 		error = null;
+		
+		switch (difficulty) {
+			case 0:
+				this.bot = new SimpleBot(whites);
+				break;
+			default:
+				this.bot = new SimpleBot(whites);
+				break;					
+		}
 	}
 	
 	private void createWhiteFigures() {
@@ -200,23 +224,10 @@ public class GameController extends Observable implements IGameController {
 		moveCount++;
 		notifyObservers();
 		if (!checkIfWin(sb) && singelplayer && !blackTurn) {
-			botMove();
+			input(bot.move());
 		}
 		return checkIfWin(sb);
 	}
-	
-
-	private void botMove() {
-		for (Figure figure : whites) {
-			if (figure.getPossibleMoves().size() != 0) {
-				Move move = figure.getPossibleMoves().get(0);
-				input(move.toString());
-				break;
-			}
-		}
-		
-	}
-
 
 	/**
      * @return if someone has won or not
