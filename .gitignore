@@ -10,3 +10,4 @@
 *.ear
 /bin
 /target
+checkers.log
