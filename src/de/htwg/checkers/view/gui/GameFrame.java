@@ -54,7 +54,7 @@ public class GameFrame implements ActionListener, Observer{
 		fieldSize = gameController.getFieldSize();
 		
 		gameFrame = new JFrame("Checkers the game");
-		gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setLocationRelativeTo(null);
 		final int gameFrameExtenderInt = 50;
 		gameFrame.setSize(fieldSize*gameFrameExtenderInt,fieldSize*gameFrameExtenderInt);
