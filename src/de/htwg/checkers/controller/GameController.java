@@ -76,7 +76,7 @@ public class GameController extends Observable implements IGameController {
      * @return the gamefield
      */
 	public Field getField() {
-		return this.field;
+		return new Field(this.field);
 	}
 	
 	/**
@@ -107,14 +107,6 @@ public class GameController extends Observable implements IGameController {
 		return moveCount;
 	}
 	
-	public List<Figure> getWhites() {
-		return whites;
-	}
-	
-	public List<Figure> getBlacks() {
-		return blacks;
-	}
-
 	/**
      * method to do a game init
      */

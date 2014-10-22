@@ -4,7 +4,7 @@ package de.htwg.checkers.models;
  *
  * @author Julian Mayer, Marcel Loevenich
  */
-public class Field {
+public class Field{
 	private Cell[][] field;
 	private int size;
 	
@@ -17,6 +17,15 @@ public class Field {
 		this.field = new Cell[size][size];
 		initCells(size);
 	}
+    
+    /**
+     * Copyconstructor for the Gamefiels
+     * @param field source field for copy
+     */
+    public Field(Field field) {
+    	this.field = field.field;
+    	this.size = field.size;
+    }
 
 	/**
      *

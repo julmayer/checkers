@@ -1,7 +1,5 @@
 package de.htwg.checkers.controller;
 
-import java.util.List;
-
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.util.observer.IObservable;
@@ -35,18 +33,6 @@ public interface IGameController extends IObservable {
      * @return the actual move count
      */
     int getMoveCount();
-    
-    /**
-     * Getter for the list with white Figures on the field.
-     * @return List with white Figures
-     */
-	List<Figure> getWhites();
-	
-	/**
-     * Getter for the list with black Figures on the field.
-     * @return List with white Figures
-     */
-	List<Figure> getBlacks();
     
 	/**
      * make a game init

@@ -45,8 +45,8 @@ public class GameControllerTest {
 	public void gameInit() {
 		gameController4.gameInit();
 		
-		assertNotNull(gameController4.getBlacks());
-		assertNotNull(gameController4.getWhites());
+//		assertNotNull(gameController4.getBlacks());
+//		assertNotNull(gameController4.getWhites());
 		
 		assertTrue(gameController4.isBlackTurn());
 		assertEquals(0, gameController4.getMoveCount());
