@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.htwg.checkers.controller.bot.Bot;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
@@ -15,19 +16,19 @@ import de.htwg.checkers.models.Move;
 
 @SuppressWarnings("unused")
 public class GameControllerTest {
-	GameController gameController4;
-	GameController gameController5;
-	GameController gameController7;
-	GameController controllerWithEasyBot;
-	GameController controllerWithMediumBot;
+	GameController gameController4 = new GameController();
+	GameController gameController5 = new GameController();
+	GameController gameController7 = new GameController();
+	GameController controllerWithEasyBot = new GameController();
+	GameController controllerWithMediumBot = new GameController();
 	
 	@Before 
 	public void setUp() {
-		gameController4 = new GameController(4, false, 0);
-		gameController5 = new GameController(5, false, 0);
-		gameController7 = new GameController(7, false, 0);
-		controllerWithEasyBot = new GameController(4, true, -1);
-		controllerWithMediumBot = new GameController(4, true, 1);
+		gameController4.gameInit(4, false, Bot.NO_BOT);
+		gameController5.gameInit(5, false, Bot.NO_BOT);
+		gameController7.gameInit(7, false, Bot.NO_BOT);
+		controllerWithEasyBot.gameInit(4, true, Bot.SIMPLE_BOT);
+		controllerWithMediumBot.gameInit(4, true, Bot.MEDIUM_BOT);
 	}
 	
 	@Test
@@ -43,14 +44,12 @@ public class GameControllerTest {
 	
 	@Test
 	public void gameInit() {
-		gameController4.gameInit();
-		
 //		assertNotNull(gameController4.getBlacks());
 //		assertNotNull(gameController4.getWhites());
 		
 		assertTrue(gameController4.isBlackTurn());
 		assertEquals(0, gameController4.getMoveCount());
-		assertEquals(null, gameController4.getError());
+		assertTrue(gameController4.getError().isEmpty());
 		
 		Field field = gameController4.getField();
 		assertTrue(field.getCellByCoordinates(1, 0).isOccupied());
@@ -76,7 +75,6 @@ public class GameControllerTest {
 		assertTrue(field.getCellByCoordinates(0, 3).getOccupier().isBlack());
 		assertTrue(field.getCellByCoordinates(2, 3).getOccupier().isBlack());
 		
-		gameController5.gameInit();
 		Field field5 = gameController5.getField();
 		for (int x = 0; x < 5; ++x) {
 			for (int y = 0; y < 5; ++y) {
@@ -96,15 +94,28 @@ public class GameControllerTest {
 		}
 	}
 	
+	@Test
+	public void testDraw() {
+		String expected = "Current situation:\n" + "3  X  -  x  - \n"
+				+ "2  -  -  -  - \n" + "1  -  -  -  - \n" + "0  -  o  -  o \n"
+				+ "   A  B  C  D \n";
+		gameController4.getFigureOnField(0, 3).setCrowned(true);
+		assertEquals(expected, gameController4.getDrawingOfField());
+	}
+	
 	@Test(expected=IllegalArgumentException.class)
 	public void testException() {
-		new GameController(2, false, 0);
+		new GameController().gameInit(2, false, Bot.NO_BOT);
+	}
+	
+	@Test
+	public void testBot() {
+		assertEquals(Bot.SIMPLE_BOT, Bot.valueOf(1));
 	}
 	
 	@Test
 	public void regularWhiteMoves() {
 		Field gamefield = gameController7.getField();
-		gameController7.gameInit();
 		gameController7.input("6 5 5 4");
 		gameController7.createAllMoves();
 		
@@ -198,7 +209,6 @@ public class GameControllerTest {
 	@Test
 	public void regularBlackMoves() {
 		Field gamefield = gameController7.getField();
-		gameController7.gameInit();
 		gameController7.createAllMoves();
 		
 		// both Cells free
@@ -290,7 +300,6 @@ public class GameControllerTest {
 	@Test
 	public void crownedBlackMoves()
 	{
-		gameController7.gameInit();
 		Field gameField = gameController7.getField();
 		
 		Figure queen = gameController7.getFigureOnField(0, 5);
@@ -351,7 +360,6 @@ public class GameControllerTest {
 	@Test
 	public void crownedWhiteMoves()
 	{
-		gameController7.gameInit();
 		Field gameField = gameController7.getField();
 		
 		Figure queen = gameController7.getFigureOnField(0, 5);
@@ -411,8 +419,6 @@ public class GameControllerTest {
 	
 	@Test
 	public void input() {
-		gameController7.gameInit();
-		
 		assertFalse(gameController7.input("a"));
 		assertFalse(gameController7.input("-1 0 0 0"));
 		assertFalse(gameController7.input("0 -1 0 0"));
@@ -435,24 +441,19 @@ public class GameControllerTest {
 	
 	@Test
 	public void blackKillsWhite() {
-		gameController4.gameInit();
-		StringBuilder sb = new StringBuilder();
 		
-		assertFalse(gameController4.checkIfWin(sb));
+		assertFalse(gameController4.checkIfWin());
 		gameController4.input("0 3 1 2");
 		gameController4.input("3 0 2 1");
 		gameController4.input("1 2 3 0");
 		gameController4.input("1 0 2 1");
 		gameController4.input("3 0 1 2");
-		assertTrue(gameController4.checkIfWin(sb));
+		assertTrue(gameController4.checkIfWin());
 	}
 	
 	@Test
 	public void WhiteKillsBlack() {
-		gameController4.gameInit();
-		StringBuilder sb = new StringBuilder();
-		
-		assertFalse(gameController4.checkIfWin(sb));
+		assertFalse(gameController4.checkIfWin());
 		gameController4.input("2 3 1 2");
 		gameController4.input("1 0 2 1");
 		gameController4.input("1 2 0 1");
@@ -465,13 +466,11 @@ public class GameControllerTest {
 		gameController4.input("1 2 0 3");
 		gameController4.input("1 0 2 1");
 		gameController4.input("0 3 3 0");
-		assertTrue(gameController4.checkIfWin(sb));
+		assertTrue(gameController4.checkIfWin());
 	}
 	
 	@Test
 	public void BlackBlocksWhite() {
-		StringBuilder sb = new StringBuilder();
-		gameController4.gameInit();
 		gameController4.input("0 3 1 2");
 		
 		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
@@ -479,26 +478,21 @@ public class GameControllerTest {
 		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
 		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(0, 3), false);
 		
-		assertTrue(gameController4.checkIfWin(sb));
+		assertTrue(gameController4.checkIfWin());
 	}
 	
 	@Test
 	public void WhiteBlocksBlack() {
-		StringBuilder sb = new StringBuilder();
-		gameController4.gameInit();
-				
 		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
 		Figure f1 = new Figure(gameController4.getField().getCellByCoordinates(2, 1), false);
 		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
 		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(1, 2), false);
 		
-		assertTrue(gameController4.checkIfWin(sb));
+		assertTrue(gameController4.checkIfWin());
 	}
 	
 	@Test
 	public void validateSelectedMove() {
-		gameController4.gameInit();
-		
 		gameController4.input("0 3 1 2");
 		gameController4.input("1 2 2 1");
 		
@@ -507,7 +501,6 @@ public class GameControllerTest {
 	
 	@Test
 	public void deleteAllMovesWithoutFigure() {
-		gameController7.gameInit();
 		gameController7.input("6 5 5 4");
 		
 		gameController7.getField().getCellByCoordinates(4, 5).getOccupier().kill();
@@ -519,11 +512,9 @@ public class GameControllerTest {
 	
 	@Test
 	public void botMove() {
-		controllerWithEasyBot.gameInit();
 		controllerWithEasyBot.input("0 3 1 2");
 		assertTrue(controllerWithEasyBot.isBlackTurn());
 		
-		controllerWithMediumBot.gameInit();
 		controllerWithMediumBot.input("0 3 1 2");
 		assertTrue(controllerWithMediumBot.isBlackTurn());
 	}

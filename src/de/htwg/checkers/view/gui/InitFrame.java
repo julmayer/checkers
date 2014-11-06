@@ -156,9 +156,9 @@ public class InitFrame  {
     	int difficulty;
 		
     	if (easy.isSelected()) {
-			difficulty = 0;
-		} else {
 			difficulty = 1;
+		} else {
+			difficulty = 2;
 		}
 		
     	return difficulty;

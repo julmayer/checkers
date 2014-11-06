@@ -30,7 +30,6 @@ public class FigureTest {
 	public void createBlackFigure() {
 		
 		assertNotNull(blackFigure);
-		assertTrue(blackFigure.isAlive());
 		assertFalse(blackFigure.isCrowned());
 		assertNotNull(blackFigure.getPossibleMoves());
 		assertEquals(startPosition, blackFigure.getPosition());
@@ -43,7 +42,6 @@ public class FigureTest {
 	public void createWhiteFigure() {
 		
 		assertNotNull(whiteFigure);
-		assertTrue(whiteFigure.isAlive());
 		assertFalse(whiteFigure.isCrowned());
 		assertNotNull(whiteFigure.getPossibleMoves());
 		assertEquals(startPosition, whiteFigure.getPosition());
@@ -56,9 +54,7 @@ public class FigureTest {
 	public void killFigure() {
 		Cell oldPosition = blackFigure.getPosition();
 		blackFigure.kill();
-		assertFalse(blackFigure.isAlive());
 		assertNull(blackFigure.getPosition());
-		assertTrue(whiteFigure.isAlive());
 		assertNotNull(blackFigure.hashCode());
 		assertNull(oldPosition.getOccupier());		
 	}
