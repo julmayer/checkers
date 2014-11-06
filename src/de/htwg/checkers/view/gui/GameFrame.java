@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,105 +23,147 @@ import de.htwg.checkers.util.observer.Observer;
  * main frame with the game
  * @author Julian Mayer, Marcel Loevenich
  */
-public class GameFrame implements ActionListener, Observer{
+public class GameFrame extends JFrame implements ActionListener, Observer{
 	
+	private class initFrameListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			startClicked();
+		}
+	}
+	
+	private class winPopUpListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// get info
+			JButton clickedButton = (JButton) arg0.getSource();
+			String control = new String(clickedButton.getName());
+			
+			controlEntered(control);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6475445915710130057L;
+
 	private IGameController gameController;
 
 	private JButton[][] buttons;
+	private JPanel statusPanel;
+	private JPanel buttonPanel;
 	private JLabel moveCountLabel;
 	private JLabel errorLabel;
 	private JLabel turnLabel;
 	
 	private int fieldSize;
 	private int clickCount = 0;
-	private StringBuilder sB = new StringBuilder();
-	private StringBuilder stringOutput = new StringBuilder();
-	
+	private StringBuilder inputStringBuilder = new StringBuilder();
+
+	private InitFrame initFrame;
+	private WinPopUp winPopUp;
+
 	/**
      * constructor for the gameframe
      * @param gameController
      */
     @Inject
-	public GameFrame(IGameController gameController){
-		
-		JPanel panel;
-		JPanel statusPanel;
-		JPanel gamePanel;	
-		JFrame gameFrame;
-		
+	public GameFrame(IGameController gameController) {
 		this.gameController = gameController;
 		this.gameController.addObserver(this);
 		
-		fieldSize = gameController.getFieldSize();
 		
-		gameFrame = new JFrame("Checkers the game");
-		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gameFrame.setLocationRelativeTo(null);
-		final int gameFrameExtenderInt = 50;
-		gameFrame.setSize(fieldSize*gameFrameExtenderInt,fieldSize*gameFrameExtenderInt);
-		
-		moveCountLabel = new JLabel("Overall number of moves: 0");
+		this.setTitle("Checkers the game");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(true);
+
+		moveCountLabel = new JLabel("");
 		errorLabel = new JLabel("");
-		turnLabel = new JLabel("Active color is black!");
+		turnLabel = new JLabel("");
+		statusPanel = buildStatusPanel();
 		
+		askForInitialization();
+	}
+    
+    private void initGameFrame() {
+		// set size
+		fieldSize = gameController.getFieldSize();
+    	final int gameFrameExtenderInt = 50;
+		this.setSize(fieldSize * gameFrameExtenderInt, fieldSize * gameFrameExtenderInt);
+		
+		// generate subPanels
 		buttons = new JButton[fieldSize][fieldSize];
+		buildButtonPanel();
 		
-		panel = new JPanel();
-		statusPanel = new JPanel();
-		gamePanel = new JPanel();
+		initLabels();
 		
-		panel.setLayout(new GridLayout(fieldSize,fieldSize));
-		final int three = 3;
-		statusPanel.setLayout(new GridLayout(three,1));
-		gamePanel.setLayout(new BorderLayout());
-		
-		for (int j = fieldSize-1; j > -1; j--){
-			for (int i = 0; i < fieldSize; i++){
-				buttons[i][j] = new JButton();
-				buttons[i][j].setName(i + " " + j + " ");
-				
-				buttons[i][j].addActionListener(this); 
-				if(i % 2 == j % 2){
-					if (fieldSize % 2 == 0){
-						buttons[i][j].setBackground(Color.white);
+		// build main Panel
+		JPanel gamePanel = new JPanel(new BorderLayout());
+		gamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		gamePanel.add(buttonPanel,BorderLayout.CENTER);
+		gamePanel.add(statusPanel,BorderLayout.SOUTH);
+
+		this.setContentPane(gamePanel);
+		this.setVisible(true);
+		paint();
+    }
+    
+   private void buildButtonPanel() {
+    	buttonPanel = new JPanel(new GridLayout(fieldSize,fieldSize));
+    	
+		for (int j = fieldSize - 1; j > -1; j--) {
+			for (int i = 0; i < fieldSize; i++) {
+				JButton button = new JButton();
+				button.setName(i + " " + j + " ");
+				button.addActionListener(this);
+
+				if (i % 2 == j % 2) {
+					if (fieldSize % 2 == 0) {
+						button.setBackground(Color.white);
 					} else {
-						buttons[i][j].setBackground(Color.gray);
+						button.setBackground(Color.gray);
 					}
 				} else {
-					if (fieldSize % 2 == 0){
-						buttons[i][j].setBackground(Color.gray);
+					if (fieldSize % 2 == 0) {
+						button.setBackground(Color.gray);
 					} else {
-						buttons[i][j].setBackground(Color.white);
+						button.setBackground(Color.white);
 					}
 				}
-				panel.add(buttons[i][j]);
+				buttonPanel.add(button);
+				buttons[i][j] = button;
 			}
-		}		
-		
-		gamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		
+		}
+    }
+   
+	private JPanel buildStatusPanel() {
+		final int numberOfLabels = 3;
+		JPanel statusPanel = new JPanel(new GridLayout(numberOfLabels, 1));
+
 		statusPanel.add(turnLabel);
 		statusPanel.add(moveCountLabel);
 		statusPanel.add(errorLabel);
 		
-		gamePanel.add(panel,BorderLayout.CENTER);
-		gamePanel.add(statusPanel,BorderLayout.SOUTH);
-
-		
-		gameFrame.setContentPane(gamePanel);
-		gameFrame.setResizable(true);
-		gameFrame.setVisible(true);
-		paint();
+		return statusPanel;
+	}
+	
+	private void initLabels() {
+		moveCountLabel.setText("Overall number of moves: 0");
+		errorLabel.setText("");
+		turnLabel.setText("Active color is black!");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JButton clickedButton = (JButton)e.getSource();
 		clickCount++;
-		sB.append(((JButton) e.getSource()).getName());
+		inputStringBuilder.append(clickedButton.getName());
 		if (clickCount == 2){
-			gameController.input(sB.toString());
+			gameController.input(inputStringBuilder.toString());
 			clickCount = 0;
-			sB.delete(0, sB.length());
+			inputStringBuilder.delete(0, inputStringBuilder.length());
 		}
 	}
 
@@ -130,51 +173,112 @@ public class GameFrame implements ActionListener, Observer{
     @Override
 	public void update() {
 		String error = gameController.getError();
-		if (error == null) {
-			errorLabel.setText("");
-			paint();
-						
-			int moveCount = gameController.getMoveCount();
-			String s = ("Overall number of moves: " + moveCount);
-			moveCountLabel.setText(s);
-			
-			if (gameController.isBlackTurn()){
-				turnLabel.setText("Active color is black!");
-			} else {
-				turnLabel.setText("Active color is white!");
+		errorLabel.setText(error);
+		if (error.isEmpty()) {
+			switch (gameController.getCurrentState()) {
+			case NEW_GAME:
+				this.setVisible(false);
+				askForInitialization();
+				break;
+			case RUNNING:
+				if (initFrame != null) {
+					// init through other view
+					initFrame.exit();
+				}
+				paint();
+				if (gameController.checkIfWin()){
+					errorLabel.setText(gameController.getInfo());
+					winPopUp = new WinPopUp(gameController.getInfo(), new winPopUpListener());
+					System.out.println("POP");
+				}
+				break;
+			default:
+				if (winPopUp != null) {
+					winPopUp.dispose();
+					winPopUp = null;
+				}
+				if (initFrame != null) {
+					initFrame.exit();
+					initFrame = null;
+				}
+				this.dispose();
+				// QUIT
+				break;
 			}
-			
-			if (gameController.checkIfWin(stringOutput)){
-				errorLabel.setText(stringOutput.toString());
-				new WinPopUp(stringOutput);
-			}
-		} else {
-				errorLabel.setText(error);
 		}
 	}
 	
-	private void paint(){
-		int i;
-		int j;
+	private void paint() {
+		if (!this.isVisible()) {
+			initGameFrame();
+		}
+		int i, j;
 		for (i = 0; i < fieldSize; i++){
 			for(j = 0; j < fieldSize; j++){
 				setFigureOnButton(i, j);
 			}
 		}
+
+		int moveCount = gameController.getMoveCount();
+		moveCountLabel.setText("Overall number of moves: " + moveCount);
 		
+		if (gameController.isBlackTurn()){
+			turnLabel.setText("Active color is black!");
+		} else {
+			turnLabel.setText("Active color is white!");
+		}
 	}
 	
 	private void setFigureOnButton(int i, int j) {
-		if (gameController.getFigureOnField(i, j) == null) {
-			buttons[i][j].setIcon(null);
-		} else if (gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned()){
-			buttons[i][j].setIcon(new ImageIcon(getClass().getResource("/images/black_checker_fig_skal.jpg")));
-		} else if ((!gameController.getFigureOnField(i, j).isBlack() && gameController.getFigureOnField(i, j).isCrowned())) {
-			buttons[i][j].setIcon(new ImageIcon(getClass().getResource("/images/white_checker_fig_skal.jpg")));
-		} else if (gameController.getFigureOnField(i, j).isBlack() ){
-			buttons[i][j].setIcon(new ImageIcon(getClass().getResource("/images/black_fig_skal.jpg")));
-		} else if (!gameController.getFigureOnField(i, j).isBlack()){
-			buttons[i][j].setIcon(new ImageIcon(getClass().getResource("/images/white_fig_skal.jpg")));
+		Icon icon = null;
+		
+		if (gameController.getFigureOnField(i, j) != null) {
+			StringBuilder nameBuilder = new StringBuilder("/images/");
+		
+			if (gameController.getFigureOnField(i, j).isBlack()) {
+				nameBuilder.append("black");
+			} else {
+				nameBuilder.append("white");
+			}
+			
+			if (gameController.getFigureOnField(i, j).isCrowned()) {
+				nameBuilder.append("_checker");
+			}
+			
+			nameBuilder.append("_fig_skal.jpg");
+			
+			icon = new ImageIcon(getClass().getResource(nameBuilder.toString()));
 		}
+			
+		buttons[i][j].setIcon(icon);
+	}
+	
+	private void startClicked() {
+		StringBuilder buildInitParams = new StringBuilder();
+		buildInitParams.append(initFrame.getSize());
+		if (initFrame.isOnePlayer()) {
+			buildInitParams.append(" S ");
+			buildInitParams.append(initFrame.getDifficulty());
+		} else {
+			buildInitParams.append(" M");
+		}
+
+		initFrame.exit();
+		initFrame = null;
+
+		gameController.input(buildInitParams.toString());
+	}
+	
+	private void controlEntered(String input) {
+		winPopUp.dispose();
+		gameController.input(input);
+	}
+	
+	private void askForInitialization() {
+		if (winPopUp != null) {
+			winPopUp.dispose();
+			winPopUp = null;
+		}
+		initFrame = new InitFrame(new initFrameListener());
 	}
 }

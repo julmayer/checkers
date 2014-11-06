@@ -4,9 +4,11 @@ package de.htwg.checkers.models;
  *
  * @author Julian Mayer, Marcel Loevenich
  */
-public class Field{
-	private Cell[][] field;
-	private int size;
+public class Field implements Drawable {
+	// 65 = 'A', used to translate letters to int
+	public static final int ASCII_OFFSET = 65;
+	private final Cell[][] field;
+	private final int size;
 	
 	/**
      * constructor for the gamefield
@@ -64,38 +66,34 @@ public class Field{
 	}	
 	
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
+	public String draw() {
+		final StringBuilder sb = new StringBuilder();
 		sb.append("Current situation:\n");
 		
+		// iterate through rows top to down
 		for (int i = size-1; i >= -1; --i) {
 			if (i == -1) {
+				// last row, add space for lower labels
 				sb.append("  ");
 			} else {
+				// add left labels as numbers
 				sb.append(i);
 				sb.append(" ");
 			}
+			// iterate through columns left to right
 			for (int j = 0; j < size; ++j) {
 				if (i == -1) {
+					// last row, add lower labels as letters
 					sb.append(" ");
-					sb.append(j);
+					sb.append(Character.toChars(j + ASCII_OFFSET));
 					sb.append(" ");
 				} else {
-					fillFigureString(j, i, sb);
+					sb.append(field[j][i].draw());
 				}
 			}
 			sb.append("\n");
 		}
 		
 		return sb.toString();
-	}
-	
-	private void fillFigureString(int j, int i, StringBuilder sb){
-		Figure figure = field[j][i].getOccupier();
-		if (figure == null) {
-			sb.append(" - ");
-		} else {
-			sb.append(figure.toString());
-		}
 	}
 }

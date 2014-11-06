@@ -16,7 +16,7 @@ public class MediumBot extends AbstractBot {
 	 * @param figures List of own Figures.
 	 */
 	public MediumBot(List<Figure> figures) {
-		super(figures);
+		super(figures, Bot.MEDIUM_BOT);
 	}
 
 	@Override

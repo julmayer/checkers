@@ -9,7 +9,6 @@ import com.google.inject.Injector;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.view.gui.GameFrame;
-import de.htwg.checkers.view.gui.InitFrame;
 import de.htwg.checkers.view.tui.TUI;
 
 /**
@@ -32,21 +31,20 @@ public final class Checkers {
     	// Set up logging through log4j
     	PropertyConfigurator.configure("log4j.properties");
     	
-		// Set up Google Guice Dependency Injector
-		InitFrame initFrame = new InitFrame();
+/*		InitFrame initFrame = new InitFrame();
 		synchronized (initFrame) {
 			try {
 				initFrame.wait();
 			} catch (InterruptedException e) {
 				
 			}
-		}
-		Injector injector = Guice.createInjector(new CheckersModule(initFrame.getSize(), initFrame.isOnePlayer(),
-				initFrame.getDifficulty()));
-		initFrame.exit();
+		}*/
+		// Set up Google Guice Dependency Injector
+		Injector injector = Guice.createInjector(new CheckersModule());
+//		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		
-		gameController.gameInit();
+		//gameController.gameInit();
 		
 		scanner = new Scanner(System.in);
 		

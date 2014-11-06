@@ -4,9 +4,9 @@ package de.htwg.checkers.models;
  *
  * @author Julian Mayer, Marcel Loevenich
  */
-public class Cell {
-	private int x;
-	private int y;
+public class Cell implements Drawable {
+	private final int x;
+	private final int y;
 	private Figure occupier;
 	
 	/**
@@ -98,7 +98,15 @@ public class Cell {
 		sb.append(y);
 		return sb.toString();
 	}
-	
+
+	@Override
+	public String draw() {
+		String drawing = " - ";
+		if (isOccupied()) {
+			drawing = occupier.draw();
+		}
+		return drawing;
+	}
 }
 	
 

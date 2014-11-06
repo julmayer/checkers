@@ -1,5 +1,6 @@
 package de.htwg.checkers.controller;
 
+import de.htwg.checkers.controller.bot.Bot;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.util.observer.IObservable;
@@ -37,14 +38,13 @@ public interface IGameController extends IObservable {
 	/**
      * make a game init
      */
-    void gameInit();
+    void gameInit(int size, boolean singleplayer, Bot difficulty);
 	
 	/**
-     * 
-     * @param stringOutput
-     * @return if someone has won or not
+     * check if somebody has won. 
+     * @return true if someone has won, in this case String info was filled.
      */
-    boolean checkIfWin(StringBuilder stringOutput);
+    boolean checkIfWin();
 	
 	/**
      *
@@ -71,4 +71,11 @@ public interface IGameController extends IObservable {
      * @return
      */
     String getError();
+    
+    String getInfo();
+    
+    public String getDrawingOfField();
+    
+    State getCurrentState();
+    
 }

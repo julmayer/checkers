@@ -1,53 +1,64 @@
 package de.htwg.checkers.view.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import de.htwg.checkers.controller.GameController;
 
 /**
  * PopUp frame when game is over
  * @author Julian Mayer, Marcel Loevenich
  */
-public class WinPopUp implements ActionListener {
+public class WinPopUp  extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5166328560140505158L;
 
-	
 	/**
      *contructor for the frame
      * @param sb
      */
-    public WinPopUp(StringBuilder sb) {
-		final int dialogSizeX = 200;
+    public WinPopUp(String message, ActionListener ButtonListener) {
+		final int dialogSizeX = 300;
 		final int dialogSizeY = 100;
 		
-		JDialog dialog = new JDialog();
-		JButton close = new JButton();
-		JLabel label = new JLabel();
+		JButton quit = new JButton("Quit");
+		quit.setName(GameController.QUIT + "");
+		JButton restart = new JButton("Restart");
+		restart.setName(GameController.RESTART+ "");
+		JButton newGame = new JButton("New game");
+		newGame.setName(GameController.NEW_GAME+ "");
 		
-		dialog.setLayout(new BorderLayout());
-		dialog.setLocationRelativeTo(null);
+		JLabel messageLabel = new JLabel();
 		
-		dialog.setTitle("Game over!");
-		dialog.setSize(dialogSizeX,dialogSizeY);
+		this.setLayout(new BorderLayout());
+		this.setLocationRelativeTo(null);
 		
-		label.setText(sb.toString());
+		this.setTitle("Game over!");
+		this.setSize(dialogSizeX,dialogSizeY);
 		
-		close.setText("Close");
-		close.addActionListener(this); 
+		messageLabel.setText(message);
 		
-		dialog.add(label, BorderLayout.CENTER);
-		dialog.add(close, BorderLayout.PAGE_END);
+		quit.addActionListener(ButtonListener); 
+		restart.addActionListener(ButtonListener);
+		newGame.addActionListener(ButtonListener);
 		
-		dialog.setResizable(false);
-		dialog.setModal(true);
-		dialog.setVisible(true);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.exit(0);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(newGame);
+		buttonPanel.add(restart);
+		buttonPanel.add(quit);
+				
+		
+		this.add(messageLabel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.PAGE_END);
+		
+		this.setResizable(false);
+		this.setVisible(true);
 	}
 }

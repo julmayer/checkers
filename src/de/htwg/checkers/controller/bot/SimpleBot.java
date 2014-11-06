@@ -16,7 +16,7 @@ public class SimpleBot extends AbstractBot {
 	 * @param figures List of own Figures.
 	 */
 	public SimpleBot(List<Figure> figures) {
-		super(figures);
+		super(figures, Bot.SIMPLE_BOT);
 	}
 
 	@Override
@@ -32,5 +32,4 @@ public class SimpleBot extends AbstractBot {
 		
 		return move;
 	}
-
 }

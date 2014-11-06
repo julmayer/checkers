@@ -71,7 +71,7 @@ public abstract class AbstractPossibleMovesDirection implements PossibleMovesDir
      *
      * @return the gamefield
      */
-    public Field getGamefield() {
+    protected Field getGamefield() {
 		return gamefield;
 	}
 	

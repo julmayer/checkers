@@ -16,6 +16,7 @@ public final class TUI implements Observer {
 
 	private IGameController gameController;
 	private static Logger logger = Logger.getLogger("de.htwg.checkers.view.tui");
+	private String oldField;
 	
 	/**
      *constructor for the tui
@@ -27,11 +28,26 @@ public final class TUI implements Observer {
 		this.gameController.addObserver(this);
 		
 		print("Welcome to checkers!");
-		printTui();
+		this.askForInitialization();
 	}
     
+	private void askForInitialization() {
+		print("Insert size of field between 4 and 12,"
+				+ "(M)ulti- (S)ingelplayer and easy (0) or medium (1) bot"
+				+ "(not necessary in multiplayer mode");
+	}
+	
+	private void askAfterWin() {
+		print("(Q)uit, (R)estart, (N)ew game?");
+	}
+
 	private void printTui() {
-		print(gameController.getField().toString());
+		String newField = gameController.getDrawingOfField();
+		if (oldField != null && oldField.equals(newField)) {
+			return;
+		}
+		oldField = newField;
+		print(newField);
 		print(String.format("Overall number of moves in game: %d", gameController.getMoveCount()));
 		showLegend();
 		String activeColor;
@@ -41,6 +57,7 @@ public final class TUI implements Observer {
 			activeColor = "white";
 		}
 		print("Active color: " + activeColor);
+		askAfterWin();
 		print("Insert Move: ");
 	}
 	
@@ -58,13 +75,23 @@ public final class TUI implements Observer {
      */
     @Override
 	public void update() {
-		StringBuilder sb = new StringBuilder();
 		String error = gameController.getError();
 		
-		if (error == null) {
-			printTui();
-			if (gameController.checkIfWin(sb)) {
-				print(sb.toString());
+		if (error.isEmpty()) {
+			switch (gameController.getCurrentState()) {
+			case NEW_GAME:
+				askForInitialization();
+				break;
+			case RUNNING:
+				printTui();
+				if (gameController.checkIfWin()) {
+					print(gameController.getInfo());
+					askAfterWin();
+				}
+				break;
+			default:
+				// Quit
+				break;
 			}
 		} else {
 			print(error);

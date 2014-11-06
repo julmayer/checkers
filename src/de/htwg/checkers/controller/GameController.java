@@ -4,14 +4,15 @@ package de.htwg.checkers.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 
+import de.htwg.checkers.controller.bot.Bot;
 import de.htwg.checkers.controller.bot.IBot;
-import de.htwg.checkers.controller.bot.SimpleBot;
 import de.htwg.checkers.controller.bot.MediumBot;
+import de.htwg.checkers.controller.bot.SimpleBot;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
@@ -29,10 +30,13 @@ import de.htwg.checkers.util.observer.Observable;
 
 @Singleton
 public class GameController extends Observable implements IGameController {
-	
+	public static final int MIN_GAMEFIELD_SIZE= 4;
+	public static final int BOT_DELAY = 500;
+	public static final char QUIT = 'Q';
+	public static final char NEW_GAME = 'N';
+	public static final char RESTART = 'R';
 	private Field field;
-	private final int rowsToFill;
-	private int size;
+	private int fieldSize;
 	private List<Figure> blacks;
 	private List<Figure> whites;
 	private boolean blackTurn;
@@ -42,34 +46,20 @@ public class GameController extends Observable implements IGameController {
 	private PossibleMovesUpperLeft upperLeft;
 	private PossibleMovesUpperRight upperRight;
 	private String error;
+	private String info;
 	private boolean hasMoreKills;
-	private boolean singelplayer;
+	private boolean singleplayer;
 	private IBot bot;
-	private int difficulty;
+	private boolean quit = false;
+	private State currentState;
 	
 	/**
      * Construcor for the gamecontroller
-     * @param size
+     * @param fieldSize
      */
     @Inject
-	public GameController(@Named("size") int size, @Named("onePlayer") boolean singelplayer,
-			@Named("difficulty") int difficulty) {		
-		final int minSize = 4;
-		if (size < minSize){
-			throw new IllegalArgumentException("Minimun size is 4!");
-		} else {
-			rowsToFill = size/2 - 1;
-		}
-		field = new Field(size);
-		this.lowerLeft = new PossibleMovesLowerLeft(field);
-		this.lowerRight = new PossibleMovesLowerRight(field);
-		this.upperLeft = new PossibleMovesUpperLeft(field);
-		this.upperRight = new PossibleMovesUpperRight(field);
-		this.size = size;
-		this.hasMoreKills = false;
-		this.singelplayer = singelplayer;
-		this.difficulty = difficulty;
-		
+	public GameController() {		
+		currentState = State.NEW_GAME;
 	}
 	
     /**
@@ -83,7 +73,7 @@ public class GameController extends Observable implements IGameController {
      * @return the gamefieldsize
      */
 	public int getFieldSize() {
-		return this.size;
+		return this.fieldSize;
 	}
 
 	/**
@@ -100,6 +90,14 @@ public class GameController extends Observable implements IGameController {
 		return error;
 	}
 	
+	public String getInfo() {
+		return info;
+	}
+	
+	public State getCurrentState() {
+		return this.currentState;
+	}
+	
 	/**
      * @return the actual move count
      */
@@ -110,43 +108,56 @@ public class GameController extends Observable implements IGameController {
 	/**
      * method to do a game init
      */
-	public void gameInit() {
+	public void gameInit(int size, boolean singleplayer, Bot difficulty) {
+		if (size < MIN_GAMEFIELD_SIZE){
+			throw new IllegalArgumentException(String.format("Minimum size is %d!", MIN_GAMEFIELD_SIZE));
+		}
+
+		final int rowsToFill = size/2 - 1;
+		this.fieldSize = size;
+		this.field = new Field(size);
+		this.lowerLeft = new PossibleMovesLowerLeft(field);
+		this.lowerRight = new PossibleMovesLowerRight(field);
+		this.upperLeft = new PossibleMovesUpperLeft(field);
+		this.upperRight = new PossibleMovesUpperRight(field);
+		this.singleplayer = singleplayer;
 		whites = new LinkedList<Figure>();
 		blacks = new LinkedList<Figure>();
-		createBlackFigures();
-		createWhiteFigures();
+		createBlackFigures(rowsToFill);
+		createWhiteFigures(rowsToFill);
 		// black starts
 		blackTurn = true;
 		moveCount = 0;
-		error = null;
+		error = "";
 		
 		switch (difficulty) {
-			case 0:
+			case SIMPLE_BOT :
 				this.bot = new SimpleBot(whites);
 				break;
-			case 1:
+			case MEDIUM_BOT:
 				this.bot = new MediumBot(whites);
 				break;
 			default:
 				this.bot = new SimpleBot(whites);
 				break;					
 		}
+		this.currentState = State.RUNNING;
 	}
 	
-	private void createWhiteFigures() {
+	private void createWhiteFigures(int rowsToFill) {
 		for (int y = 0; y < rowsToFill; y++){
-			fillRow(y,false);
+			fillRow(y, false);
 		}
 	}
 	
-	private void createBlackFigures() {
-		for (int y = size - rowsToFill;y < size; y++){
-			fillRow(y,true);
+	private void createBlackFigures(int rowsToFill) {
+		for (int y = fieldSize - rowsToFill;y < fieldSize; y++){
+			fillRow(y, true);
 		}
 	}
 	
 	private void fillRow(int y, boolean isBlack) {
-		for (int x = 0; x < size; x++) {
+		for (int x = 0; x < fieldSize; x++) {
 			if (x % 2 == 0 && y % 2 != 0 ){
 				fillList(new Figure(field.getCellByCoordinates(x, y),isBlack));
 			} else if (x % 2 != 0 && y % 2 == 0 ){
@@ -168,75 +179,142 @@ public class GameController extends Observable implements IGameController {
 	 * @param input
      * @return if there was an error
      */
-	
-	public boolean input(String input) {
-		
-		int moveFromX, moveFromY, moveToX, moveToY;
-		StringBuilder sb = new StringBuilder();
-		String[] splitInput = input.split(" ");
-		final int four = 4;
-		
-		if (splitInput.length != four) {
-			error = "Input to short, must be fromX formY toX toY: " + input;
-			notifyObservers();
-			return false;
+	public boolean input(final String input) {
+		final String initParamRegex = "^[0-9]+ (S [0-9]|M( [0-9])?)$";
+		final String moveRegex = "^([a-zA-Z0-9] [0-9] ?){2}$";
+		final String controlRegex = "^[a-zA-Z]$";
+		error = "";
+		if (Pattern.matches(initParamRegex, input)) {
+			parseGameInit(input);
+		} else if (Pattern.matches(moveRegex, input)) {
+			parseMove(input);
+		} else if (Pattern.matches(controlRegex, input)) {
+			parseControls(input);
+		} else {
+			error = "Incorrect input : " + input;
 		}
 		
-		final int three = 3;
-		moveFromX = Integer.valueOf(splitInput[0]);
-		moveFromY = Integer.valueOf(splitInput[1]);
-		moveToX = Integer.valueOf(splitInput[2]);
-		moveToY = Integer.valueOf(splitInput[three]);
+		notifyObservers();
+		botmove();
+		return this.quit;
+	}
+	
+	private void parseGameInit(final String input) {
+		final int fieldSizePos = 0, playModePos = 1, botLevelPos = 2;
+
+		final String[] splitInput = input.split(" ");
+		
+		final int fieldSize = Integer.valueOf(splitInput[fieldSizePos]);
+		final boolean singleplayer = splitInput[playModePos].equals("S");
+		Bot bot = Bot.NO_BOT;
+		if (singleplayer) {
+			bot = Bot.valueOf(Integer.valueOf(splitInput[botLevelPos]));
+		}
+		
+		gameInit(fieldSize, singleplayer, bot);
+	}
+	
+	private void parseMove(String input) {
+		final int srcXPos = 0, srcYPos = 1, destXPos = 2, destYPos = 3;
+		int moveFromX, moveFromY, moveToX, moveToY;
+		final String[] splittedInput = input.split(" ");
+		
+		if (this.currentState != State.RUNNING) {
+			error = "Game is not running";
+			return;
+		}
+		
+		moveFromX = parseString2int(splittedInput[srcXPos]);
+		moveFromY = parseString2int(splittedInput[srcYPos]);
+		moveToX = parseString2int(splittedInput[destXPos]);
+		moveToY = parseString2int(splittedInput[destYPos]);
 						
 		if (!field.isValidCoordinate(moveFromX,moveFromY) || !field.isValidCoordinate(moveToX,moveToY)){
 			error = "Input not valid, coordinates not in field!: " + input;
-			notifyObservers();
-			return false;
+			return;
 		}
 		
 		Figure figure = field.getCellByCoordinates(moveFromX, moveFromY).getOccupier();
 
 		if (figure == null) {
 			error = "No figure selected!" + input;
-			notifyObservers();
-			return false;
+			return;
 		}
 		
 		if (!hasMoreKills) {
 			createAllMoves();
 		}
 			
-		if (validateSelectedMove(figure, sb, moveToX, moveToY)){
+		if (validateSelectedMove(figure, moveToX, moveToY)){
 			//possible move
 			hasMoreKills = move(figure, moveToX, moveToY);
 		} else {
-			error = sb.toString() + input;
-			notifyObservers();
-			return false;
+			if (!error.isEmpty()) {
+				this.error += "\n";
+			}
+			this.error += String.format("Input was: %s", input);
+			return;
 		}
 		
 		if (!hasMoreKills) {
 			blackTurn = !blackTurn;
 		}
 		
-		error = null;
 		moveCount++;
-		notifyObservers();
-		botmove();
-		return checkIfWin(sb);
+		//botmove();
+	}
+	
+	private int parseString2int(String s) {
+		final char tmp = s.charAt(0);
+		int result;
+		
+		if (Character.isDigit(tmp)) {
+			// just parse
+			result = Integer.valueOf(s);
+		} else {
+			// A = 0
+			result = Character.toUpperCase(tmp)- Field.ASCII_OFFSET;
+		}
+		return result;
 	}
 	
 	private void botmove() {
-		StringBuilder sb = new StringBuilder();
-		if (!checkIfWin(sb) && singelplayer && !blackTurn) {
+		if (!checkIfWin() && singleplayer && !blackTurn) {
+			try {
+				Thread.sleep(BOT_DELAY);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			input(bot.move());
+		}
+	}
+	
+	private void parseControls(String input) {
+		char control = input.charAt(0);
+		
+		switch (control) {
+		case QUIT:
+			this.currentState = State.QUIT;
+			this.quit = true;
+			break;
+			
+		case RESTART:
+			this.gameInit(this.fieldSize, this.singleplayer, this.bot.getDifficulty());
+			break;
+			
+		case NEW_GAME:
+			this.currentState = State.NEW_GAME;
+			break;
+
+		default:
+			break;
 		}
 	}
 
 	/**
      * @return if someone has won or not
      */	
-	public boolean checkIfWin(StringBuilder stringOutput) {
+	public boolean checkIfWin() {
 		createAllMoves();
 		List<Figure> list;
 		boolean hasMoves = false;
@@ -251,12 +329,11 @@ public class GameController extends Observable implements IGameController {
 				break;
 			}
 		}
-		
-		if (blacks.size() == 0 || (list.equals(blacks) && !hasMoves)){
-			stringOutput.append("White wins! Congratulations!");
+		if (blacks.isEmpty() || (list.equals(blacks) && !hasMoves)){
+			this.info = "White wins! Congratulations!\n";
 			return true;
-		} else if (whites.size() == 0 || (list.equals(whites) && !hasMoves)){
-			stringOutput.append("Black wins! Congratulations!");
+		} else if (whites.isEmpty() || (list.equals(whites) && !hasMoves)){
+			this.info = "Black wins! Congratulations!";
 			return true;
 		} else {
 			return false;
@@ -273,19 +350,19 @@ public class GameController extends Observable implements IGameController {
 		return field.getCellByCoordinates(x, y).getOccupier();
 	}
 	
-	private boolean validateSelectedMove(Figure figure, StringBuilder stringOutput, int x, int y) {
+	private boolean validateSelectedMove(Figure figure, int x, int y) {
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
 		if (figure.isBlack() && !blackTurn){
-			stringOutput.append("Please select a white figure!");
+			this.error = "Please select a white figure!";
 			return false;
 		} else if (!figure.isBlack() && blackTurn){
-			stringOutput.append("Please select a black figure!");
+			this.error = "Please select a black figure!";
 			return false;
 		} else if (figure.getPossibleMoves().contains(selectedMove)){
 			//possible move
 			return true;
 		} else {
-			stringOutput.append("This is no possible move!");
+			this.error = "This is no possible move!";
 			return false;
 		}
 	}
@@ -392,8 +469,13 @@ public class GameController extends Observable implements IGameController {
 		if(figure.isBlack() && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}
-		if(!figure.isBlack() && figure.getPosition().getY() == size-1){
+		if(!figure.isBlack() && figure.getPosition().getY() == fieldSize-1){
 			figure.setCrowned(true);
 		}
+	}
+
+	@Override
+	public String getDrawingOfField() {
+		return field.draw();
 	}
 }

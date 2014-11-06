@@ -14,14 +14,16 @@ import de.htwg.checkers.models.Figure;
 public abstract class AbstractBot implements IBot {
 
 	private List<Figure> figures;
+	protected Bot difficulty;
 	
 	/**
 	 * Constructor with List of own Figures.
 	 * @param figures List of own Figures.
 	 */
 	@Inject
-	public AbstractBot(List<Figure> figures) {
+	public AbstractBot(List<Figure> figures, Bot bot) {
 		this.figures = figures;
+		this.difficulty = bot;
 	}
 	
 	/**
@@ -30,6 +32,10 @@ public abstract class AbstractBot implements IBot {
 	 */
 	protected List<Figure> getFigures() {
 		return this.figures;
+	}
+	
+	public Bot getDifficulty() {
+		return difficulty;
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package de.htwg.checkers.view.gui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -18,7 +17,7 @@ import javax.swing.JRadioButton;
  * first frame, to choose the fieldsize, after the game has started
  * @author Julian Mayer, Marcel Loevenich
  */
-public class InitFrame  implements ActionListener {
+public class InitFrame  {
 	
 	private JRadioButton radioButton4x4;
 	private JRadioButton radioButton8x8;
@@ -27,15 +26,12 @@ public class InitFrame  implements ActionListener {
 	private JRadioButton singelplayer;
 	private JRadioButton easy;
 	private JRadioButton medium;
-	private int size;
 	private JFrame initFrame;
-	private boolean onePlayer;
-	private int difficulty;
 	
 	/**
      *constructor for the frame
      */
-    public InitFrame(){
+    public InitFrame(ActionListener startListener) {
 
 		JPanel panel;
 		JPanel playerPanel;
@@ -81,7 +77,7 @@ public class InitFrame  implements ActionListener {
 		easy.setSelected(true);
 		medium = new JRadioButton("medium");
 		
-		startButton.addActionListener(this); 
+		startButton.addActionListener(startListener); 
 		
 		playerPanel.add(singelplayer);
 		playerPanel.add(multiplayer);
@@ -119,44 +115,29 @@ public class InitFrame  implements ActionListener {
 		initFrame.pack();
 		initFrame.setVisible(true);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		final int sizeFour = 4;
-		final int sizeEight = 8;
-		final int sizeTen = 10;
-		final int sizeTwelve = 12;
-
-		if (radioButton8x8.isSelected()){
-			size = sizeEight;
-		} else if (radioButton10x10.isSelected()){
-			size = sizeTen;
-		} else if (radioButton4x4.isSelected()) {
-			size = sizeFour;
-		} else if (radioButton12x12.isSelected()){
-			size = sizeTwelve;
-		}
-		
-		onePlayer = singelplayer.isSelected();
-		
-		if (easy.isSelected()) {
-			difficulty = 0;
-		} else if (medium.isSelected()) {
-			difficulty = 1;
-		}
-		
-		synchronized (this) {
-			this.notify();
-		}
-	}
 	
 	/**
      * 
      * @return fieldsize
      */
     public int getSize() {
-		return size;
+		int size;
+		final int sizeFour = 4;
+		final int sizeEight = 8;
+		final int sizeTen = 10;
+		final int sizeTwelve = 12;
+
+		if (radioButton8x8.isSelected()) {
+			size = sizeEight;
+		} else if (radioButton10x10.isSelected()) {
+			size = sizeTen;
+		} else if (radioButton4x4.isSelected()) {
+			size = sizeFour;
+		} else {
+			size = sizeTwelve;
+		}
+    	
+    	return size;
 	}
     
     /**
@@ -164,7 +145,7 @@ public class InitFrame  implements ActionListener {
      * @return true if singelplayer is selected.
      */
     public boolean isOnePlayer() {
-    	return onePlayer;
+    	return singelplayer.isSelected();
     }
 	
     /**
@@ -172,6 +153,14 @@ public class InitFrame  implements ActionListener {
      * @return difficulty. Lower number equals easier gameplay.
      */
     public int getDifficulty() {
+    	int difficulty;
+		
+    	if (easy.isSelected()) {
+			difficulty = 0;
+		} else {
+			difficulty = 1;
+		}
+		
     	return difficulty;
     }
     

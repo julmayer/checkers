@@ -7,11 +7,10 @@ import java.util.List;
  * 
  * @author Julian Mayer, Marcel Loevenich
  */
-public class Figure {
+public class Figure implements Drawable {
 	private Cell position;
 	private boolean crowned;
-	private boolean alive;
-	private boolean black;
+	private final boolean black;
 	private List<Move> possibleMoves;
 	
 	/**
@@ -25,7 +24,6 @@ public class Figure {
 			this.position.setOccupier(this);
 		}
 		this.black = black;
-		this.alive = true;
 		this.crowned = false;
 		this.possibleMoves = new LinkedList<Move>();
 	}
@@ -66,19 +64,11 @@ public class Figure {
 		this.crowned = crowned;
 	}
 
-	/**
-     *
-     * @return if a figure is alive or not
-     */
-    public boolean isAlive() {
-		return alive;
-	}
 
 	/**
      * method to kill a figure
      */
     public void kill() {
-		this.alive = false;
 		this.position.setOccupier(null);
 		this.position = null;
 	}
@@ -184,5 +174,20 @@ public class Figure {
 		}
 		
 		return s;
+	}
+
+	@Override
+	public String draw() {
+		String drawing;
+		if (black) {
+			drawing = " x ";
+		} else {
+			drawing = " o ";
+		}
+		
+		if (crowned) {
+			drawing = drawing.toUpperCase();
+		}
+		return drawing;
 	}
 }

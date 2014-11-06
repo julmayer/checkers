@@ -11,4 +11,6 @@ public interface IBot {
     * @return botMove as String with format "FromX FromY ToX ToY"
     */
 	String move();
+	
+	Bot getDifficulty();
 }
