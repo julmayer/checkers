@@ -189,7 +189,6 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 				if (gameController.checkIfWin()){
 					errorLabel.setText(gameController.getInfo());
 					winPopUp = new WinPopUp(gameController.getInfo(), new winPopUpListener());
-					System.out.println("POP");
 				}
 				break;
 			default:
@@ -203,6 +202,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 				}
 				this.dispose();
 				// QUIT
+				System.exit(0);
 				break;
 			}
 		}
