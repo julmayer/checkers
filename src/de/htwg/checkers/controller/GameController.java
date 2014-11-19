@@ -195,7 +195,9 @@ public class GameController extends Observable implements IGameController {
 		}
 		
 		notifyObservers();
-		botmove();
+		if (currentState == State.RUNNING) {
+			botmove();
+		}
 		return this.quit;
 	}
 	
