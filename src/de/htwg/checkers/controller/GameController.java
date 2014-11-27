@@ -27,7 +27,7 @@ import de.htwg.checkers.util.observer.Observable;
  * Implementation of gameController
  * @author Julian Mayer, Marcel Loevenich
  */
-
+	
 @Singleton
 public class GameController extends Observable implements IGameController {
 	public static final int MIN_GAMEFIELD_SIZE= 4;
