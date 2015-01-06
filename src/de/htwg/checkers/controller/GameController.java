@@ -35,6 +35,8 @@ public class GameController extends Observable implements IGameController {
 	public static final char QUIT = 'Q';
 	public static final char NEW_GAME = 'N';
 	public static final char RESTART = 'R';
+	public static final char WHITE_GAVE_UP = 'W';
+	public static final char BLACK_GAVE_UP = 'B';
 	private Field field;
 	private int fieldSize;
 	private List<Figure> blacks;
@@ -307,6 +309,14 @@ public class GameController extends Observable implements IGameController {
 		case NEW_GAME:
 			this.currentState = State.NEW_GAME;
 			break;
+			
+		case BLACK_GAVE_UP:
+		    blacks.clear();
+		    break;
+		    
+		case WHITE_GAVE_UP:
+		    whites.clear();
+		    break;
 
 		default:
 			break;
