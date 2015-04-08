@@ -40,7 +40,7 @@ public final class Checkers {
 			}
 		}*/
 		// Set up Google Guice Dependency Injector
-		Injector injector = Guice.createInjector(new CheckersModule());
+		Injector injector = Guice.createInjector(new CheckersModule(), new PluginModule());
 //		initFrame.exit();
 		IGameController gameController = injector.getInstance(IGameController.class);
 		

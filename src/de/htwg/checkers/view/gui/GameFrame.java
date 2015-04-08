@@ -3,8 +3,10 @@ package de.htwg.checkers.view.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -12,12 +14,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import com.google.inject.Inject;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.util.observer.Observer;
+import de.htwg.checkers.view.plugin.IPlugin;
 
 /**
  * main frame with the game
@@ -56,6 +62,8 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	private JLabel moveCountLabel;
 	private JLabel errorLabel;
 	private JLabel turnLabel;
+	private JMenuBar menuBar;
+	private JMenu pluginMenu;
 	
 	private int fieldSize;
 	private int clickCount = 0;
@@ -69,7 +77,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
      * @param gameController
      */
     @Inject
-	public GameFrame(IGameController gameController) {
+	public GameFrame(final IGameController gameController, Set<IPlugin> plugins) {
 		this.gameController = gameController;
 		this.gameController.addObserver(this);
 		
@@ -84,6 +92,24 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		turnLabel = new JLabel("");
 		statusPanel = buildStatusPanel();
 		
+		menuBar = new JMenuBar();
+		pluginMenu = new JMenu("Plugins");
+		
+		menuBar.add(pluginMenu);
+		
+		for (final IPlugin p : plugins) {
+			JMenuItem m = new JMenuItem(p.getMenuEntry(), p.getMenuKey());
+			m.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					p.execute(gameController, GameFrame.this);
+					
+				}
+			});
+			pluginMenu.add(m);
+		}
+		this.setJMenuBar(menuBar);
 		askForInitialization();
 	}
     
