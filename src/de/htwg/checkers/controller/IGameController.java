@@ -1,8 +1,11 @@
 package de.htwg.checkers.controller;
 
+import java.util.List;
+
 import de.htwg.checkers.controller.bot.Bot;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.Move;
 import de.htwg.checkers.util.observer.IObservable;
 
 /**
@@ -77,5 +80,7 @@ public interface IGameController extends IObservable {
     public String getDrawingOfField();
     
     State getCurrentState();
+    
+    List<Move> getPossibleMoves();
     
 }

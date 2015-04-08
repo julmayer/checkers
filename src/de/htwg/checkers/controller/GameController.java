@@ -490,4 +490,20 @@ public class GameController extends Observable implements IGameController {
 	public String getDrawingOfField() {
 		return field.draw();
 	}
+	
+	@Override
+	public List<Move> getPossibleMoves() {
+	    List<Figure> figures = whites;
+	    List<Move> moves = new LinkedList<Move>();
+	    
+	    if (isBlackTurn()) {
+	        figures = blacks;
+	    }
+	    
+	    for (Figure f : figures) {
+	        moves.addAll(f.getPossibleMoves());
+	    }
+	    
+	    return moves;
+	}
 }

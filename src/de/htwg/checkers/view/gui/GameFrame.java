@@ -253,7 +253,14 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		buttons[i][j].setIcon(icon);
 	}
 	
-	private void startClicked() {
+	/**
+     * @return the buttons
+     */
+    public JButton[][] getButtons() {
+        return buttons;
+    }
+
+    private void startClicked() {
 		StringBuilder buildInitParams = new StringBuilder();
 		buildInitParams.append(initFrame.getSize());
 		if (initFrame.isOnePlayer()) {
