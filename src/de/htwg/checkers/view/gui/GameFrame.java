@@ -3,7 +3,6 @@ package de.htwg.checkers.view.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
@@ -94,6 +93,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		
 		menuBar = new JMenuBar();
 		pluginMenu = new JMenu("Plugins");
+		pluginMenu.setMnemonic('P');
 		
 		menuBar.add(pluginMenu);
 		
@@ -144,26 +144,32 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 				JButton button = new JButton();
 				button.setName(i + " " + j + " ");
 				button.addActionListener(this);
-
-				if (i % 2 == j % 2) {
-					if (fieldSize % 2 == 0) {
-						button.setBackground(Color.white);
-					} else {
-						button.setBackground(Color.gray);
-					}
-				} else {
-					if (fieldSize % 2 == 0) {
-						button.setBackground(Color.gray);
-					} else {
-						button.setBackground(Color.white);
-					}
-				}
+				button.setBackground(getButtonBackground(i, j));
 				buttonPanel.add(button);
 				buttons[i][j] = button;
 			}
 		}
     }
    
+   private Color getButtonBackground(int x, int y) {
+       Color color;
+       if (x % 2 == y % 2) {
+           if (fieldSize % 2 == 0) {
+               color = Color.white;
+           } else {
+               color = Color.gray;
+           }
+       } else {
+           if (fieldSize % 2 == 0) {
+               color = Color.gray;
+           } else {
+               color = Color.white;
+           }
+       }
+       return color;
+   }
+   
+  
 	private JPanel buildStatusPanel() {
 		final int numberOfLabels = 3;
 		JPanel statusPanel = new JPanel(new GridLayout(numberOfLabels, 1));
@@ -240,7 +246,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		}
 		int i, j;
 		for (i = 0; i < fieldSize; i++){
-			for(j = 0; j < fieldSize; j++){
+			for(j = 0; j < fieldSize; j++) {
 				setFigureOnButton(i, j);
 			}
 		}
@@ -277,6 +283,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		}
 			
 		buttons[i][j].setIcon(icon);
+		buttons[i][j].setBackground(getButtonBackground(i, j));
 	}
 	
 	/**
