@@ -70,7 +70,7 @@ public interface IGameController extends IObservable {
     boolean input(String input);
 	
 	/**
-     *
+     * 
      * @return
      */
     String getError();
@@ -83,4 +83,9 @@ public interface IGameController extends IObservable {
     
     List<Move> getPossibleMoves();
     
+    /**
+     * Return the name of the current game
+     * @return name of game
+     */
+    String getName();
 }

@@ -1,6 +1,9 @@
 package de.htwg.checkers.controller;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,15 +57,19 @@ public class GameController extends Observable implements IGameController {
 	private IBot bot;
 	private boolean quit = false;
 	private State currentState;
+	private String name;
 	
 	/**
      * Construcor for the gamecontroller
      * @param fieldSize
      */
     @Inject
-	public GameController() {		
-		currentState = State.NEW_GAME;
-	}
+    public GameController() {
+        currentState = State.NEW_GAME;
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        Date date = new Date();
+        this.name = dateFormat.format(date);
+    }
 	
     /**
      * @return the gamefield
@@ -105,6 +112,10 @@ public class GameController extends Observable implements IGameController {
      */
 	public int getMoveCount() {
 		return moveCount;
+	}
+	
+	public String getName() {
+	    return this.name;
 	}
 	
 	/**
