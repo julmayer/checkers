@@ -2,7 +2,6 @@ package de.htwg.checkers.view.plugin.impl;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.models.Move;
