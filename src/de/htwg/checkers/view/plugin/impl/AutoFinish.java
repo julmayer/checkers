@@ -2,7 +2,6 @@ package de.htwg.checkers.view.plugin.impl;
 
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.models.Move;
@@ -57,7 +56,6 @@ public class AutoFinish implements IPlugin {
                 Move move = moves.get(random.nextInt(moves.size()));
                 this.controller.input(move.toString());
             }
-            Logger.getGlobal().info("finished");
         }
         
     }
