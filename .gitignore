@@ -1,6 +1,5 @@
 *.class
 /bin
-*sonar*
 /.settings/*
 .gitignore
 
