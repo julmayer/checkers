@@ -2,10 +2,11 @@ package de.htwg.checkers.controller;
 
 import java.util.List;
 
-import de.htwg.checkers.controller.bot.Bot;
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.Move;
+import de.htwg.checkers.models.State;
 import de.htwg.checkers.util.observer.IObservable;
 
 /**
@@ -41,7 +42,7 @@ public interface IGameController extends IObservable {
 	/**
      * make a game init
      */
-    void gameInit(int size, boolean singleplayer, Bot difficulty);
+    void gameInit(int size, Bot difficulty);
 	
 	/**
      * check if somebody has won. 
@@ -82,10 +83,4 @@ public interface IGameController extends IObservable {
     State getCurrentState();
     
     List<Move> getPossibleMoves();
-    
-    /**
-     * Return the name of the current game
-     * @return name of game
-     */
-    String getName();
 }

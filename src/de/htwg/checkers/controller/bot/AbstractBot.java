@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Figure;
 
 /**

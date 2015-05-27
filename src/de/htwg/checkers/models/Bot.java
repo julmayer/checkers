@@ -1,4 +1,4 @@
-package de.htwg.checkers.controller.bot;
+package de.htwg.checkers.models;
 
 public enum Bot {
 	NO_BOT, SIMPLE_BOT, MEDIUM_BOT;

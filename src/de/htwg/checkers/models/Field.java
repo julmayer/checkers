@@ -36,6 +36,14 @@ public class Field implements Drawable {
     public Cell[][] getField(){
 		return field;
 	}
+    
+    /**
+     * Returns the size of the field.
+     * @return size of the field
+     */
+    public int getSize() {
+        return size;
+    }
 	
 	/**
      * 

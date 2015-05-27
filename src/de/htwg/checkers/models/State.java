@@ -1,4 +1,4 @@
-package de.htwg.checkers.controller;
+package de.htwg.checkers.models;
 
 public enum State {
 	NEW_GAME,

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.htwg.checkers.controller.bot.Bot;
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
@@ -24,11 +24,11 @@ public class GameControllerTest {
 	
 	@Before 
 	public void setUp() {
-		gameController4.gameInit(4, false, Bot.NO_BOT);
-		gameController5.gameInit(5, false, Bot.NO_BOT);
-		gameController7.gameInit(7, false, Bot.NO_BOT);
-		controllerWithEasyBot.gameInit(4, true, Bot.SIMPLE_BOT);
-		controllerWithMediumBot.gameInit(4, true, Bot.MEDIUM_BOT);
+		gameController4.gameInit(4, Bot.NO_BOT);
+		gameController5.gameInit(5, Bot.NO_BOT);
+		gameController7.gameInit(7, Bot.NO_BOT);
+		controllerWithEasyBot.gameInit(4, Bot.SIMPLE_BOT);
+		controllerWithMediumBot.gameInit(4, Bot.MEDIUM_BOT);
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class GameControllerTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testException() {
-		new GameController().gameInit(2, false, Bot.NO_BOT);
+		new GameController().gameInit(2, Bot.NO_BOT);
 	}
 	
 	@Test

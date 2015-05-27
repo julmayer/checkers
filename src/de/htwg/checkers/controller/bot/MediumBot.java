@@ -2,6 +2,7 @@ package de.htwg.checkers.controller.bot;
 
 import java.util.List;
 
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Figure;
 
 /**
