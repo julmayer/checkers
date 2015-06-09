@@ -23,6 +23,7 @@ import de.htwg.checkers.models.Figure;
 import de.htwg.checkers.models.GameState;
 import de.htwg.checkers.models.Move;
 import de.htwg.checkers.models.State;
+import de.htwg.checkers.persistence.PersistContainer;
 import de.htwg.checkers.util.observer.Observable;
 
 /**
@@ -57,7 +58,7 @@ public class GameController extends Observable implements IGameController {
     @Inject
     public GameController() {
         gameState = new GameState();
-        error = new String();
+        this.error = "";
     }
 	
     /**
@@ -65,6 +66,10 @@ public class GameController extends Observable implements IGameController {
      */
 	public Field getField() {
 		return new Field(this.field);
+	}
+	
+	public GameState getGameState() {
+	    return this.gameState;
 	}
 	
 	/**
@@ -113,31 +118,58 @@ public class GameController extends Observable implements IGameController {
 
 		final int rowsToFill = size/2 - 1;
 		this.field = new Field(size);
-		this.lowerLeft = new PossibleMovesLowerLeft(field);
-		this.lowerRight = new PossibleMovesLowerRight(field);
-		this.upperLeft = new PossibleMovesUpperLeft(field);
-		this.upperRight = new PossibleMovesUpperRight(field);
-		whites = new LinkedList<Figure>();
-		blacks = new LinkedList<Figure>();
-		createBlackFigures(rowsToFill);
-		createWhiteFigures(rowsToFill);
-		// black starts
 		this.gameState.reset();
-		error = "";
-		
-		switch (difficulty) {
-			case SIMPLE_BOT :
-				this.bot = new SimpleBot(whites);
-				break;
-			case MEDIUM_BOT:
-				this.bot = new MediumBot(whites);
-				break;
-			default:
-				this.bot = null;
-				break;					
-		}
 		this.gameState.setBot(difficulty);
 		this.gameState.setCurrentState(State.RUNNING);
+		this.gameInit();
+		createBlackFigures(rowsToFill);
+		createWhiteFigures(rowsToFill);
+	}
+	
+	@Override
+	public void gameInit(PersistContainer container) {
+	    this.gameState = container.getGameState();
+	    this.field = container.getField();
+	    this.gameInit();
+	    
+	    // TODO reconstuction of figures
+	    int size = field.getSize();
+	    for (int i = 0; i < size; ++i) {
+	        for (int j = 0; j < size; ++j) {
+	            Figure figure = field.getCellByCoordinates(i, j).getOccupier();
+	            if (figure == null) {
+	                continue;
+	            }
+	            if (figure.isBlack()) {
+	                this.blacks.add(figure);
+	            } else {
+	                this.whites.add(figure);
+	            }
+	        }
+	    }
+	    this.notifyObservers();
+	}
+	
+	private void gameInit() {
+        this.lowerLeft = new PossibleMovesLowerLeft(field);
+        this.lowerRight = new PossibleMovesLowerRight(field);
+        this.upperLeft = new PossibleMovesUpperLeft(field);
+        this.upperRight = new PossibleMovesUpperRight(field);
+        this.whites = new LinkedList<Figure>();
+        this.blacks = new LinkedList<Figure>();
+        this.error = "";
+        
+        switch (this.gameState.getBot()) {
+        case SIMPLE_BOT:
+            this.bot = new SimpleBot(this.whites);
+            break;
+        case MEDIUM_BOT:
+            this.bot = new MediumBot(this.whites);
+            break;
+        default:
+            this.bot = null;
+            break;
+        }
 	}
 	
 	private void createWhiteFigures(int rowsToFill) {

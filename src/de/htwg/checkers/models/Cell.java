@@ -19,6 +19,15 @@ public class Cell implements Drawable {
 		this.y = y;
 		this.occupier = null;
 	}
+    
+    public Cell(Cell cell) {
+        this.x = cell.x;
+        this.y = cell.y;
+        if (cell.occupier != null) {
+            this.occupier = new Figure(cell.occupier);
+            this.occupier.setPosition(this);
+        }
+    }
 	
 	/**
      *

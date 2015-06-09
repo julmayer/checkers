@@ -17,7 +17,7 @@ import javax.swing.JRadioButton;
  * first frame, to choose the fieldsize, after the game has started
  * @author Julian Mayer, Marcel Loevenich
  */
-public class InitFrame  {
+public class InitFrame {
 	
 	private JRadioButton radioButton4x4;
 	private JRadioButton radioButton8x8;
@@ -31,7 +31,7 @@ public class InitFrame  {
 	/**
      *constructor for the frame
      */
-    public InitFrame(ActionListener startListener) {
+    public InitFrame(ActionListener startListener, ActionListener loadListener) {
 
 		JPanel panel;
 		JPanel playerPanel;
@@ -40,16 +40,18 @@ public class InitFrame  {
 		JPanel buttonPanel;
 		JPanel difficultyPanel;
 		JButton startButton;
+		JButton loadButton;
 		JLabel label1;
 		JLabel label2;
 		JRadioButton multiplayer;
 		
 		initFrame = new JFrame("Checkers");
-		initFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		initFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initFrame.setLocationRelativeTo(null);
 		final int frameSizeX = 325;
 		final int frameSizeY = 150;
 		initFrame.setSize(frameSizeX,frameSizeY);
+		
 	
 		panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -63,6 +65,7 @@ public class InitFrame  {
 		
 		
 		startButton = new JButton("Start");
+		loadButton = new JButton("Load");
 		label1 = new JLabel("Welcome to checkers!");
 		label2 = new JLabel("Please choose the size of the gamefield:");
 		radioButton4x4 = new JRadioButton("4x4");
@@ -78,6 +81,7 @@ public class InitFrame  {
 		medium = new JRadioButton("medium");
 		
 		startButton.addActionListener(startListener); 
+		loadButton.addActionListener(loadListener);
 		
 		playerPanel.add(singelplayer);
 		playerPanel.add(multiplayer);
@@ -86,6 +90,7 @@ public class InitFrame  {
 		sizePanel.add(radioButton10x10);
 		sizePanel.add(radioButton12x12);
 		buttonPanel.add(startButton);
+		buttonPanel.add(loadButton);
 		labelPanel.add(label1);
 		labelPanel.add(label2);
 		difficultyPanel.add(easy);

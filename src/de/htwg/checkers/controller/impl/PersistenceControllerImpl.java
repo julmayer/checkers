@@ -6,32 +6,36 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.htwg.checkers.controller.GameController;
-import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.controller.IPersistenceController;
-import de.htwg.checkers.persistence.IGameControllerDAO;
+import de.htwg.checkers.persistence.IDAO;
+import de.htwg.checkers.persistence.PersistContainer;
 
 @Singleton
 public class PersistenceControllerImpl implements IPersistenceController {
-    IGameControllerDAO dao;
+    IDAO dao;
 
     @Inject
-    public PersistenceControllerImpl(IGameControllerDAO dao) {
+    public PersistenceControllerImpl(IDAO dao) {
         this.dao = dao;
     }
 
     @Override
     public List<String> getStoredGames() {
         List<String> result = new ArrayList<String>();
-        for (IGameController gc : dao.getAllGameControllers()) {
-            result.add(gc.getName());
+        for (PersistContainer container : dao.getAllPersistContainers()) {
+            result.add(container.getName());
         }
         return result;
     }
 
     @Override
-    public void save(IGameController gameController) {
-        this.dao.saveGameController(gameController);
+    public void save(PersistContainer container) {
+        this.dao.savePersistContainer(container);
+    }
+    
+    @Override
+    public PersistContainer getByName(String name) {
+        return this.dao.getPersistContainerBy(name);
     }
 
 }

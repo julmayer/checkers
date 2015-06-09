@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -16,11 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.google.inject.Inject;
 
 import de.htwg.checkers.controller.IGameController;
+import de.htwg.checkers.controller.IPersistenceController;
+import de.htwg.checkers.persistence.PersistContainer;
 import de.htwg.checkers.util.observer.Observer;
 import de.htwg.checkers.view.plugin.IPlugin;
 
@@ -37,6 +41,25 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		}
 	}
 	
+	private class loadListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+	        List<String> selection = persistenceController.getStoredGames();
+	        String gameName = (String) JOptionPane.showInputDialog(GameFrame.this,
+	                "Select savegame to be loaded", "Load game",
+	                JOptionPane.QUESTION_MESSAGE, null, selection.toArray(), null);
+
+	        if (gameName != null && !gameName.isEmpty()) {
+	            gameController.gameInit(persistenceController.getByName(gameName));
+
+	            if (initFrame != null) {
+	                initFrame.exit();
+	                initFrame = null;
+	            }
+	        }
+	    }
+	}
+
 	private class winPopUpListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -54,6 +77,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	private static final long serialVersionUID = 6475445915710130057L;
 
 	private IGameController gameController;
+	private IPersistenceController persistenceController;
 
 	private JButton[][] buttons;
 	private JPanel statusPanel;
@@ -63,6 +87,9 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	private JLabel turnLabel;
 	private JMenuBar menuBar;
 	private JMenu pluginMenu;
+    private JMenu optionMenu;
+    private JMenuItem save;
+
 	
 	private int fieldSize;
 	private int clickCount = 0;
@@ -76,9 +103,11 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
      * @param gameController
      */
     @Inject
-	public GameFrame(final IGameController gameController, Set<IPlugin> plugins) {
+	public GameFrame(final IGameController gameController, Set<IPlugin> plugins, 
+	        final IPersistenceController persistenceController) {
 		this.gameController = gameController;
 		this.gameController.addObserver(this);
+		this.persistenceController = persistenceController;
 		
 		
 		this.setTitle("Checkers the game");
@@ -92,9 +121,27 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		statusPanel = buildStatusPanel();
 		
 		menuBar = new JMenuBar();
+		optionMenu = new JMenu("Options");
+		optionMenu.setMnemonic('O');
+		save = new JMenuItem("Save");
+		save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)JOptionPane.showInputDialog(GameFrame.this, 
+                        "Inser name for savegame", "new Game");
+                if (name != null && !name.isEmpty()) {
+                    PersistContainer container = new PersistContainer(name, 
+                            gameController.getField(), gameController.getGameState());
+                    persistenceController.save(container);
+                }
+            }
+        });
+		
+		optionMenu.add(save);
 		pluginMenu = new JMenu("Plugins");
 		pluginMenu.setMnemonic('P');
 		
+		menuBar.add(optionMenu);
 		menuBar.add(pluginMenu);
 		
 		for (final IPlugin p : plugins) {
@@ -110,7 +157,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 			pluginMenu.add(m);
 		}
 		this.setJMenuBar(menuBar);
-		askForInitialization();
+		update();
 	}
     
     private void initGameFrame() {
@@ -319,6 +366,6 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 			winPopUp.dispose();
 			winPopUp = null;
 		}
-		initFrame = new InitFrame(new initFrameListener());
+		initFrame = new InitFrame(new initFrameListener(), new loadListener());
 	}
 }

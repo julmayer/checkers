@@ -7,11 +7,11 @@ import com.db4o.ObjectContainer;
 import com.db4o.query.Predicate;
 import com.google.inject.Singleton;
 
-import de.htwg.checkers.controller.IGameController;
-import de.htwg.checkers.persistence.IGameControllerDAO;
+import de.htwg.checkers.persistence.IDAO;
+import de.htwg.checkers.persistence.PersistContainer;
 
 @Singleton
-public class DB40Impl implements IGameControllerDAO {
+public class DB40Impl implements IDAO {
     /** Name of the database */
     private static final String DB_NAME = "CheckersDb4o.db";
     ObjectContainer db;
@@ -21,14 +21,14 @@ public class DB40Impl implements IGameControllerDAO {
     }
 
     @Override
-    public void saveGameController(final IGameController gameController) {
-        db.store(gameController);
+    public void savePersistContainer(final PersistContainer container) {
+        db.store(container);
     }
 
     @Override
-    public IGameController getGameControllerByName(final String name) {
-        List<IGameController> gameControllers = db
-                .query(new Predicate<IGameController>() {
+    public PersistContainer getPersistContainerBy(final String name) {
+        List<PersistContainer> containers = db.query(
+                new Predicate<PersistContainer>() {
 
                     /**
                      * auto generated
@@ -36,32 +36,32 @@ public class DB40Impl implements IGameControllerDAO {
                     private static final long serialVersionUID = 1L;
 
                     @Override
-                    public boolean match(IGameController arg0) {
+                    public boolean match(PersistContainer arg0) {
                         return arg0.getName().equals(name);
                     }
 
                 });
 
-        if (gameControllers.isEmpty()) {
+        if (containers.isEmpty()) {
             return null;
         }
-        return gameControllers.get(0);
+        assert(containers.size() == 1);
+        return containers.get(0);
     }
 
     @Override
-    public List<IGameController> getAllGameControllers() {
-        List<IGameController> gameControllers = db.query(IGameController.class);
+    public List<PersistContainer> getAllPersistContainers() {
+        List<PersistContainer> gameControllers = db.query(PersistContainer.class);
         return gameControllers;
     }
 
     @Override
-    public void updateGameController(final IGameController gameController) {
-        db.store(gameController);
+    public void updatePersistContainer(final PersistContainer container) {
+        db.store(container);
     }
 
     @Override
-    public void deleteGameController(final IGameController gameController) {
-        db.delete(gameController);
+    public void deletePersistContainer(final PersistContainer container) {
+        db.delete(container);
     }
-
 }

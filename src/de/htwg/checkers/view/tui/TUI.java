@@ -28,7 +28,7 @@ public final class TUI implements Observer {
 		this.gameController.addObserver(this);
 		
 		print("Welcome to checkers!");
-		this.askForInitialization();
+	    update();
 	}
     
 	private void askForInitialization() {
