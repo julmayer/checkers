@@ -50,6 +50,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	                JOptionPane.QUESTION_MESSAGE, null, selection.toArray(), null);
 
 	        if (gameName != null && !gameName.isEmpty()) {
+	            GameFrame.this.setVisible(false); // hide gameframe to repaint after update
 	            gameController.gameInit(persistenceController.getByName(gameName));
 
 	            if (initFrame != null) {
@@ -137,7 +138,10 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
             }
         });
 		
-		optionMenu.add(save);
+		JMenuItem load = new JMenuItem("Load");
+		load.addActionListener(new loadListener());
+        optionMenu.add(save);
+        optionMenu.add(load);
 		pluginMenu = new JMenu("Plugins");
 		pluginMenu.setMnemonic('P');
 		
