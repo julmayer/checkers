@@ -25,7 +25,14 @@ public class Field implements Drawable {
      * @param field source field for copy
      */
     public Field(Field field) {
-    	this.field = field.field;
+        this.field = new Cell[field.size][field.size];
+        for (int i = 0; i < field.size; ++i) {
+            for (int j = 0; j < field.size; ++j) {
+                this.field[i][j] = new Cell(field.getCellByCoordinates(i, j));
+                assert this.field[i][j].equals(field.getCellByCoordinates(i, j));
+                assert this.field[i][j].getOccupier().equals(field.getCellByCoordinates(i, j).getOccupier());
+            }
+        }
     	this.size = field.size;
     }
 
@@ -36,6 +43,14 @@ public class Field implements Drawable {
     public Cell[][] getField(){
 		return field;
 	}
+    
+    /**
+     * Returns the size of the field.
+     * @return size of the field
+     */
+    public int getSize() {
+        return size;
+    }
 	
 	/**
      * 

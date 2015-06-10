@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.htwg.checkers.controller.bot.Bot;
 import de.htwg.checkers.controller.bot.IBot;
 import de.htwg.checkers.controller.bot.MediumBot;
 import de.htwg.checkers.controller.bot.SimpleBot;
@@ -17,10 +16,14 @@ import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesLowerRight;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperLeft;
 import de.htwg.checkers.controller.possiblemoves.PossibleMovesUpperRight;
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Cell;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.GameState;
 import de.htwg.checkers.models.Move;
+import de.htwg.checkers.models.State;
+import de.htwg.checkers.persistence.PersistContainer;
 import de.htwg.checkers.util.observer.Observable;
 
 /**
@@ -38,31 +41,25 @@ public class GameController extends Observable implements IGameController {
 	public static final char WHITE_GAVE_UP = 'W';
 	public static final char BLACK_GAVE_UP = 'B';
 	private Field field;
-	private int fieldSize;
 	private List<Figure> blacks;
 	private List<Figure> whites;
-	private boolean blackTurn;
-	private int moveCount;
 	private PossibleMovesLowerLeft lowerLeft;
 	private PossibleMovesLowerRight lowerRight;
 	private PossibleMovesUpperLeft upperLeft;
 	private PossibleMovesUpperRight upperRight;
 	private String error;
 	private String info;
-	private boolean hasMoreKills;
-	private boolean singleplayer;
 	private IBot bot;
-	private boolean quit = false;
-	private State currentState;
+	private GameState gameState;
 	
 	/**
      * Construcor for the gamecontroller
-     * @param fieldSize
      */
     @Inject
-	public GameController() {		
-		currentState = State.NEW_GAME;
-	}
+    public GameController() {
+        gameState = new GameState();
+        this.error = "";
+    }
 	
     /**
      * @return the gamefield
@@ -71,18 +68,22 @@ public class GameController extends Observable implements IGameController {
 		return new Field(this.field);
 	}
 	
+	public GameState getGameState() {
+	    return this.gameState;
+	}
+	
 	/**
      * @return the gamefieldsize
      */
 	public int getFieldSize() {
-		return this.fieldSize;
+		return this.field.getSize();
 	}
 
 	/**
      * @return if its blackturn or not
      */
 	public boolean isBlackTurn() {
-		return blackTurn;
+		return this.gameState.isBlackTurn();
 	}
 	
 	/**
@@ -97,53 +98,78 @@ public class GameController extends Observable implements IGameController {
 	}
 	
 	public State getCurrentState() {
-		return this.currentState;
+		return this.gameState.getCurrentState();
 	}
 	
 	/**
      * @return the actual move count
      */
 	public int getMoveCount() {
-		return moveCount;
+		return this.gameState.getMoveCount();
 	}
 	
 	/**
      * method to do a game init
      */
-	public void gameInit(int size, boolean singleplayer, Bot difficulty) {
+	public void gameInit(int size, Bot difficulty) {
 		if (size < MIN_GAMEFIELD_SIZE){
 			throw new IllegalArgumentException(String.format("Minimum size is %d!", MIN_GAMEFIELD_SIZE));
 		}
 
 		final int rowsToFill = size/2 - 1;
-		this.fieldSize = size;
 		this.field = new Field(size);
-		this.lowerLeft = new PossibleMovesLowerLeft(field);
-		this.lowerRight = new PossibleMovesLowerRight(field);
-		this.upperLeft = new PossibleMovesUpperLeft(field);
-		this.upperRight = new PossibleMovesUpperRight(field);
-		this.singleplayer = singleplayer;
-		whites = new LinkedList<Figure>();
-		blacks = new LinkedList<Figure>();
+		this.gameState.reset();
+		this.gameState.setBot(difficulty);
+		this.gameState.setCurrentState(State.RUNNING);
+		this.gameInit();
 		createBlackFigures(rowsToFill);
 		createWhiteFigures(rowsToFill);
-		// black starts
-		blackTurn = true;
-		moveCount = 0;
-		error = "";
-		
-		switch (difficulty) {
-			case SIMPLE_BOT :
-				this.bot = new SimpleBot(whites);
-				break;
-			case MEDIUM_BOT:
-				this.bot = new MediumBot(whites);
-				break;
-			default:
-				this.bot = new SimpleBot(whites);
-				break;					
-		}
-		this.currentState = State.RUNNING;
+	}
+	
+	@Override
+	public void gameInit(PersistContainer container) {
+	    this.gameState = container.getGameState();
+	    this.field = container.getField();
+	    this.gameInit();
+	    
+	    // TODO reconstuction of figures
+	    int size = field.getSize();
+	    for (int i = 0; i < size; ++i) {
+	        for (int j = 0; j < size; ++j) {
+	            Figure figure = field.getCellByCoordinates(i, j).getOccupier();
+	            if (figure == null) {
+	                continue;
+	            }
+	            if (figure.isBlack()) {
+	                this.blacks.add(figure);
+	            } else {
+	                this.whites.add(figure);
+	            }
+	        }
+	    }
+	    this.notifyObservers();
+	}
+	
+	private void gameInit() {
+        this.lowerLeft = new PossibleMovesLowerLeft(field);
+        this.lowerRight = new PossibleMovesLowerRight(field);
+        this.upperLeft = new PossibleMovesUpperLeft(field);
+        this.upperRight = new PossibleMovesUpperRight(field);
+        this.whites = new LinkedList<Figure>();
+        this.blacks = new LinkedList<Figure>();
+        this.error = "";
+        
+        switch (this.gameState.getBot()) {
+        case SIMPLE_BOT:
+            this.bot = new SimpleBot(this.whites);
+            break;
+        case MEDIUM_BOT:
+            this.bot = new MediumBot(this.whites);
+            break;
+        default:
+            this.bot = null;
+            break;
+        }
 	}
 	
 	private void createWhiteFigures(int rowsToFill) {
@@ -153,13 +179,14 @@ public class GameController extends Observable implements IGameController {
 	}
 	
 	private void createBlackFigures(int rowsToFill) {
-		for (int y = fieldSize - rowsToFill;y < fieldSize; y++){
+		int fieldSize = this.field.getSize();
+	    for (int y = fieldSize - rowsToFill;y  < fieldSize; y++) {
 			fillRow(y, true);
 		}
 	}
 	
 	private void fillRow(int y, boolean isBlack) {
-		for (int x = 0; x < fieldSize; x++) {
+		for (int x = 0; x < this.field.getSize(); x++) {
 			if (x % 2 == 0 && y % 2 != 0 ){
 				fillList(new Figure(field.getCellByCoordinates(x, y),isBlack));
 			} else if (x % 2 != 0 && y % 2 == 0 ){
@@ -197,10 +224,10 @@ public class GameController extends Observable implements IGameController {
 		}
 		
 		notifyObservers();
-		if (currentState == State.RUNNING) {
+		if (gameState.getCurrentState() == State.RUNNING) {
 			botmove();
 		}
-		return this.quit;
+		return gameState.getCurrentState() == State.QUIT;
 	}
 	
 	private void parseGameInit(final String input) {
@@ -215,7 +242,7 @@ public class GameController extends Observable implements IGameController {
 			bot = Bot.valueOf(Integer.valueOf(splitInput[botLevelPos]));
 		}
 		
-		gameInit(fieldSize, singleplayer, bot);
+		gameInit(fieldSize, bot);
 	}
 	
 	private void parseMove(String input) {
@@ -223,7 +250,7 @@ public class GameController extends Observable implements IGameController {
 		int moveFromX, moveFromY, moveToX, moveToY;
 		final String[] splittedInput = input.split(" ");
 		
-		if (this.currentState != State.RUNNING) {
+		if (this.gameState.getCurrentState() != State.RUNNING) {
 			error = "Game is not running";
 			return;
 		}
@@ -245,13 +272,13 @@ public class GameController extends Observable implements IGameController {
 			return;
 		}
 		
-		if (!hasMoreKills) {
+		if (!gameState.isHasMoreKills()) {
 			createAllMoves();
 		}
 			
 		if (validateSelectedMove(figure, moveToX, moveToY)){
 			//possible move
-			hasMoreKills = move(figure, moveToX, moveToY);
+			gameState.setHasMoreKills(move(figure, moveToX, moveToY));
 		} else {
 			if (!error.isEmpty()) {
 				this.error += "\n";
@@ -260,11 +287,11 @@ public class GameController extends Observable implements IGameController {
 			return;
 		}
 		
-		if (!hasMoreKills) {
-			blackTurn = !blackTurn;
+		if (!gameState.isHasMoreKills()) {
+		    this.gameState.changeTurn();
 		}
 		
-		moveCount++;
+		this.gameState.incMoveCount();
 		//botmove();
 	}
 	
@@ -283,7 +310,7 @@ public class GameController extends Observable implements IGameController {
 	}
 	
 	private void botmove() {
-		if (!checkIfWin() && singleplayer && !blackTurn) {
+		if (isBotsTurn() && !checkIfWin()) {
 			try {
 				Thread.sleep(BOT_DELAY);
 			} catch (InterruptedException e) {
@@ -293,21 +320,32 @@ public class GameController extends Observable implements IGameController {
 		}
 	}
 	
+	/**
+	 * Checks if a bot is selected (otherwise its a multiplayer game)
+	 * and if the white player is on turn (bot is always white)
+	 * @return true if bot is on turn
+	 */
+	private boolean isBotsTurn() {
+	    if (!this.gameState.getBot().equals(Bot.NO_BOT) && !this.isBlackTurn()) {
+	        return true;
+	    }
+	    return false;
+	}
+	
 	private void parseControls(String input) {
 		char control = input.charAt(0);
 		
 		switch (control) {
 		case QUIT:
-			this.currentState = State.QUIT;
-			this.quit = true;
+			this.gameState.setCurrentState(State.QUIT);
 			break;
 			
 		case RESTART:
-			this.gameInit(this.fieldSize, this.singleplayer, this.bot.getDifficulty());
+		    this.gameInit(this.field.getSize(), this.gameState.getBot());
 			break;
 			
 		case NEW_GAME:
-			this.currentState = State.NEW_GAME;
+			this.gameState.setCurrentState(State.NEW_GAME);
 			break;
 			
 		case BLACK_GAVE_UP:
@@ -330,7 +368,7 @@ public class GameController extends Observable implements IGameController {
 		createAllMoves();
 		List<Figure> list;
 		boolean hasMoves = false;
-		if(blackTurn){
+		if(this.isBlackTurn()){
 			list = blacks;
 		} else {
 			list = whites;
@@ -364,10 +402,10 @@ public class GameController extends Observable implements IGameController {
 	
 	private boolean validateSelectedMove(Figure figure, int x, int y) {
 		Move selectedMove = new Move(figure.getPosition(), field.getCellByCoordinates(x, y));
-		if (figure.isBlack() && !blackTurn){
+		if (figure.isBlack() && !this.isBlackTurn()){
 			this.error = "Please select a white figure!";
 			return false;
-		} else if (!figure.isBlack() && blackTurn){
+		} else if (!figure.isBlack() && this.isBlackTurn()){
 			this.error = "Please select a black figure!";
 			return false;
 		} else if (figure.getPossibleMoves().contains(selectedMove)){
@@ -405,7 +443,7 @@ public class GameController extends Observable implements IGameController {
 	
 	private void deleteAllMovesWithoutFigure(Figure figure) {
 		List<Figure> list;
-		if (blackTurn) {
+		if (this.isBlackTurn()) {
 			list = blacks;
 		} else {
 			list = whites;
@@ -422,7 +460,7 @@ public class GameController extends Observable implements IGameController {
      * method to create all moves
      */
 	public void createAllMoves() {
-		if (blackTurn) {
+		if (this.isBlackTurn()) {
 			createAllMoves(blacks);
 		} else {
 			createAllMoves(whites);
@@ -481,7 +519,7 @@ public class GameController extends Observable implements IGameController {
 		if(figure.isBlack() && figure.getPosition().getY() == 0){
 			figure.setCrowned(true);
 		}
-		if(!figure.isBlack() && figure.getPosition().getY() == fieldSize-1){
+		if(!figure.isBlack() && figure.getPosition().getY() == this.field.getSize()-1){
 			figure.setCrowned(true);
 		}
 	}
@@ -496,7 +534,7 @@ public class GameController extends Observable implements IGameController {
 	    List<Figure> figures = whites;
 	    List<Move> moves = new LinkedList<Move>();
 	    
-	    if (isBlackTurn()) {
+	    if (this.isBlackTurn()) {
 	        figures = blacks;
 	    }
 	    

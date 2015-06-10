@@ -2,10 +2,13 @@ package de.htwg.checkers.controller;
 
 import java.util.List;
 
-import de.htwg.checkers.controller.bot.Bot;
+import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Field;
 import de.htwg.checkers.models.Figure;
+import de.htwg.checkers.models.GameState;
 import de.htwg.checkers.models.Move;
+import de.htwg.checkers.models.State;
+import de.htwg.checkers.persistence.PersistContainer;
 import de.htwg.checkers.util.observer.IObservable;
 
 /**
@@ -19,6 +22,8 @@ public interface IGameController extends IObservable {
      * @return the gamefield
      */
     Field getField();
+    
+    GameState getGameState();
 	
 	/**
      *
@@ -41,7 +46,9 @@ public interface IGameController extends IObservable {
 	/**
      * make a game init
      */
-    void gameInit(int size, boolean singleplayer, Bot difficulty);
+    void gameInit(int size, Bot difficulty);
+    
+    void gameInit(PersistContainer container);
 	
 	/**
      * check if somebody has won. 
@@ -70,7 +77,7 @@ public interface IGameController extends IObservable {
     boolean input(String input);
 	
 	/**
-     *
+     * 
      * @return
      */
     String getError();
@@ -82,5 +89,4 @@ public interface IGameController extends IObservable {
     State getCurrentState();
     
     List<Move> getPossibleMoves();
-    
 }

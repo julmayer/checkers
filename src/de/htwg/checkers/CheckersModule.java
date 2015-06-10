@@ -18,7 +18,6 @@ public class CheckersModule extends AbstractModule {
      */
     @Override
 	protected void configure() {
-		bind(IGameController.class).to(GameController.class);
+        bind(IGameController.class).to(GameController.class);
 	}
-
 }

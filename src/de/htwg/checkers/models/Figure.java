@@ -27,6 +27,12 @@ public class Figure implements Drawable {
 		this.crowned = false;
 		this.possibleMoves = new LinkedList<Move>();
 	}
+    
+    public Figure (Figure figure) {
+        this.crowned = figure.crowned;
+        this.black = figure.black;
+        this.possibleMoves = new LinkedList<Move>();
+    }
 
 	/**
      *
