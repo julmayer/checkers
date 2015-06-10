@@ -140,8 +140,26 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		
 		JMenuItem load = new JMenuItem("Load");
 		load.addActionListener(new loadListener());
+		JMenuItem restart = new JMenuItem("Restart");
+		restart.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameController.input("R");
+            }
+        });
+		JMenuItem newGame = new JMenuItem("New Game");
+		newGame.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameController.input("N");
+            }
+        });
         optionMenu.add(save);
         optionMenu.add(load);
+        optionMenu.add(restart);
+        optionMenu.add(newGame);
 		pluginMenu = new JMenu("Plugins");
 		pluginMenu.setMnemonic('P');
 		
