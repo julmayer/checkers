@@ -14,6 +14,15 @@ public class GameState {
         this.currentState = State.NEW_GAME;
     }
     
+    public GameState(boolean blackTurn, int moveCount, boolean hasMoreKills, 
+            Bot bot, State currentState) {
+        this.blackTurn = blackTurn;
+        this.moveCount = moveCount;
+        this.hasMoreKills = hasMoreKills;
+        this.bot = bot;
+        this.currentState = currentState;
+    }
+    
     public GameState(GameState state) {
         this.blackTurn = state.blackTurn;
         this.moveCount = state.moveCount;
