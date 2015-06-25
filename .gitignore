@@ -2,6 +2,7 @@
 /bin
 /.settings/*
 .gitignore
+CheckersDb4o.db
 
 # Package Files #
 
