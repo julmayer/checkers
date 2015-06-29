@@ -14,7 +14,7 @@ import de.htwg.checkers.persistence.PersistContainer;
 public class DB40Impl implements IDAO {
     /** Name of the database */
     private static final String DB_NAME = "CheckersDb4o.db";
-    ObjectContainer db;
+    private ObjectContainer db;
 
     public DB40Impl() {
         this.db = Db4oEmbedded.openFile(DB_NAME);
@@ -51,8 +51,7 @@ public class DB40Impl implements IDAO {
 
     @Override
     public List<PersistContainer> getAllPersistContainers() {
-        List<PersistContainer> gameControllers = db.query(PersistContainer.class);
-        return gameControllers;
+        return db.query(PersistContainer.class);
     }
 
     @Override

@@ -45,12 +45,14 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 	        List<String> selection = persistenceController.getStoredGames();
+	        Object[] array = selection.toArray();
 	        String gameName = (String) JOptionPane.showInputDialog(GameFrame.this,
 	                "Select savegame to be loaded", "Load game",
-	                JOptionPane.QUESTION_MESSAGE, null, selection.toArray(), null);
+	                JOptionPane.QUESTION_MESSAGE, null, array, null);
 
 	        if (gameName != null && !gameName.isEmpty()) {
-	            GameFrame.this.setVisible(false); // hide gameframe to repaint after update
+	            // hide gameframe to repaint after update
+	            GameFrame.this.setVisible(false);
 	            gameController.gameInit(persistenceController.getByName(gameName));
 
 	            if (initFrame != null) {
@@ -86,10 +88,6 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 	private JLabel moveCountLabel;
 	private JLabel errorLabel;
 	private JLabel turnLabel;
-	private JMenuBar menuBar;
-	private JMenu pluginMenu;
-    private JMenu optionMenu;
-    private JMenuItem save;
 
 	
 	private int fieldSize;
@@ -119,12 +117,12 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		moveCountLabel = new JLabel("");
 		errorLabel = new JLabel("");
 		turnLabel = new JLabel("");
-		statusPanel = buildStatusPanel();
+		buildStatusPanel();
 		
-		menuBar = new JMenuBar();
-		optionMenu = new JMenu("Options");
+		JMenuBar menuBar = new JMenuBar();
+		JMenu optionMenu = new JMenu("Options");
 		optionMenu.setMnemonic('O');
-		save = new JMenuItem("Save");
+		JMenuItem save = new JMenuItem("Save");
 		save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -160,7 +158,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
         optionMenu.add(load);
         optionMenu.add(restart);
         optionMenu.add(newGame);
-		pluginMenu = new JMenu("Plugins");
+		JMenu pluginMenu = new JMenu("Plugins");
 		pluginMenu.setMnemonic('P');
 		
 		menuBar.add(optionMenu);
@@ -239,15 +237,13 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
    }
    
   
-	private JPanel buildStatusPanel() {
+	private void buildStatusPanel() {
 		final int numberOfLabels = 3;
-		JPanel statusPanel = new JPanel(new GridLayout(numberOfLabels, 1));
+		statusPanel = new JPanel(new GridLayout(numberOfLabels, 1));
 
 		statusPanel.add(turnLabel);
 		statusPanel.add(moveCountLabel);
 		statusPanel.add(errorLabel);
-		
-		return statusPanel;
 	}
 	
 	private void initLabels() {
@@ -272,7 +268,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
      * methode to update the gui
      */
     @Override
-	public void update() {
+	public final void update() {
 		String error = gameController.getError();
 		errorLabel.setText(error);
 		if (error.isEmpty()) {

@@ -4,6 +4,7 @@ package de.htwg.checkers.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
@@ -132,7 +133,6 @@ public class GameController extends Observable implements IGameController {
 	    this.field = container.getField();
 	    this.gameInit();
 	    
-	    // TODO reconstuction of figures
 	    int size = field.getSize();
 	    for (int i = 0; i < size; ++i) {
 	        for (int j = 0; j < size; ++j) {
@@ -237,12 +237,12 @@ public class GameController extends Observable implements IGameController {
 		
 		final int fieldSize = Integer.valueOf(splitInput[fieldSizePos]);
 		final boolean singleplayer = splitInput[playModePos].equals("S");
-		Bot bot = Bot.NO_BOT;
+		Bot difficulty = Bot.NO_BOT;
 		if (singleplayer) {
-			bot = Bot.valueOf(Integer.valueOf(splitInput[botLevelPos]));
+		    difficulty = Bot.valueOf(Integer.valueOf(splitInput[botLevelPos]));
 		}
 		
-		gameInit(fieldSize, bot);
+		gameInit(fieldSize, difficulty);
 	}
 	
 	private void parseMove(String input) {
@@ -292,7 +292,6 @@ public class GameController extends Observable implements IGameController {
 		}
 		
 		this.gameState.incMoveCount();
-		//botmove();
 	}
 	
 	private int parseString2int(String s) {
@@ -314,7 +313,7 @@ public class GameController extends Observable implements IGameController {
 			try {
 				Thread.sleep(BOT_DELAY);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+			    Logger.getGlobal().throwing(GameController.class.getName(), "botmove", e);
 			}
 			input(bot.move());
 		}

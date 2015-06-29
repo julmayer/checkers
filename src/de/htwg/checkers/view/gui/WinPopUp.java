@@ -24,7 +24,7 @@ public class WinPopUp  extends JFrame {
      *contructor for the frame
      * @param sb
      */
-    public WinPopUp(String message, ActionListener ButtonListener) {
+    public WinPopUp(String message, ActionListener buttonListener) {
 		final int dialogSizeX = 300;
 		final int dialogSizeY = 100;
 		
@@ -45,9 +45,9 @@ public class WinPopUp  extends JFrame {
 		
 		messageLabel.setText(message);
 		
-		quit.addActionListener(ButtonListener); 
-		restart.addActionListener(ButtonListener);
-		newGame.addActionListener(ButtonListener);
+		quit.addActionListener(buttonListener); 
+		restart.addActionListener(buttonListener);
+		newGame.addActionListener(buttonListener);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(newGame);

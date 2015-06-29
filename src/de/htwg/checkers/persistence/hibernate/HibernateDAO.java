@@ -36,7 +36,7 @@ public class HibernateDAO implements IDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new RuntimeException(ex.getMessage());
+            throw ex;
         }
     }
 
@@ -64,7 +64,7 @@ public class HibernateDAO implements IDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new RuntimeException(ex.getMessage());
+            throw ex;
         }
         return ppContainer;
     }
@@ -91,7 +91,7 @@ public class HibernateDAO implements IDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new RuntimeException(ex.getMessage());
+            throw ex;
         }
         
         return result;
@@ -114,7 +114,7 @@ public class HibernateDAO implements IDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new RuntimeException(ex.getMessage());
+            throw ex;
         }
 
     }
@@ -136,7 +136,7 @@ public class HibernateDAO implements IDAO {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new RuntimeException(ex.getMessage());
+            throw ex;
         }
     }
 
@@ -148,7 +148,7 @@ public class HibernateDAO implements IDAO {
         Field field = new Field(pField.getSize());
         
         for (PersistentFigure pFigure : pField.getFigures()) {
-            Cell cell = field.getCellByCoordinates(pFigure.getX_position(), pFigure.getY_position());
+            Cell cell = field.getCellByCoordinates(pFigure.getXPosition(), pFigure.getYPosition());
             Figure figure = new Figure(cell, pFigure.isBlack());
             figure.setCrowned(pFigure.isCrowned());
         }

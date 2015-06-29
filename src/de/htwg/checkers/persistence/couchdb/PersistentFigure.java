@@ -11,8 +11,8 @@ import de.htwg.checkers.models.Figure;
  */
 public class PersistentFigure extends CouchDbDocument {
     private static final long serialVersionUID = 8461774934168356312L;
-    private int x_position;
-    private int y_position;
+    private int xPosition;
+    private int yPosition;
 	private boolean crowned;
 	private boolean black;
 
@@ -22,24 +22,24 @@ public class PersistentFigure extends CouchDbDocument {
         this.crowned = figure.isCrowned();
         this.black = figure.isBlack();
         Cell cell = figure.getPosition();
-        this.x_position = cell.getX();
-        this.y_position = cell.getY();
+        this.xPosition = cell.getX();
+        this.yPosition = cell.getY();
     }
 
-    public int getX_position() {
-        return x_position;
+    public int getXPosition() {
+        return xPosition;
     }
 
-    public void setX_position(int x_position) {
-        this.x_position = x_position;
+    public void setXPosition(int xPosition) {
+        this.xPosition = xPosition;
     }
 
-    public int getY_position() {
-        return y_position;
+    public int getYPosition() {
+        return yPosition;
     }
 
-    public void setY_position(int y_position) {
-        this.y_position = y_position;
+    public void setYPosition(int yPosition) {
+        this.yPosition = yPosition;
     }
 
     public boolean isCrowned() {

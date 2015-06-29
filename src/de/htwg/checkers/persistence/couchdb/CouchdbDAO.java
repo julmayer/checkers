@@ -3,6 +3,7 @@ package de.htwg.checkers.persistence.couchdb;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -19,7 +20,7 @@ import de.htwg.checkers.persistence.IDAO;
 import de.htwg.checkers.persistence.PersistContainer;
 
 public class CouchdbDAO implements IDAO {
-    CouchDbConnector db;
+    private CouchDbConnector db;
     
     public CouchdbDAO() {
         HttpClient client;
@@ -30,8 +31,7 @@ public class CouchdbDAO implements IDAO {
             CouchDbInstance dbInstance = new StdCouchDbInstance(client);
             db = dbInstance.createConnector("checkers", true);
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Logger.getGlobal().throwing("CouchdbDAO", "CouchdbDAO", e);
         }
     }
 
@@ -48,8 +48,7 @@ public class CouchdbDAO implements IDAO {
 
     @Override
     public PersistContainer getPersistContainerBy(String name) {
-        PersistContainer result = generateContainer(getPPContainerBy(name));
-        return result;
+        return generateContainer(getPPContainerBy(name));
     }
 
     @Override
@@ -96,7 +95,7 @@ public class CouchdbDAO implements IDAO {
         Field field = new Field(pField.getSize());
         
         for (PersistentFigure pFigure : pField.getFigures()) {
-            Cell cell = field.getCellByCoordinates(pFigure.getX_position(), pFigure.getY_position());
+            Cell cell = field.getCellByCoordinates(pFigure.getXPosition(), pFigure.getYPosition());
             Figure figure = new Figure(cell, pFigure.isBlack());
             figure.setCrowned(pFigure.isCrowned());
         }

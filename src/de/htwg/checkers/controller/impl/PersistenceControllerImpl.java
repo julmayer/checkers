@@ -12,7 +12,7 @@ import de.htwg.checkers.persistence.PersistContainer;
 
 @Singleton
 public class PersistenceControllerImpl implements IPersistenceController {
-    IDAO dao;
+    private IDAO dao;
 
     @Inject
     public PersistenceControllerImpl(IDAO dao) {

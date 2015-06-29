@@ -84,7 +84,7 @@ public interface IGameController extends IObservable {
     
     String getInfo();
     
-    public String getDrawingOfField();
+    String getDrawingOfField();
     
     State getCurrentState();
     

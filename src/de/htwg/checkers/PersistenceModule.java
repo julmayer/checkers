@@ -12,8 +12,6 @@ public class PersistenceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(IPersistenceController.class).to(PersistenceControllerImpl.class);
-        //bind(IDAO.class).to(DB40Impl.class);
-        //bind(IDAO.class).to(HibernateDAO.class);
         bind(IDAO.class).to(CouchdbDAO.class);
     }
 

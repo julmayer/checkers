@@ -22,10 +22,8 @@ public class InitFrame {
 	private JRadioButton radioButton4x4;
 	private JRadioButton radioButton8x8;
 	private JRadioButton radioButton10x10;
-	private JRadioButton radioButton12x12;
 	private JRadioButton singelplayer;
 	private JRadioButton easy;
-	private JRadioButton medium;
 	private JFrame initFrame;
 	
 	/**
@@ -71,14 +69,14 @@ public class InitFrame {
 		radioButton4x4 = new JRadioButton("4x4");
 		radioButton8x8 = new JRadioButton("8x8");
 		radioButton10x10 = new JRadioButton("10x10");
-		radioButton12x12 = new JRadioButton("12x12");
+		JRadioButton radioButton12x12 = new JRadioButton("12x12");
 		radioButton8x8.setSelected(true);
 		singelplayer = new JRadioButton("Singelplayer");
 		singelplayer.setSelected(true);
 		multiplayer = new JRadioButton("Multiplayer");
 		easy = new JRadioButton("easy");
 		easy.setSelected(true);
-		medium = new JRadioButton("medium");
+		JRadioButton medium = new JRadioButton("medium");
 		
 		startButton.addActionListener(startListener); 
 		loadButton.addActionListener(loadListener);

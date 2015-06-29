@@ -24,9 +24,9 @@ public class PersistentFigure implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(name = "x_position")
-    private int x_position;
+    private int xPosition;
     @Column(name = "y_position")
-    private int y_position;
+    private int yPosition;
     @Column(name = "crowned")
 	private boolean crowned;
     @Column(name = "black")
@@ -38,8 +38,8 @@ public class PersistentFigure implements Serializable {
         this.crowned = figure.isCrowned();
         this.black = figure.isBlack();
         Cell cell = figure.getPosition();
-        this.x_position = cell.getX();
-        this.y_position = cell.getY();
+        this.xPosition = cell.getX();
+        this.yPosition = cell.getY();
     }
 
     public long getId() {
@@ -50,20 +50,20 @@ public class PersistentFigure implements Serializable {
         this.id = id;
     }
 
-    public int getX_position() {
-        return x_position;
+    public int getXPosition() {
+        return xPosition;
     }
 
-    public void setX_position(int x_position) {
-        this.x_position = x_position;
+    public void setXPosition(int xPosition) {
+        this.xPosition = xPosition;
     }
 
-    public int getY_position() {
-        return y_position;
+    public int getYPosition() {
+        return yPosition;
     }
 
-    public void setY_position(int y_position) {
-        this.y_position = y_position;
+    public void setYPosition(int yPosition) {
+        this.yPosition = yPosition;
     }
 
     public boolean isCrowned() {

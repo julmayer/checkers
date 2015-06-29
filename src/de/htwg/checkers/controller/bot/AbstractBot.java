@@ -15,7 +15,7 @@ import de.htwg.checkers.models.Figure;
 public abstract class AbstractBot implements IBot {
 
 	private List<Figure> figures;
-	protected Bot difficulty;
+	private Bot difficulty;
 	
 	/**
 	 * Constructor with List of own Figures.
