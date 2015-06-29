@@ -138,9 +138,15 @@ public class GameControllerTest {
 		assertEquals(0, nothingFreeMiddel.getPossibleMoves().size());
 		assertEquals(0, nothingFreeRight.getPossibleMoves().size());
 		
-		Cell c12 = gamefield.getCellByCoordinates(1, 2);
-		Cell c32 = gamefield.getCellByCoordinates(3, 2);
-		Cell c52 = gamefield.getCellByCoordinates(5, 2);
+		
+		Cell c12 = gameController7.getFigureOnField(0, 1).getPossibleMoves().get(0).getTo();
+		Cell c32 = null;
+		for (Move move : gameController7.getFigureOnField(2, 1).getPossibleMoves()) {
+		    if (move.getTo().getX() == 3 && move.getTo().getY() == 2) {
+		        c32 = move.getTo();
+		    }
+		}
+		Cell c52 = gameController7.getFigureOnField(6, 1).getPossibleMoves().get(0).getTo();
 		Move lbC12 = new Move(leftBorder.getPosition(), c12);
 		Move bflC12 = new Move(bothFreeL.getPosition(), c12);
 		Move bflC32 = new Move(bothFreeL.getPosition(), c32);
@@ -179,8 +185,13 @@ public class GameControllerTest {
 		assertEquals(0, nothingFreeMiddel.getPossibleMoves().size());
 		assertEquals(0, nothingFreeRight.getPossibleMoves().size());
 		
-		Cell c03 = gamefield.getCellByCoordinates(0, 3);
-		Cell c23 = gamefield.getCellByCoordinates(2, 3);
+		Cell c03 = null;
+		for (Move move : bothFreeL.getPossibleMoves()) {
+		    if (move.getTo().getX() == 0 && move.getTo().getY() == 3) {
+		        c03 = move.getTo();
+		    }
+		}
+		Cell c23 = leftBorder.getPossibleMoves().get(0).getTo();
 		Cell c43 = gamefield.getCellByCoordinates(4, 3);
 		Cell c63 = gamefield.getCellByCoordinates(6, 3);
 		Move lbC23 = new Move(leftBorder.getPosition(), c23);
@@ -230,8 +241,14 @@ public class GameControllerTest {
 		assertEquals(0, nothingFreeMiddel.getPossibleMoves().size());
 		assertEquals(0, nothingFreeRight.getPossibleMoves().size());
 		
-		Cell c14 = gamefield.getCellByCoordinates(1, 4);
+		Cell c14 = leftBorder.getPossibleMoves().get(0).getTo();
 		Cell c34 = gamefield.getCellByCoordinates(3, 4);
+		for (Move move : bothFreeL.getPossibleMoves()) {
+		    if (move.getTo().getX() == 3 && move.getTo().getY() == 4) {
+		        c34 = move.getTo();
+		        break;
+		    }
+		}
 		Cell c54 = gamefield.getCellByCoordinates(5, 4);
 		Move lbC14 = new Move(leftBorder.getPosition(), c14);
 		Move bflC14 = new Move(bothFreeL.getPosition(), c14);
@@ -271,7 +288,14 @@ public class GameControllerTest {
 		assertEquals(0, nothingFreeRight.getPossibleMoves().size());
 		
 		Cell c03 = gamefield.getCellByCoordinates(0, 3);
-		Cell c23 = gamefield.getCellByCoordinates(2, 3);
+	      for (Move move : bothFreeL.getPossibleMoves()) {
+	            if (move.getTo().getX() == 0 && move.getTo().getY() == 3) {
+	                c03 = move.getTo();
+	                break;
+	            }
+	        }
+		Cell c23 = leftBorder.getPossibleMoves().get(0).getTo();
+		
 		Cell c43 = gamefield.getCellByCoordinates(4, 3);
 		Cell c63 = gamefield.getCellByCoordinates(6, 3);
 		Move lbC23 = new Move(leftBorder.getPosition(), c23);
@@ -304,8 +328,9 @@ public class GameControllerTest {
 		
 		Figure queen = gameController7.getFigureOnField(0, 5);
 		queen.setCrowned(true);
+		gameController7.createAllMoves();
 		
-		Cell c14 = gameField.getCellByCoordinates(1, 4);
+		Cell c14 = queen.getPossibleMoves().get(0).getTo();
 		Cell c23 = gameField.getCellByCoordinates(2, 3);
 		Cell c32 = gameField.getCellByCoordinates(3, 2);
 		Move qc14 = new Move(queen.getPosition(), c14);
@@ -336,7 +361,7 @@ public class GameControllerTest {
 		
 		// long kill
 		enemy14.kill();
-		Figure enemy23 = new Figure(c23, false);
+		Figure enemy23 = new Figure(queen.getPossibleMoves().get(0).getTo(), false);
 		gameController7.createAllMoves();
 		
 		assertEquals(1, queen.getPossibleMoves().size());
@@ -348,6 +373,17 @@ public class GameControllerTest {
 		queen25.setCrowned(true);
 		Cell c43 = gameField.getCellByCoordinates(4, 3);
 		Cell c52 = gameField.getCellByCoordinates(5, 2);
+		gameController7.getGameState().changeTurn();
+		gameController7.input("G 1 F 2");
+		gameController7.getGameState().changeTurn();
+		gameController7.createAllMoves();
+		for (Move move : gameController7.getFigureOnField(5, 2).getPossibleMoves()) {
+		    if (move.getTo().getX() == 4 && move.getTo().getY() == 3) {
+		        c43 = move.getTo();
+		    }
+		}
+		gameController7.getGameState().changeTurn();
+		gameController7.getFigureOnField(5, 2).kill();
 		Figure enemy43 = new Figure(c43, false);
 		Move q2c52 = new Move(queen25.getPosition(), c52);
 		
@@ -357,65 +393,7 @@ public class GameControllerTest {
 		assertTrue(queen25.getPossibleMoves().contains(q2c52));
 	}
 	
-	@Test
-	public void crownedWhiteMoves()
-	{
-		Field gameField = gameController7.getField();
-		
-		Figure queen = gameController7.getFigureOnField(0, 5);
-		queen.setCrowned(true);
-		
-		Cell c14 = gameField.getCellByCoordinates(1, 4);
-		Cell c23 = gameField.getCellByCoordinates(2, 3);
-		Cell c32 = gameField.getCellByCoordinates(3, 2);
-		Move qc14 = new Move(queen.getPosition(), c14);
-		Move qc23 = new Move(queen.getPosition(), c23);
-		Move qc32 = new Move(queen.getPosition(), c32);
-		
-		// normal moves, no kill
-		gameController7.createAllMoves();
-		
-		assertEquals(3, queen.getPossibleMoves().size());
-		assertTrue(queen.getPossibleMoves().contains(qc14));
-		assertTrue(queen.getPossibleMoves().contains(qc23));
-		assertTrue(queen.getPossibleMoves().contains(qc32));
-		
-		// no moves
-		Figure dummy = new Figure(c14, true);
-		gameController7.createAllMoves();
-		
-		assertEquals(0, queen.getPossibleMoves().size());
-		
-		// short kill
-		dummy.kill();
-		Figure enemy14 = new Figure(c14, false);
-		gameController7.createAllMoves();
-		
-		assertEquals(1, queen.getPossibleMoves().size());
-		assertTrue(queen.getPossibleMoves().contains(qc23));
-		
-		// long kill
-		enemy14.kill();
-		Figure enemy23 = new Figure(c23, false);
-		gameController7.createAllMoves();
-		
-		assertEquals(1, queen.getPossibleMoves().size());
-		assertTrue(queen.getPossibleMoves().contains(qc32));
-		
-		// must kill
-		enemy23.kill();
-		Figure queen25 = gameController7.getFigureOnField(2, 5);
-		queen25.setCrowned(true);
-		Cell c43 = gameField.getCellByCoordinates(4, 3);
-		Cell c52 = gameField.getCellByCoordinates(5, 2);
-		Figure enemy43 = new Figure(c43, false);
-		Move q2c52 = new Move(queen25.getPosition(), c52);
-		
-		gameController7.createAllMoves();
-		
-		assertEquals(1, queen25.getPossibleMoves().size());
-		assertTrue(queen25.getPossibleMoves().contains(q2c52));
-	}
+
 	
 	@Test
 	public void input() {
