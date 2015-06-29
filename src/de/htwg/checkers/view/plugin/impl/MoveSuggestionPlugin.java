@@ -6,7 +6,7 @@ import javax.swing.JButton;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.models.Move;
-import de.htwg.checkers.view.gui.GameFrame;
+import de.htwg.checkers.view.gui.IGui;
 import de.htwg.checkers.view.plugin.IPlugin;
 
 public class MoveSuggestionPlugin implements IPlugin {
@@ -21,7 +21,7 @@ public class MoveSuggestionPlugin implements IPlugin {
     }
 
     @Override
-    public void execute(IGameController controller, GameFrame frame) {
+    public void execute(IGameController controller, IGui frame) {
         
         for (Move m : controller.getPossibleMoves()) {
             int x = m.getTo().getX();

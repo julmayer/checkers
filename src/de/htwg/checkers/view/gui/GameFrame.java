@@ -32,7 +32,7 @@ import de.htwg.checkers.view.plugin.IPlugin;
  * main frame with the game
  * @author Julian Mayer, Marcel Loevenich
  */
-public class GameFrame extends JFrame implements ActionListener, Observer{
+public class GameFrame extends JFrame implements ActionListener, Observer, IGui {
 	
 	private class initFrameListener implements ActionListener {
 		@Override
@@ -351,9 +351,7 @@ public class GameFrame extends JFrame implements ActionListener, Observer{
 		buttons[i][j].setBackground(getButtonBackground(i, j));
 	}
 	
-	/**
-     * @return the buttons
-     */
+    @Override
     public JButton[][] getButtons() {
         return buttons;
     }

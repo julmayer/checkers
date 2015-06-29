@@ -5,7 +5,7 @@ import java.util.Random;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.models.Move;
-import de.htwg.checkers.view.gui.GameFrame;
+import de.htwg.checkers.view.gui.IGui;
 import de.htwg.checkers.view.plugin.IPlugin;
 
 public class AutoMove implements IPlugin {
@@ -21,7 +21,7 @@ public class AutoMove implements IPlugin {
     }
 
     @Override
-    public void execute(IGameController controller, GameFrame frame) {
+    public void execute(IGameController controller, IGui frame) {
         List<Move> moves = controller.getPossibleMoves();
         Random r = new Random(System.nanoTime());
         int idx = r.nextInt(moves.size());

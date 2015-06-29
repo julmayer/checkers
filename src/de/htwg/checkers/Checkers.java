@@ -9,6 +9,7 @@ import com.google.inject.Injector;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.view.gui.GameFrame;
+import de.htwg.checkers.view.gui.IGui;
 import de.htwg.checkers.view.tui.TUI;
 
 /**
@@ -44,7 +45,7 @@ public final class Checkers {
 		@SuppressWarnings("unused")
 		TUI tui = injector.getInstance(TUI.class);
 		@SuppressWarnings("unused")
-		GameFrame gui = injector.getInstance(GameFrame.class);
+		IGui gui = injector.getInstance(GameFrame.class);
 
 		boolean finished = false;
 

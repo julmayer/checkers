@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.models.Move;
-import de.htwg.checkers.view.gui.GameFrame;
+import de.htwg.checkers.view.gui.IGui;
 import de.htwg.checkers.view.plugin.IPlugin;
 
 public class AutoFinish implements IPlugin {
@@ -24,7 +24,7 @@ public class AutoFinish implements IPlugin {
     }
 
     @Override
-    public void execute(IGameController controller, GameFrame frame) {
+    public void execute(IGameController controller, IGui frame) {
         if (this.thread == null) {
             this.stop = false;
             this.thread = new Thread(new Finisher(controller));
