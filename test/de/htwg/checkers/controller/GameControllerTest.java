@@ -471,22 +471,21 @@ public class GameControllerTest {
 	
 	@Test
 	public void BlackBlocksWhite() {
+	    gameController4.getFigureOnField(3, 0).kill();
 		gameController4.input("0 3 1 2");
-		
-		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
-		Figure f1 = new Figure(gameController4.getField().getCellByCoordinates(2, 1), false);
-		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
-		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(0, 3), false);
-		
+		gameController4.input("B 0 A 1");
+		gameController4.getGameState().changeTurn();
 		assertTrue(gameController4.checkIfWin());
 	}
 	
 	@Test
 	public void WhiteBlocksBlack() {
-		Figure f = new Figure(gameController4.getField().getCellByCoordinates(0, 1), false);
-		Figure f1 = new Figure(gameController4.getField().getCellByCoordinates(2, 1), false);
-		Figure f2 = new Figure(gameController4.getField().getCellByCoordinates(3, 2), false);
-		Figure f3 = new Figure(gameController4.getField().getCellByCoordinates(1, 2), false);
+	    // remove one black figure
+	    gameController4.getFigureOnField(0, 3).kill();
+	    gameController4.input("2 3 3 2");
+	    gameController4.getGameState().changeTurn();
+	    gameController4.input("3 2 2 1");
+	    gameController4.getGameState().changeTurn();
 		
 		assertTrue(gameController4.checkIfWin());
 	}
