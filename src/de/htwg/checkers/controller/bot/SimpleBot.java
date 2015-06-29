@@ -2,7 +2,6 @@ package de.htwg.checkers.controller.bot;
 
 import java.util.List;
 
-import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Figure;
 
 /**
@@ -17,7 +16,7 @@ public class SimpleBot extends AbstractBot {
 	 * @param figures List of own Figures.
 	 */
 	public SimpleBot(List<Figure> figures) {
-		super(figures, Bot.SIMPLE_BOT);
+		super(figures);
 	}
 
 	@Override

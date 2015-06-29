@@ -1,5 +1,10 @@
 package de.htwg.checkers.models;
 
+/**
+ * 
+ * @author jmayer
+ *
+ */
 public enum Bot {
 	NO_BOT, SIMPLE_BOT, MEDIUM_BOT;
 	

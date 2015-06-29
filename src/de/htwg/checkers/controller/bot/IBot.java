@@ -1,6 +1,5 @@
 package de.htwg.checkers.controller.bot;
 
-import de.htwg.checkers.models.Bot;
 
 /**
  * Interface for the bots
@@ -13,6 +12,4 @@ public interface IBot {
     * @return botMove as String with format "FromX FromY ToX ToY"
     */
 	String move();
-	
-	Bot getDifficulty();
 }

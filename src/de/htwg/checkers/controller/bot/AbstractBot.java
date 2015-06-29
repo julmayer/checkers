@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import de.htwg.checkers.models.Bot;
 import de.htwg.checkers.models.Figure;
 
 /**
@@ -15,16 +14,14 @@ import de.htwg.checkers.models.Figure;
 public abstract class AbstractBot implements IBot {
 
 	private List<Figure> figures;
-	private Bot difficulty;
 	
 	/**
 	 * Constructor with List of own Figures.
 	 * @param figures List of own Figures.
 	 */
 	@Inject
-	public AbstractBot(List<Figure> figures, Bot bot) {
+	public AbstractBot(List<Figure> figures) {
 		this.figures = figures;
-		this.difficulty = bot;
 	}
 	
 	/**
@@ -33,10 +30,6 @@ public abstract class AbstractBot implements IBot {
 	 */
 	protected List<Figure> getFigures() {
 		return this.figures;
-	}
-	
-	public Bot getDifficulty() {
-		return difficulty;
 	}
 	
 	/**

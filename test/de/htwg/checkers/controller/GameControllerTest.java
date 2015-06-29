@@ -43,6 +43,11 @@ public class GameControllerTest {
 	}
 	
 	@Test
+	public void testDifficulty() {
+	    controllerWithEasyBot.getGameState();
+	}
+	
+	@Test
 	public void gameInit() {
 //		assertNotNull(gameController4.getBlacks());
 //		assertNotNull(gameController4.getWhites());

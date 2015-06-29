@@ -29,8 +29,6 @@ public class Field implements Drawable {
         for (int i = 0; i < field.size; ++i) {
             for (int j = 0; j < field.size; ++j) {
                 this.field[i][j] = new Cell(field.getCellByCoordinates(i, j));
-                assert this.field[i][j].equals(field.getCellByCoordinates(i, j));
-                assert this.field[i][j].getOccupier().equals(field.getCellByCoordinates(i, j).getOccupier());
             }
         }
     	this.size = field.size;
