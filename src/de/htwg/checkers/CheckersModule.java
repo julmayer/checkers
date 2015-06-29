@@ -7,8 +7,8 @@ import com.google.inject.AbstractModule;
 
 import de.htwg.checkers.controller.GameController;
 import de.htwg.checkers.controller.IGameController;
-import de.htwg.checkers.view.gui.GameFrame;
 import de.htwg.checkers.view.gui.IGui;
+import de.htwg.checkers.view.gui.impl.GameFrame;
 
 /**
  * @author Julian Mayer, Marcel Loevenich

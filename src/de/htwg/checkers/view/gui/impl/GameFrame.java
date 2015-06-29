@@ -1,4 +1,4 @@
-package de.htwg.checkers.view.gui;
+package de.htwg.checkers.view.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +26,9 @@ import de.htwg.checkers.controller.IGameController;
 import de.htwg.checkers.controller.IPersistenceController;
 import de.htwg.checkers.persistence.PersistContainer;
 import de.htwg.checkers.util.observer.Observer;
+import de.htwg.checkers.view.gui.IGui;
+import de.htwg.checkers.view.gui.InitFrame;
+import de.htwg.checkers.view.gui.WinPopUp;
 import de.htwg.checkers.view.plugin.IPlugin;
 
 /**
