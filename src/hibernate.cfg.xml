@@ -12,7 +12,7 @@
 		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
 		<property name="current_session_context_class">thread</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<mapping class="de.htwg.checkers.persistence.hibernate.PersistentField" />
 		<mapping class="de.htwg.checkers.persistence.hibernate.PersistentFigure" />
 		<mapping class="de.htwg.checkers.persistence.hibernate.PersistentGameState" />
