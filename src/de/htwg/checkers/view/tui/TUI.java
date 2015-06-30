@@ -33,7 +33,7 @@ public final class TUI implements Observer {
     
 	private void askForInitialization() {
 		print("Insert size of field between 4 and 12,"
-				+ "(M)ulti- (S)ingelplayer and easy (0) or medium (1) bot"
+				+ "(M)ulti- (S)ingelplayer and easy (1) or medium (2) bot"
 				+ "(not necessary in multiplayer mode");
 	}
 	
