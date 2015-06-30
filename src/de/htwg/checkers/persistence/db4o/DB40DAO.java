@@ -1,4 +1,4 @@
-package de.htwg.checkers.persistence.impl;
+package de.htwg.checkers.persistence.db4o;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ import de.htwg.checkers.persistence.IDAO;
 import de.htwg.checkers.persistence.PersistContainer;
 
 @Singleton
-public class DB40Impl implements IDAO {
+public class DB40DAO implements IDAO {
     /** Name of the database */
     private static final String DB_NAME = "CheckersDb4o.db";
     private ObjectContainer db;
 
-    public DB40Impl() {
+    public DB40DAO() {
         this.db = Db4oEmbedded.openFile(DB_NAME);
     }
 
